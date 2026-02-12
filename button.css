@@ -1,0 +1,55 @@
+.home {
+  /* Layout & Shape */
+  display: inline-block;
+  padding: 9px 20px;
+  border-radius: 30px; /* Makes it pill-shaped */
+  border: none;
+  cursor: pointer;
+
+  /* Typography */
+  font-family: 'Inter', sans-serif; /* Use a bold sans-serif font */
+  font-weight: 800;
+  font-size: 14px;
+  color: #2d364d; /* Deep navy text color */
+
+  /* Colors & Shadows */
+  
+
+  background-color: #b5bdd1; 
+  /* Light bluish-grey base */
+
+   /* Horizontal: 2px (slight right) */
+   /* Vertical: 8px (pushes shadow to the top edge) */
+   /* Blur: 10px (softness) */
+ box-shadow: 
+         inset 1px 2px 3px rgba(0, 0, 0, 0.45), /* The Top Inset Shadow */
+        0px 2px 2px rgba(0, 0, 0, 0.8),      /* The Outer Shadow 1 */
+        0px 4px 7px rgba(0, 0, 0, 0.22);
+           /* The Outer Shadow 2 */
+  
+  transition: all 0.3s ease;
+}
+
+.home-button:active {
+  /* Makes it look like it's being pressed further */
+  transform: scale(0.98);
+}
+
+
+.account-img{
+  
+    
+    /* This will hide the white background of the image */
+  mix-blend-mode: multiply;
+  
+  /* Optional: adjust size if needed */
+  width: 40px;
+  height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 24px;
+    font-weight: bold;
+};
+
