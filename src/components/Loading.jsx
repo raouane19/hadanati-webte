@@ -25,7 +25,7 @@ const Loading = () => {
       <div className="text-container">
         <span>Parents,</span>
         <span>Daycares,</span>
-        <span>All together.</span>
+        <span>All together..</span>
       </div>
     </div>
   );
