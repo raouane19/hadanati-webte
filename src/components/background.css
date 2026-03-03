@@ -1,0 +1,15 @@
+.need {
+    display: flex;
+    align-items: center;      /* Vertically centers everything */
+    justify-content: space-between; /* Pushes Logo to left, Icon to right */
+    padding: 10px 40px;
+    width: 100%;
+    box-sizing: border-box;
+}
+body{
+  min-height: 100vh;
+  background-color: #fbf6fb;
+  background-attachment: fixed;
+  margin: 0px;
+
+};

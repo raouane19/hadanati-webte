@@ -1,0 +1,66 @@
+.home, .help, .about, .lang, .active, .nhome, .login {
+  /* Layout & Shape */
+  display: inline-block;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  padding: 12px 28px; /* Increased padding for better spacing */
+
+  /* Typography - CONSISTENT */
+  font-family: "Inter", "PT Sans", sans-serif;
+  font-weight: 500; /* Changed from 800 to match Figma */
+  font-size: 16px; /* Increased from 14px */
+  color: #636E72;
+  letter-spacing: 0.3px; /* Adds slight spacing between letters */
+
+  /* Colors & Shadows */
+  background-color: #ffffff;
+  transition: all 0.2s ease; /* Smooth hover effect */
+}
+
+.login {
+  /* Layout & Shape */
+  display: inline-block;
+  border-radius: 30px;
+  border: 1px solid #c7ced0;
+  cursor: pointer;
+  padding: 12px 28px; /* Same as other buttons */
+
+  /* Typography - CONSISTENT */
+  font-family: "Inter", "PT Sans", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #000000;
+  letter-spacing: 0.3px;
+
+  /* Colors & Shadows */
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+/* Remove the separate padding rules */
+/* Delete these old rules:
+.home,.account,.help,.about,.active ,.nhome,.login{
+ padding: 9px 25px;
+}
+.lang{
+  padding: 9px 15px;
+} */
+
+
+.home:hover,.account:hover,.help:hover,.about:hover,.lang:hover,.login:hover{
+background-color: rgb(238, 236, 223);
+}
+
+
+.active ,.nhome {
+  /* put whatever color change you want here */
+  background-color:rgb(248, 232, 247);
+  
+}
+.active:hover ,.nhome:hover{
+  background-color: rgb(249, 240, 248);
+}
+
+
+

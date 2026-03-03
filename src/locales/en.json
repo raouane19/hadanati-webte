@@ -1,0 +1,52 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "help": "Help",
+    "language": "Language",
+    "login": "Log In"
+  },
+  "home": {
+    "badge": "TRUSTED BY PARENTS",
+    "title": "Welcome to",
+    "brand": "HADANATI",
+    "description": "A professional guide to safe, modern nurseries. We help discerning parents discover the perfect environment for their child's early development.",
+    "btn1": "Join our family",
+    "btn2": "See how it works"
+  },
+  "whyChoose": {
+    "title": "Why choose HADANATI?",
+    "subtitle": "A sophisticated and professional approach to your child's first educational journey.",
+    "safety": {
+      "title": "Verified Safety",
+      "description": "Every nursery undergoes a rigorous screening process to ensure the highest safety standards for your peace of mind."
+    },
+    "curriculum": {
+      "title": "Curriculum Excellence",
+      "description": "We partner with institutions that prioritize modern, evidence-based early childhood development programs."
+    },
+    "community": {
+      "title": "Parent Community",
+      "description": "Connect with a supportive network of parents and experts dedicated to nurturing the next generation."
+    }
+  },
+  "footer": {
+    "description": "Setting the standard for early childhood education and nursery selection across the region with professional clarity and sophisticated care.",
+    "about": {
+      "title": "ABOUT",
+      "mission": "Our Mission",
+      "team": "Team",
+      "careers": "Careers",
+      "contact": "Contact"
+    },
+    "help": {
+      "title": "GET HELP",
+      "support": "Parent Support",
+      "faq": "Safety FAQ",
+      "center": "Help Center",
+      "guides": "Guides"
+    },
+    "stayUpdated": "STAY UPDATED",
+    "copyright": "© 2026 HADANATI.COM. ALL RIGHTS RESERVED. PROFESSIONAL NURSERY NETWORK."
+  }
+}

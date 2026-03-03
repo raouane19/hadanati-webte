@@ -1,0 +1,29 @@
+.parent {
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* Logo | Center space | Right buttons */
+  align-items: center;
+  gap: 40px;
+  background-color: #ffffff;
+  padding: 10px 48px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.09);
+  margin: 0px;
+}
+
+.logo-div {
+  grid-column: 1; /* Logo in first column */
+}
+
+.buttons-div {
+  grid-column: 2; /* Home, About, Help in center */
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+/* Add this new div wrapper in your JSX for Language and Log In */
+.right-buttons {
+  grid-column: 3; /* Language and Log In on right */
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+}
