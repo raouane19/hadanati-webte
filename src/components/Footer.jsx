@@ -8,26 +8,15 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        {/* Left Section - Logo & Description */}
+
         <div className="footer-left">
           <img src="/logo.png" alt="HADANATI Logo" className="footer-logo" />
           <p className="footer-description">
             {t('footer.description')}
           </p>
-          <div className="social-icons">
-            <a href="#!" className="social-icon">
-              <img src="/wrl.png" alt="Social" width="35" height="35" />
-            </a>
-            <a href="#!" className="social-icon">
-              <p className="email-icon">@</p>
-            </a>
-            <a href="#!" className="social-icon">
-             <img src="/comment.png" alt="Sociale" width="20" height="20" />
-            </a>
-          </div>
+          <img src="/left-social-icons.png" alt="Social" className="left-social-img" />
         </div>
 
-        {/* Middle Section - About */}
         <div className="footer-column">
           <h4 className="footer-heading">{t('footer.about.title')}</h4>
           <ul className="footer-links">
@@ -38,7 +27,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Middle Section - Get Help */}
         <div className="footer-column">
           <h4 className="footer-heading">{t('footer.help.title')}</h4>
           <ul className="footer-links">
@@ -49,13 +37,13 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Right Section - Stay Updated */}
         <div className="footer-column">
           <h4 className="footer-heading">{t('footer.stayUpdated')}</h4>
+          <img src="/social-icons.png" alt="Social Media" className="social-icons-img" />
         </div>
+
       </div>
 
-      {/* Bottom Copyright */}
       <div className="footer-bottom">
         <p>{t('footer.copyright')}</p>
       </div>
