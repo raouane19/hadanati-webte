@@ -1,0 +1,136 @@
+.join-container {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 80px;
+  background-color: #ffffff;
+}
+
+.join-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.join-title {
+  font-family: "Inter:Bold", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #2D3436;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.join-subtitle {
+  font-family: "Inter:Bold", sans-serif;
+  font-size: 14px;
+  color: #8B9196;
+  line-height: 1.7;
+}
+
+.join-cards {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.join-card {
+  background-color: #ffffff;
+  border: 1px solid #ede9e4;
+  border-radius: 16px;
+  padding: 36px 28px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.25s, transform 0.25s;
+  justify-content: space-between;
+}
+
+.join-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.11);
+  transform: translateY(-4px);
+}
+
+.join-card-icon {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parent-icon {
+  background-color: #ddeaf5;
+}
+
+.nursery-icon {
+  background-color: #fae8e8;
+}
+
+.card-icon-img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+.join-card-title {
+  font-family: "Inter:Bold", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2D3436;
+  letter-spacing: 0.3px;
+}
+
+.join-card-desc {
+  font-family: "Inter:Bold", sans-serif;
+  font-size: 14px;
+  color: #8B9196;
+  line-height: 1.7;
+}
+
+.join-btn {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 13px;
+  margin-top: 4px;
+  font-family: "Inter:Bold", sans-serif;
+}
+
+.join-back {
+  font-family: "Inter:Bold", sans-serif;
+  font-size: 14px;
+  color: #8B9196;
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+
+.join-back:hover {
+  color: #6B8E9E;
+}
+
+@media (max-width: 600px) {
+  .join-container {
+    padding: 40px 20px;
+  }
+
+  .join-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .join-title {
+    font-size: 28px;
+  }
+}

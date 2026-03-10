@@ -48,5 +48,16 @@
     },
     "stayUpdated": "STAY UPDATED",
     "copyright": "© 2026 HADANATI.COM. ALL RIGHTS RESERVED. PROFESSIONAL NURSERY NETWORK."
-  }
+  },
+  "join": {
+  "title": "Join our family",
+  "subtitle": "Please select your account type to continue",
+  "parentTitle": "Join as a Parent",
+  "parentDesc": "Discover exceptional nurseries, manage your childcare applications, and stay connected with their early learning journey.",
+  "parentBtn": "Register as Parent",
+  "nurseryTitle": "Join as a Nursery",
+  "nurseryDesc": "Showcase your facility, streamline your admissions process, and reach more parents in your local community.",
+  "nurseryBtn": "Register as Nursery",
+  "back": "Back to Home"
+}
 }
