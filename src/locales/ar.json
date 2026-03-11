@@ -59,5 +59,25 @@
   "nurseryDesc": "اعرض مرفقك، وبسّط عملية القبول، وتواصل مع المزيد من الأهل في مجتمعك المحلي.",
   "nurseryBtn": "سجّل كحضانة",
   "back": "العودة إلى الرئيسية"
+},
+  "signup": {
+  "title": "تسجيل ولي الأمر",
+  "subtitle": "انضم إلى مجتمع حضانتي وعزز رحلة طفلك",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "email": "البريد الإلكتروني",
+  "phone": "رقم الهاتف",
+  "password": "كلمة المرور",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "btn": "إنشاء حساب",
+  "loginLink": "هل لديك حساب بالفعل؟",
+  "login": "تسجيل الدخول",
+  "professional": "كن مستشاراً مهنياً موثوقاً",
+  "firstNamePlaceholder": "مثال: سارة",
+  "lastNamePlaceholder": "مثال: جاكسون",
+  "emailPlaceholder": "email@example.com",
+  "phonePlaceholder": "+213",
+  "passwordPlaceholder": "••••••••"
 }
+
 }

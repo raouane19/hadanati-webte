@@ -59,5 +59,24 @@
   "nurseryDesc": "Showcase your facility, streamline your admissions process, and reach more parents in your local community.",
   "nurseryBtn": "Register as Nursery",
   "back": "Back to Home"
+},
+ "signup": {
+  "title": "Parent Sign Up",
+  "subtitle": "Join the Hadanati community and empower your child's journey",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "email": "Email Address",
+  "phone": "Phone Number",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "btn": "Create Account",
+  "loginLink": "Already have an account?",
+  "login": "Log in",
+  "professional": "Become a confidential professional advisor",
+  "firstNamePlaceholder": "e.g. Sarah",
+  "lastNamePlaceholder": "e.g. Jackson",
+  "emailPlaceholder": "email@example.com",
+  "phonePlaceholder": "+213",
+  "passwordPlaceholder": "••••••••"
 }
 }
