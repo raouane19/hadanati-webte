@@ -78,5 +78,22 @@
   "emailPlaceholder": "email@example.com",
   "phonePlaceholder": "+213",
   "passwordPlaceholder": "••••••••"
+},
+"nursery": {
+  "title": "Nursery Sign Up",
+  "subtitle": "Register your professional nursery with Hadanati",
+  "daycareName": "Daycare Name",
+  "daycarePlaceholder": "e.g. Little Blossoms Academy",
+  "ownerName": "Owner Full Name",
+  "ownerPlaceholder": "Jane Doe",
+  "email": "Email Address",
+  "emailPlaceholder": "jane@example.com",
+  "phone": "Phone Number",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "btn": "Register daycare and complete your profile",
+  "loginLink": "Already have an account?",
+  "login": "Log in"
 }
+
 }
