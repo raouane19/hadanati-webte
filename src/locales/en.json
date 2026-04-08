@@ -50,50 +50,179 @@
     "copyright": "© 2026 HADANATI.COM. ALL RIGHTS RESERVED. PROFESSIONAL NURSERY NETWORK."
   },
   "join": {
-  "title": "Join our family",
-  "subtitle": "Please select your account type to continue",
-  "parentTitle": "Join as a Parent",
-  "parentDesc": "Discover exceptional nurseries, manage your childcare applications, and stay connected with their early learning journey.",
-  "parentBtn": "Register as Parent",
-  "nurseryTitle": "Join as a Nursery",
-  "nurseryDesc": "Showcase your facility, streamline your admissions process, and reach more parents in your local community.",
-  "nurseryBtn": "Register as Nursery",
-  "back": "Back to Home"
-},
- "signup": {
-  "title": "Parent Sign Up",
-  "subtitle": "Join the Hadanati community and empower your child's journey",
-  "firstName": "First Name",
-  "lastName": "Last Name",
-  "email": "Email Address",
-  "phone": "Phone Number",
-  "password": "Password",
-  "confirmPassword": "Confirm Password",
-  "btn": "Create Account",
-  "loginLink": "Already have an account?",
-  "login": "Log in",
-  "professional": "Become a confidential professional advisor",
-  "firstNamePlaceholder": "e.g. Sarah",
-  "lastNamePlaceholder": "e.g. Jackson",
-  "emailPlaceholder": "email@example.com",
-  "phonePlaceholder": "+213",
-  "passwordPlaceholder": "••••••••"
-},
-"nursery": {
-  "title": "Nursery Sign Up",
-  "subtitle": "Register your professional nursery with Hadanati",
-  "daycareName": "Daycare Name",
-  "daycarePlaceholder": "e.g. Little Blossoms Academy",
-  "ownerName": "Owner Full Name",
-  "ownerPlaceholder": "Jane Doe",
-  "email": "Email Address",
-  "emailPlaceholder": "jane@example.com",
-  "phone": "Phone Number",
-  "password": "Password",
-  "confirmPassword": "Confirm Password",
-  "btn": "Register daycare and complete your profile",
-  "loginLink": "Already have an account?",
-  "login": "Log in"
+    "title": "Join our family",
+    "subtitle": "Please select your account type to continue",
+    "parentTitle": "Join as a Parent",
+    "parentDesc": "Discover exceptional nurseries, manage your childcare applications, and stay connected with their early learning journey.",
+    "parentBtn": "Register as Parent",
+    "nurseryTitle": "Join as a Nursery",
+    "nurseryDesc": "Showcase your facility, streamline your admissions process, and reach more parents in your local community.",
+    "nurseryBtn": "Register as Nursery",
+    "back": "Back to Home"
+  },
+  "signup": {
+    "title": "Parent Sign Up",
+    "subtitle": "Join the Hadanati community and empower your child's journey",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "btn": "Create Account",
+    "loginLink": "Already have an account?",
+    "login": "Log in",
+    "professional": "Become a confidential professional advisor",
+    "firstNamePlaceholder": "e.g. Sarah",
+    "lastNamePlaceholder": "e.g. Jackson",
+    "emailPlaceholder": "email@example.com",
+    "phonePlaceholder": "+213",
+    "passwordPlaceholder": "••••••••"
+  },
+  "nursery": {
+    "title": "Nursery Sign Up",
+    "subtitle": "Register your professional nursery with Hadanati",
+    "daycareName": "Daycare Name",
+    "daycarePlaceholder": "e.g. Little Blossoms Academy",
+    "ownerName": "Owner Full Name",
+    "ownerPlaceholder": "Jane Doe",
+    "email": "Email Address",
+    "emailPlaceholder": "jane@example.com",
+    "phone": "Phone Number",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "btn": "Register daycare and complete your profile",
+    "loginLink": "Already have an account?",
+    "login": "Log in"
+  },
+  "daycare": {
+    "title": "Complete Daycare Profile",
+    "backStep": "Return to Dashboard",
+    "fullAddress": "Full Address",
+    "fullAddressPlaceholder": "Street name, building number, area",
+    "city": "City",
+    "selectCity": "Select city",
+    "monthlyFee": "Monthly Fee / Price",
+    "totalCapacity": "Total Capacity",
+    "capacityPlaceholder": "e.g. 45 children",
+    "ageRange": "Age Range",
+    "ageRangePlaceholder": "e.g. 6 months to 5 years",
+    "educationalApproach": "Educational Approach",
+    "selectApproach": "Select approach",
+    "opensAt": "Opens At",
+    "closesAt": "Closes At",
+    "services": "SERVICES & FACILITIES",
+    "transport": "Transport Availability",
+    "healthcare": "Healthcare Availability",
+    "foodServices": "FOOD SERVICES",
+    "lunch": "Lunch",
+    "snacks": "Snacks",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your nursery's mission, facilities, and unique approach to early childhood education...",
+    "gallery": "Nursery Gallery",
+    "uploadTitle": "Upload Photos",
+    "uploadSub": "Drag and drop multiple files to create your gallery",
+    "uploadLimit": "You can upload up to 5 photos",
+    "saveBtn": "Save & Continue",
+    "needHelp": "Need help completing your profile?",
+    "contactSupport": "Contact support"
+  },
+  "sa": {
+    "title": "Sunshine Early Learning",
+    "subtitle": "A nurturing place where children grow and thrive",
+    "info": {
+      "title": "Daycare Info"
+    },
+    "hero": {
+      "line1": "Where Excellence Meets",
+      "line2": "Early Education",
+      "desc": "Nurturing the next generation through a balanced curriculum, professional educators, and a loving, secure environment.",
+      "btn1": "Leave review",
+      "btn2": "Send request"
+    },
+    "phil": {
+      "badge": "A PREMIER EDUCATION PARTNER",
+      "title": "Our Philosophy: Nurturing Growth, Inspiring Discovery",
+      "text": "At Sunshine Academy, we believe that early childhood is the most crucial stage of human development. Our approach blends Reggio Emilia-inspired inquiry with a rigorous academic foundation. We foster a nurturing environment where children are encouraged to explore, question, and grow at their own pace."
+    },
+    "reviews": {
+      "title": "Parent Reviews",
+      "readAll": "Read All Reviews"
+    },
+    "leaders": {
+      "title": "Our Leadership Team"
+    }
+  },
+  "daycareInfo": {
+    "campus": "Main Campus",
+    "campusVal": "123 Learning Lane, Chicago, IL",
+    "hours": "Operating Hours",
+    "hoursVal": "Mon - Fri, 7:00 AM - 6:30 PM",
+    "admissions": "Admissions",
+    "admissionsVal": "apply@sunshineacademy.edu",
+    "capacity": "Capacity",
+    "capacityVal": "120 children",
+    "age": "Age Range",
+    "ageVal": "6 weeks - 6 years",
+    "tuition": "Tuition",
+    "tuitionVal": "From 3000 DZD/mo"
+  },
+  "reviews": {
+    "r1": {
+      "text": "Sunshine Early Learning has been an absolute blessing for our family. The staff is warm, professional, and truly dedicated to each child's growth.",
+      "author": "— Sarah M., Parent"
+    }
+  },
+  "leaders": {
+    "elena": {
+      "name": "Elena Johnson",
+      "role": "Director & Founder"
+    },
+    "jessica": {
+      "name": "Jessica Lee",
+      "role": "Lead Educator"
+    },
+    "mark": {
+      "name": "Mark Thompson",
+      "role": "Child Psychologist"
+    },
+    "amanda": {
+      "name": "Amanda Carter",
+      "role": "Nutrition Specialist"
+    }
+  },
+  "login": {
+    "title": "Daycare login",
+    "subtitle": "Welcome back! Let’s continue your daycare journey.",
+    "email": "Email Address",
+    "emailPlaceholder": "sarah@example.com",
+    "password": "Password",
+    "btn": "Log in",
+    "forgotPassword": "Forgot password?",
+    "professional": "Secure & confidential professional services"
+  },
+  "parentDashboard": {
+  "heroTitle1": "Find the perfect",
+  "heroTitle2": "daycare",
+  "heroTitle3": "for your child",
+  "heroSub": "Search thousands of verified childcare providers with real parent reviews, safety ratings, and available spots.",
+  "searchPlaceholder": "Search by daycare name",
+  "locationPlaceholder": "Enter your city or wilaya",
+  "findBtn": "Find Centers",
+  "filters": "Filters",
+  "foodProvided": "🍴 Food Provided",
+  "lunchIncluded": "Lunch Included",
+  "healthySnacks": "Healthy Snacks",
+  "healthcareCap": "🏥 Healthcare Cap",
+  "amenities": "⚙️ Amenities",
+  "transport": "Transport Service",
+  "educational": "Educational Program",
+  "applyFilters": "Apply Filters",
+  "centersFound": "centers",
+  "found": "found",
+  "near": "near",
+  "viewDetails": "View Details",
+  "topRated": "TOP RATED",
+  "bestValue": "BEST VALUE"
 }
-
 }

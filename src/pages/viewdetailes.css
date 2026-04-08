@@ -1,0 +1,508 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600&display=swap');
+body {
+ 
+    font-family: 'Inter', sans-serif;
+}
+.sa-hero-title,
+.sa-phil-title,
+.sa-section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+.sa-page {
+  background-color: #fbf6fb;
+   font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+ 
+/* ── Page header ── */
+.sa-page-header {
+  padding: 24px 28px 16px;
+}
+ 
+.sa-page-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #1a1a2e;
+  margin: 0;
+}
+ 
+.sa-page-sub {
+  font-size: 0.85rem;
+  color: #778286;
+  margin: 4px 0 0;
+}
+ 
+/* ── Two-column layout ── */
+.sa-two-col {
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  gap: 16px;
+  padding: 0 28px 20px;
+  align-items: start;
+}
+ 
+.sa-mid {
+  padding-top: 0;
+}
+ 
+/* ── Hero ── */
+.sa-hero {
+  border-radius: 12px;
+  overflow: hidden;
+  height: 280px;
+  position: relative;
+  background: linear-gradient(135deg, #163530 0%, #1f5249 50%, #2d7068 100%);
+}
+ .sa-two-col{
+    align-items: stretch;
+ }
+ .sa-hero{
+    height: 100%;
+    min-height: 280px;
+ }
+.sa-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+ 
+/* CSS scene fallback */
+.sa-hero-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+ 
+.sa-scene-wall {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #b8d4b0, #8fbc88);
+  opacity: 0.35;
+}
+ 
+.sa-scene-window {
+  position: absolute;
+  top: 10%; left: 6%;
+  width: 90px; height: 65px;
+  background: linear-gradient(180deg, #87ceeb, #b3e0ff);
+  border: 4px solid #c49a4e;
+  border-radius: 3px;
+  opacity: 0.6;
+}
+ 
+.sa-scene-board {
+  position: absolute;
+  top: 10%; right: 8%;
+  width: 110px; height: 72px;
+  background: #2d6e4e;
+  border: 5px solid #8b6914;
+  border-radius: 3px;
+}
+ 
+.sa-scene-desk {
+  position: absolute;
+  bottom: 20%; right: 19%;
+  width: 70px; height: 45px;
+  background: #d4a574;
+  border-radius: 4px;
+}
+ 
+.sa-scene-teacher {
+  position: absolute;
+  bottom: 0; right: 52%;
+  font-size: 72px;
+  line-height: 1;
+}
+ 
+.sa-scene-student {
+  position: absolute;
+  bottom: 0; right: 22%;
+  font-size: 52px;
+  line-height: 1;
+}
+ 
+.sa-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 40, 37, 0.9) 0%,
+    rgba(16, 40, 37, 0.6) 55%,
+    rgba(16, 40, 37, 0.05) 100%
+  );
+}
+ 
+.sa-hero-content {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 340px;
+  z-index: 2;
+}
+ 
+.sa-hero-title {
+font-family: 'Inter', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.18;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  margin: 0 0 10px;
+}
+ 
+.sa-hero-accent {
+  color:#6B8E9E ; /*#f0a500*/
+}
+ 
+.sa-hero-desc {
+  font-size: 0.78rem;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.65;
+  margin: 0 0 18px;
+  max-width: 290px;
+}
+ 
+.sa-hero-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+ 
+.sa-btn-white {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background:#6B8E9E;
+  color: white;
+  transition: background 0.2s;
+}
+ 
+.sa-btn-white:hover {
+  background: #2f3e45;
+}
+ 
+.sa-btn-ghost {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  background:  rgba(255, 255, 255, 0.192);
+  color: #ffffff;
+  border: 1.5px  rgba(255, 255, 255, 0.192);
+  transition: background 0.2s;
+}
+ 
+.sa-btn-ghost:hover {
+  background: rgba(210, 180, 140, 0.65);
+}
+ 
+/* ── Daycare info card ── */
+.sa-info-card {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e8e8e8;
+  box-shadow: none;
+}
+ 
+.sa-info-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+ 
+.sa-info-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #6b8e9e;
+  flex-shrink: 0;
+}
+ 
+.sa-info-head-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+ 
+.sa-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+ 
+.sa-info-row:last-child {
+  border-bottom: none;
+}
+ 
+.sa-info-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+ 
+.sa-info-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 2px;
+}
+ 
+.sa-info-value {
+  font-size: 12px;
+  color: #666666;
+}
+ 
+/* ── Philosophy ── */
+.sa-phil {
+  padding-right: 16px;
+}
+ 
+.sa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #7a9baa;
+  margin-bottom: 10px;
+}
+ 
+.sa-badge::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 1.5px;
+  background: #7a9baa;
+}
+ 
+.sa-phil-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  color: #1a1a2e;
+  margin: 0 0 12px;
+}
+ 
+.sa-phil-text {
+  font-size: 0.82rem;
+  color: #778286;
+  line-height: 1.8;
+  margin: 0;
+}
+ 
+/* ── Facilities ── */
+.sa-facilities {
+  padding-top: 4px;
+}
+ 
+.sa-facilities-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+ 
+.sa-facility-card {
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  border: 1px solid #e8e8e8;
+  transition: box-shadow 0.2s;
+}
+ 
+.sa-facility-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+}
+ 
+.sa-facility-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+ 
+.sa-facility-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+ 
+.sa-facility-sub {
+  font-size: 11px;
+  color: #778286;
+}
+ 
+/* ── Generic section ── */
+.sa-section {
+  padding: 0 28px 24px;
+}
+ 
+.sa-section-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+ 
+.sa-section-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 16px;
+}
+ 
+.sa-section-row .sa-section-title {
+  margin: 0;
+}
+ 
+.sa-read-all {
+  font-size: 0.76rem;
+  color: #7a9baa;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+ 
+.sa-read-all:hover {
+  text-decoration: underline;
+}
+ 
+/* ── Review card ── */
+.sa-review-card {
+  background: #ffffff;
+  border: 1px solid #e8eceb;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+ 
+.sa-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+ 
+.sa-star {
+  color: #f0a500;
+  font-size: 13px;
+}
+ 
+.sa-score {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-left: 5px;
+}
+ 
+.sa-review-text {
+  font-size: 0.82rem;
+  color: #3d3d3d;
+  line-height: 1.75;
+  margin: 0 0 10px;
+}
+ 
+.sa-reviewer {
+  font-size: 0.75rem;
+  color: #778286;
+}
+ 
+/* ── Leadership ── */
+.sa-leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+ 
+.sa-leader-card {
+  text-align: center;
+  padding: 18px 10px;
+  background: #ffffff;
+  border: 1px solid #e8eceb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+ 
+.sa-leader-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+ 
+.sa-leader-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  overflow: hidden;
+  background: #f0f0f0;
+  border: 2px solid #e8eceb;
+}
+ 
+.sa-leader-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 3px;
+}
+ 
+.sa-leader-role {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #778286;
+}
+ 
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sa-two-col {
+    grid-template-columns: 1fr;
+    padding: 0 16px 16px;
+  }
+ 
+  .sa-page-header {
+    padding: 20px 16px 12px;
+  }
+ 
+  .sa-section {
+    padding: 0 16px 20px;
+  }
+ 
+  .sa-leaders-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+ 
+  .sa-hero {
+    height: 320px;
+  }
+ 
+  .sa-facilities-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+ 

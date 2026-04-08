@@ -1,3 +1,4 @@
+import { useNavigate, Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import './SignUp.css';
 import { useTranslation } from 'react-i18next';
@@ -5,6 +6,7 @@ import { FiPhone } from 'react-icons/fi';
 
 const SignUp = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -17,11 +19,21 @@ const SignUp = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
+  // Optional: check passwords match
+  if (formData.password !== formData.confirmPassword) {
+    alert("Passwords don't match!");
+    return;
+  }
+
+  // Save user role as "parent" so ProtectedRoute allows access
+  localStorage.setItem('userRole', 'parent');
+
+  console.log(formData);
+  navigate('/parent-dashboard');
+};
 
   return (
     <div className="signup-container">
@@ -49,7 +61,7 @@ const SignUp = () => {
           <div className="form-group">
             <label>{t('signup.phone')}</label>
             <div className="input-with-icon">
-              <FiPhone className="input-icon-inside"/>
+              <FiPhone className="input-icon-inside" />
               <input type="tel" name="phone" placeholder="+213" onChange={handleChange} />
             </div>
           </div>
@@ -68,11 +80,15 @@ const SignUp = () => {
           <button type="submit" className="signup-btn">{t('signup.btn')}</button>
         </form>
 
-        <p className="login-link">{t('signup.loginLink')} <a href="#">{t('signup.login')}</a></p>
+        {/* Updated login link with react-router-dom Link */}
+        <p className="login-link">
+          {t('signup.loginLink')}{' '}
+          <Link to="/parent-login">{t('signup.login')}</Link>
+        </p>
+
         <p className="professional-link">{t('signup.professional')}</p>
       </div>
     </div>
   );
 };
-
 export default SignUp;

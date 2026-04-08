@@ -1,0 +1,72 @@
+import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import './daycarelogin.css';
+import { useTranslation } from 'react-i18next';
+
+ 
+const Login = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+ 
+  
+ 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+ 
+const handleSubmit = (e) => {
+  e.preventDefault();
+  console.log(formData);
+  localStorage.setItem('userRole', 'daycare');
+  navigate('/dashboard'); // ✅ go straight to dashboard
+};
+  return (
+    <div className="login-container">
+ 
+
+ 
+      <div className="login-box">
+        <h2 className="login-title">{t('login.title')}</h2>
+        <p className="login-subtitle">{t('login.subtitle')}</p>
+ 
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>{t('login.email')}</label>
+            <input
+              type="email"
+              name="email"
+              placeholder={t('login.emailPlaceholder')}
+              onChange={handleChange}
+            />
+          </div>
+ 
+          <div className="form-group">
+            <label>{t('login.password')}</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              onChange={handleChange}
+            />
+          </div>
+ 
+        <button type="submit" className="login-btn">
+  {t('login.btn')}
+</button>
+        </form>
+ 
+        <p className="forgot-link">
+          <a href="#">{t('login.forgotPassword')}</a>
+        </p>
+ 
+        <p className="professional-link">{t('login.professional')}</p>
+      </div>
+    </div>
+  );
+};
+ 
+export default Login;
