@@ -17,16 +17,16 @@ const transporter = nodemailer.createTransport({
 
 // ----------------- REGISTER -----------------
 router.post("/register/parent", async (req, res) => {
-    const { first_name, last_name, email, password, phone } = req.body;
+    const { first_name, last_name, email, password, phone, lat, lon } = req.body;
 
     try {
         const hash = await bcrypt.hash(password, 10);
         // Generate 6-digit OTP
         const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        const sql = "INSERT INTO Parents (first_name, last_name, email, password, phone, verification_code) VALUES (?, ?, ?, ?, ?, ?)";
+        const sql = "INSERT INTO Parents (first_name, last_name, email, password, phone, lat, lon, verification_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
-        db.query(sql, [first_name, last_name, email, hash, phone, otpCode], (err, result) => {
+        db.query(sql, [first_name, last_name, email, hash, phone, lat || null, lon || null, otpCode], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ message: "Database error or Email already exists" });
@@ -53,9 +53,6 @@ router.post("/register/parent", async (req, res) => {
     }
 });
 
-// ----------------- VERIFY OTP -----------------
-
-// ----------------- LOGIN -----------------
 // ----------------- LOGIN (PARENTS & DAYCARES) -----------------
 router.post("/login", (req, res) => {
     const { email, password, role } = req.body; // role = 'parent' or 'daycare'
@@ -164,8 +161,8 @@ router.post("/reset-password", async (req, res) => {
                 if (err) return res.status(500).json(err);
                 res.json({ message: "Password updated successfully." });
             });
-        } catch (e) {
-            res.status(500).json(e);
+        } catch (error) {
+            res.status(500).json(error);
         }
     });
 });
@@ -173,17 +170,17 @@ router.post("/reset-password", async (req, res) => {
 // ----------------- DAYCARE REGISTER -----------------
 router.post("/register/daycare", async (req, res) => {
     // Destructuring fields based on your provided SQL table
-    const { name, email, password, phone, address, capacity, age_range, price } = req.body;
+    const { name, email, password, phone, address, lat, lon, capacity, age_range, price } = req.body;
 
     try {
         const hash = await bcrypt.hash(password, 10);
         const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
 
         const sql = `INSERT INTO Daycares 
-            (name, email, password, phone, address, capacity, age_range, price, verification_code) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            (name, email, password, phone, address, lat, lon, capacity, age_range, price, verification_code) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         
-        db.query(sql, [name, email, hash, phone, address, capacity, age_range, price, otpCode], (err, result) => {
+        db.query(sql, [name, email, hash, phone, address, lat || null, lon || null, capacity, age_range, price, otpCode], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ message: "Error: Email might already exist or Database connection issue." });

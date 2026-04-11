@@ -85,6 +85,7 @@ CREATE TABLE `Children` (
   `parent_id` int NOT NULL,
   `name` varchar(100) NOT NULL,
   `age` int NOT NULL,
+  `birth_date` date DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `medical_issues` text,
   PRIMARY KEY (`id`),
@@ -123,7 +124,7 @@ CREATE TABLE `Daycares` (
   `price` decimal(10,2) DEFAULT NULL,
   `education_info` text,
   `healthcare_info` text,
-  `social_media` varchar(255) DEFAULT NULL,
+  `social_media` varchar(1000) DEFAULT NULL,
   `profile_image` varchar(255) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '0',
   `has_activities` tinyint(1) DEFAULT '0',
@@ -159,6 +160,8 @@ CREATE TABLE `Parents` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `lat` decimal(10,7) DEFAULT NULL,
+  `lon` decimal(10,7) DEFAULT NULL,
   `Profile_image` varchar(255) DEFAULT NULL,
   `is_verified` tinyint(1) DEFAULT '0',
   `verification_code` varchar(6) DEFAULT NULL,
@@ -174,7 +177,7 @@ CREATE TABLE `Parents` (
 
 LOCK TABLES `Parents` WRITE;
 /*!40000 ALTER TABLE `Parents` DISABLE KEYS */;
-INSERT INTO `Parents` VALUES (1,'John','Doe','john.doe@example.com','$2b$10$V28qZk0uJmzQgSP0cYBWDuTb3EPjdI2ps9Tdmm9WLhPuqlH6V.9UO','1234567890',NULL,0,NULL,NULL),(2,'ahmed','mohamed','ahmed@example.com','$2b$10$6HDq.bEu4l7vpiJj3gdbrO9x1nWDeetj2P8PnQsd1YhCKCCasdbF2','1234585749',NULL,0,NULL,NULL),(4,'djamila','boualid','boualidjamila55@gmail.com','$2b$10$/Z9CYbqoADYXaxrHf/cZSu3W/EXavZKy2vxzVUQMPqMJAesYA9p/y','0612345678',NULL,1,NULL,NULL),(5,'rouane','difi','r.difi@esi-sba.dz','$2b$10$VKthLYDPQwuy0XHgvYfizufTMNjv2HjBojRaZ9ttFSI1mOuiMLbgu','08374676',NULL,0,'440779',NULL),(6,'chaima','djebbar','c.djebbar@esi-sba.dz','$2b$10$.u2eYwDkEJR71bYbJ2xi1OxCUEFlXN8aqO3vJHrHW9c24yrc8Ngmy','08374676',NULL,0,'898234',NULL),(9,'chaima','djebbar','chaimadjebbar916@gmail.com','$2b$10$NOMOViI9VThGuDE6EYTJ1O1boHWEJAUDa7yRYVWVwUZOtUayh7cNm','08374676',NULL,0,'424909','320169');
+INSERT INTO `Parents` VALUES (1,'John','Doe','john.doe@example.com','$2b$10$V28qZk0uJmzQgSP0cYBWDuTb3EPjdI2ps9Tdmm9WLhPuqlH6V.9UO','1234567890',NULL,NULL,NULL,0,NULL,NULL),(2,'ahmed','mohamed','ahmed@example.com','$2b$10$6HDq.bEu4l7vpiJj3gdbrO9x1nWDeetj2P8PnQsd1YhCKCCasdbF2','1234585749',NULL,NULL,NULL,0,NULL,NULL),(4,'djamila','boualid','boualidjamila55@gmail.com','$2b$10$/Z9CYbqoADYXaxrHf/cZSu3W/EXavZKy2vxzVUQMPqMJAesYA9p/y','0612345678',NULL,NULL,NULL,1,NULL,NULL),(5,'rouane','difi','r.difi@esi-sba.dz','$2b$10$VKthLYDPQwuy0XHgvYfizufTMNjv2HjBojRaZ9ttFSI1mOuiMLbgu','08374676',NULL,NULL,NULL,0,'440779',NULL),(6,'chaima','djebbar','c.djebbar@esi-sba.dz','$2b$10$.u2eYwDkEJR71bYbJ2xi1OxCUEFlXN8aqO3vJHrHW9c24yrc8Ngmy','08374676',NULL,NULL,NULL,0,'898234',NULL),(9,'chaima','djebbar','chaimadjebbar916@gmail.com','$2b$10$NOMOViI9VThGuDE6EYTJ1O1boHWEJAUDa7yRYVWVwUZOtUayh7cNm','08374676',NULL,NULL,NULL,0,'424909','320169');
 /*!40000 ALTER TABLE `Parents` ENABLE KEYS */;
 UNLOCK TABLES;
 
