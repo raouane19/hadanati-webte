@@ -17,20 +17,22 @@ import SearchResults from './pages/SearchResults';
 
 function AppContent() {
   const location = useLocation();
-  const hideNavbarAndFooter = location.pathname.startsWith('/daycare/') || location.pathname === '/search';
+
+  const hideNavbar =
+    location.pathname.startsWith('/daycare/') ||
+    location.pathname === '/search' ||
+    location.pathname === '/parent-dashboard';
 
   return (
     <div className="App">
-      {!hideNavbarAndFooter && <Navbar />}
+      {!hideNavbar && <Navbar />}
       <Routes>
-
         <Route path="/" element={
           <>
             <Home />
             <WhyChoose />
           </>
         } />
-
         <Route path="/join" element={<JoinPage />} />
         <Route path="/register-parent" element={<SignUp />} />
         <Route path="/parent-login" element={<ParentLogin />} />
@@ -38,23 +40,19 @@ function AppContent() {
         <Route path="/daycare-profile" element={<DaycareProfile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/daycare/:id" element={<SunshineAcademyPage />} />
-
         <Route path="/daycare-profile" element={
           <ProtectedRoute allowedRoles={['daycare']}>
             <DaycareProfile />
           </ProtectedRoute>
         } />
-
         <Route path="/parent-dashboard" element={
           <ProtectedRoute allowedRoles={['parent']}>
             <ParentDashboard />
           </ProtectedRoute>
         } />
-
         <Route path="/search" element={<SearchResults />} />
-
       </Routes>
-      {!hideNavbarAndFooter && <Footer />}
+      <Footer />
     </div>
   );
 }

@@ -4,12 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import './viewdetailes.css';
+import ParentProfile from './parentprfile';
 import { FiMapPin, FiClock, FiMail, FiUsers, FiSmile } from 'react-icons/fi';
 import { BsCash } from 'react-icons/bs';
 import { LuUtensils  } from 'react-icons/lu';
 import { LuVideo } from 'react-icons/lu';
 import { LuBus } from 'react-icons/lu';
 import { LuBriefcaseMedical } from 'react-icons/lu';
+import { MdOutlineAssignment } from 'react-icons/md';
+import { TbMoodSmile } from 'react-icons/tb';
+import { MdOutlineCheckCircle } from 'react-icons/md';
 
 
 const INFO_ROWS = [
@@ -259,103 +263,74 @@ const SunshineAcademyPage = () => {
           ))}
         </div>
       </div>
+      </div>
  
-      {/* ── Request Modal ── */}
+    
+ 
+   {/* ── Request Modal ── */}
       {showRequestModal && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 1000,
-          background: 'rgba(0,0,0,0.4)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <div style={{
-            background: '#fff',
-            borderRadius: '16px',
-            width: '360px',
-            padding: '24px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-          }}>
- 
-            {/* Modal header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>📋</span>
-                <span style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280' }}>Request Form</span>
+        <div className="modal-overlay">
+          <div className="modal-box">
+
+            {/* Header */}
+            <div className="modal-header">
+              <div className="modal-header-left">
+                <div className="modal-header-icon">
+                  <MdOutlineAssignment size={18} color="#4f6d8f" />
+                </div>
+                <span className="modal-header-label">Request Form</span>
               </div>
-              <button
-                onClick={handleCloseModal}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', color: '#9ca3af', lineHeight: 1 }}>
-                ✕
-              </button>
+              <button className="modal-close" onClick={handleCloseModal}>✕</button>
             </div>
- 
-            {/* Modal title */}
-            <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px', margin: '0 0 16px' }}>
-              <span>😊</span> Select Child
+
+            {/* Title */}
+            <h3 className="modal-title">
+              <TbMoodSmile size={28} color="#4f6d8f" /> Select Child
             </h3>
- 
+
             {/* Children list */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
+            <div className="modal-children">
               {MOCK_CHILDREN.map(child => (
                 <div
                   key={child.id}
+                  className={`modal-child-row ${selectedChild === child.id ? 'selected' : ''}`}
                   onClick={() => setSelectedChild(child.id)}
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '12px 16px', borderRadius: '12px', cursor: 'pointer',
-                    border: selectedChild === child.id ? '1.5px solid #4f6d8f' : '1px solid #e5e7eb',
-                    background: selectedChild === child.id ? '#f8fafc' : '#fff',
-                    transition: 'all 0.15s',
-                  }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{
-                      width: '38px', height: '38px', borderRadius: '50%',
-                      background: child.color, color: child.textColor,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '16px', fontWeight: '600',
-                    }}>
+                >
+                  <div className="modal-child-left">
+                    <div className="modal-child-avatar" style={{ background: child.color, color: child.textColor }}>
                       {child.initials}
                     </div>
-                    <span style={{ fontSize: '15px', fontWeight: '500', color: '#111827' }}>{child.name}</span>
+                    <span className="modal-child-name">{child.name}</span>
                   </div>
                   {selectedChild === child.id && (
-                    <span style={{ color: '#4f6d8f', fontSize: '18px' }}>✓</span>
+                    <MdOutlineCheckCircle size={22} color="#4f6d8f" />
                   )}
                 </div>
               ))}
- 
-              {/* Add new child — wire up later */}
-              <button style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: '#9ca3af', fontSize: '14px', padding: '8px 4px',
-              }}>
-                <span style={{ fontSize: '18px' }}>+</span> Add New Child
+
+              {/* Add new child */}
+              <button className="modal-add-child">
+                <div className="modal-add-icon">+</div>
+                Add New Child
               </button>
             </div>
- 
-            {/* Submit button */}
+
+            {/* Submit */}
             <button
+              className={`modal-submit ${selectedChild ? 'active' : ''}`}
               disabled={!selectedChild}
               onClick={handleSubmit}
-              style={{
-                width: '100%', padding: '14px',
-                background: selectedChild ? '#4f6d8f' : '#d1d5db',
-                color: '#fff', border: 'none', borderRadius: '12px',
-                fontSize: '15px', fontWeight: '600',
-                cursor: selectedChild ? 'pointer' : 'not-allowed',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                transition: 'background 0.2s',
-              }}>
-              Submit Request ➤
+            >
+              Submit Request <span>➤</span>
             </button>
- 
+
           </div>
         </div>
       )}
- 
-    </div>
-      </>
+
+       
+    </>
   );
 };
- 
+
 export default SunshineAcademyPage;
