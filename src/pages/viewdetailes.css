@@ -9,6 +9,129 @@ body {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
 }
+/* ─── Navbar ─── */
+.search-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 48px;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-logo {
+  font-weight: 800;
+  font-size: 20px;
+
+}
+.logo{
+  width: 120px;
+  height: auto;
+}
+
+.search-nav-links {
+  display: flex;
+  gap: 36px;
+  font-size: 14px;
+  color: #555;
+}
+
+.search-nav-links span {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.search-nav-links span:hover {
+  color: #6B8E9E;
+}
+.language-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  gap: 2px;
+}
+
+.language-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #aaa;
+}
+
+.lang-active {
+  color: #6B8E9E;
+}
+
+.search-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  color: #555;
+}
+
+.search-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  color: #333;
+  line-height: 1.3;
+}
+
+.search-user-name small {
+  font-weight: 400;
+  color: #888;
+  font-size: 11px;
+}
+
+/* ─── Search Bar (directly under navbar, no gap) ─── */
+.search-bar-container {
+  padding: 16px 48px;
+ 
+  /* remove border-bottom so it flows into page background cleanly */
+}
+.search-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #eef1f8;   /* ← background مزرق فاتح */
+  border: none;          /* ← بلا border */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7fa3;        /* ← لون الأيقونة رمادي-أزرق */
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.search-avatar svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.8;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
 .sa-page {
   background-color: #fbf6fb;
    font-family: 'Inter', sans-serif;
@@ -24,13 +147,19 @@ body {
   font-size: 1.9rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: #1a1a2e;
+  color: #4a5568;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
   margin: 0;
 }
  
 .sa-page-sub {
-  font-size: 0.85rem;
-  color: #778286;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #6b7280;
+  letter-spacing: 0px;
+-webkit-font-smoothing: antialiased;
   margin: 4px 0 0;
 }
  
@@ -130,88 +259,88 @@ body {
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(16, 40, 37, 0.9) 0%,
-    rgba(16, 40, 37, 0.6) 55%,
-    rgba(16, 40, 37, 0.05) 100%
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.25) 60%,
+    rgba(0, 0, 0, 0.0) 100%
   );
 }
- 
+
 .sa-hero-content {
   position: absolute;
-  left: 28px;
+  left: 40px;
   top: 50%;
   transform: translateY(-50%);
-  max-width: 340px;
+  max-width: 520px;
   z-index: 2;
 }
- 
+
 .sa-hero-title {
-font-family: 'Inter', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 800;
-  line-height: 1.18;
-  color: #ffffff;
-  letter-spacing: -0.3px;
-  margin: 0 0 10px;
-}
- 
-.sa-hero-accent {
-  color:#6B8E9E ; /*#f0a500*/
-}
- 
-.sa-hero-desc {
-  font-size: 0.78rem;
   font-family: 'Inter', sans-serif;
-  color: rgba(255, 255, 255, 0.75);
-  line-height: 1.65;
-  margin: 0 0 18px;
-  max-width: 290px;
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: -1px;
+  margin: 0 0 14px;
 }
- 
+
+.sa-hero-accent {
+  color: #7a9fb5;
+}
+
+.sa-hero-desc {
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.65;
+  margin: 0 0 24px;
+  max-width: 480px;
+}
+
 .sa-hero-btns {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
- 
+
 .sa-btn-white {
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
   border: none;
-  background:#6B8E9E;
+  background: #7a9fb5;
   color: white;
   transition: background 0.2s;
 }
- 
+
 .sa-btn-white:hover {
-  background: #2f3e45;
+  background: #5c8099;
 }
- 
+
 .sa-btn-ghost {
-  padding: 8px 18px;
-  border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
-  background:  rgba(255, 255, 255, 0.192);
+  background: rgba(255, 255, 255, 0.18);
   color: #ffffff;
-  border: 1.5px  rgba(255, 255, 255, 0.192);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   transition: background 0.2s;
 }
- 
+
 .sa-btn-ghost:hover {
-  background: rgba(210, 180, 140, 0.65);
+  background: rgba(255, 255, 255, 0.28);
 }
  
 /* ── Daycare info card ── */
 .sa-info-card {
-  background-color: #f5f5f5;
-  border-radius: 12px;
+  background-color: #f0f2f8;
+  border-radius: 16px;
   padding: 20px;
-  border: 1px solid #e8e8e8;
+ border: 1px solid #e2e5ef;
   box-shadow: none;
 }
  
@@ -251,9 +380,16 @@ font-family: 'Inter', sans-serif;
 }
  
 .sa-info-icon {
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e8ecf5;
+  color: #4a5568;
+  font-size: 15px;
   flex-shrink: 0;
-  margin-top: 2px;
 }
  
 .sa-info-label {
@@ -276,13 +412,28 @@ font-family: 'Inter', sans-serif;
 .sa-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.68rem;
+  gap: 8px;
+  background: #f0f2f8;
+  border: 1px solid #e2e5ef;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: #7a9baa;
-  margin-bottom: 10px;
+  color: #4a5568;
+  letter-spacing: 0.8px;
+}
+.sa-badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #4a5568;
+  font-size: 13px;
+  line-height: 1;
+  color: #4a5568;
+  padding-bottom: 1px;
 }
  
 .sa-badge::before {
@@ -294,44 +445,47 @@ font-family: 'Inter', sans-serif;
 }
  
 .sa-phil-title {
-  font-size: 1.15rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2rem;
   font-weight: 800;
-  line-height: 1.3;
-  letter-spacing: -0.2px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
   color: #1a1a2e;
-  margin: 0 0 12px;
+  margin: 20px 0 20px;  /* ← small top margin added */
 }
- 
+
 .sa-phil-text {
-  font-size: 0.82rem;
-  color: #778286;
-  line-height: 1.8;
+  font-size: 1rem;
+  color: #555e62;
+  line-height: 1.75;
   margin: 0;
 }
  
 /* ── Facilities ── */
 .sa-facilities {
-  padding-top: 4px;
+  width: 100%;
+  overflow: hidden;
 }
  
 .sa-facilities-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 12px;
+  width: 100%;
 }
- 
+
 .sa-facility-card {
-  background: #f5f5f5;
-  border-radius: 12px;
-  padding: 16px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #eef0f7;
+  border-radius: 16px;
+  padding: 20px 12px;
   text-align: center;
-  gap: 4px;
-  border: 1px solid #e8e8e8;
-  transition: box-shadow 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
  
 .sa-facility-card:hover {
@@ -339,19 +493,25 @@ font-family: 'Inter', sans-serif;
 }
  
 .sa-facility-icon {
+  color: #4a5568;
   font-size: 24px;
-  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
- 
+
 .sa-facility-name {
   font-size: 13px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #2d3748;
+  font-family:'Inter', sans-serif ;
 }
- 
+
 .sa-facility-sub {
   font-size: 11px;
-  color: #778286;
+  color: #6b7280;
+  font-family: 'Inter', sans-serif;
+  FONT-WEIGHT: 400;
 }
  
 /* ── Generic section ── */

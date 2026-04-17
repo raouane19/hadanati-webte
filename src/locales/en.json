@@ -128,7 +128,7 @@
     "contactSupport": "Contact support"
   },
   "sa": {
-    "title": "Sunshine Early Learning",
+    "title": "Sunshine Academy ",
     "subtitle": "A nurturing place where children grow and thrive",
     "info": {
       "title": "Daycare Info"
@@ -224,5 +224,44 @@
   "viewDetails": "View Details",
   "topRated": "TOP RATED",
   "bestValue": "BEST VALUE"
+},
+"search": {
+  "placeholder_name": "Nursery name",
+  "placeholder_city": "City",
+  "find_btn": "Find Centers",
+  "top_result": "Top Result",
+  "similar": "Similar Centers Nearby",
+  "view_map": "View map",
+  "exact_match": "EXACT MATCH",
+  "view_details": "View Details →",
+  "reviews": "reviews",
+  "no_results": "No centers found. Try a different search! 😊",
+  "nursery_desc_1": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence.",
+  "nursery_desc_2": "Focus on creative arts and outdoor learning.",
+  "nursery_desc_3": "Montessori-inspired learning environment.",
+  "nursery_desc_4": "Large indoor gym and safe outdoor play area.",
+  "nursery_desc_5": "A warm and welcoming environment for children."
+},
+"nurseries": {
+  "sunshine": {
+    "name": "Sunshine Academy",
+    "desc": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence."
+  },
+  "littlesprouts": {
+    "name": "Little Sprouts Daycare",
+    "desc": "Focus on creative arts and outdoor learning."
+  },
+  "brighthorizons": {
+    "name": "Bright Horizons",
+    "desc": "Montessori-inspired learning environment."
+  },
+  "wonderland": {
+    "name": "Wonderland Prep",
+    "desc": "Large indoor gym and safe outdoor play area."
+  },
+  "happykids": {
+    "name": "Happy Kids Center",
+    "desc": "A warm and welcoming environment for children."
+  }
 }
 }

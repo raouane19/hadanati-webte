@@ -127,7 +127,18 @@ const ParentDashboard = () => {
               onChange={(e) => setLocation(e.target.value)}
             />
           </div>
-          <button className="pd-find-btn">{t('parentDashboard.findBtn')}</button>
+            <button
+          className="pd-find-btn"
+          onClick={() => {
+            if (search.trim() === '' && location.trim() === '') {
+              alert('Please enter a daycare name or city first!');
+              return;
+            }
+            navigate('/search', { state: { name: search, city: location } });
+          }}
+        >
+          {t('parentDashboard.findBtn')}
+        </button>
         </div>
       </div>
 

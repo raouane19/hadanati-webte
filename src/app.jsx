@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from "./components/navbar";
 import Footer from "./components/Footer";
 import Home from "./components/home";
@@ -13,47 +13,57 @@ import Login from './pages/daycarelogin';
 import ParentDashboard from './pages/parentdashboard';
 import SunshineAcademyPage from './pages/viewdetailes';
 import ProtectedRoute from './components/ProtectedRoute';
+import SearchResults from './pages/SearchResults';
+
+function AppContent() {
+  const location = useLocation();
+  const hideNavbarAndFooter = location.pathname.startsWith('/daycare/') || location.pathname === '/search';
+
+  return (
+    <div className="App">
+      {!hideNavbarAndFooter && <Navbar />}
+      <Routes>
+
+        <Route path="/" element={
+          <>
+            <Home />
+            <WhyChoose />
+          </>
+        } />
+
+        <Route path="/join" element={<JoinPage />} />
+        <Route path="/register-parent" element={<SignUp />} />
+        <Route path="/parent-login" element={<ParentLogin />} />
+        <Route path="/register-nursery" element={<NurserySignUp />} />
+        <Route path="/daycare-profile" element={<DaycareProfile />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/daycare/:id" element={<SunshineAcademyPage />} />
+
+        <Route path="/daycare-profile" element={
+          <ProtectedRoute allowedRoles={['daycare']}>
+            <DaycareProfile />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/parent-dashboard" element={
+          <ProtectedRoute allowedRoles={['parent']}>
+            <ParentDashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/search" element={<SearchResults />} />
+
+      </Routes>
+      {!hideNavbarAndFooter && <Footer />}
+    </div>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
       <Loading />
-      <div className="App">
-        <Navbar />
-        <Routes>
-
-          {/* Home with WhyChoose */}
-          <Route path="/" element={
-            <>
-              <Home />
-              <WhyChoose />
-            </>
-          } />
-
-          <Route path="/join" element={<JoinPage />} />
-          <Route path="/register-parent" element={<SignUp />} />
-          <Route path="/parent-login" element={<ParentLogin />} />
-          <Route path="/register-nursery" element={<NurserySignUp />} />
-          <Route path="/daycare-profile" element={<DaycareProfile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/daycare/:id" element={<SunshineAcademyPage />} />
-
-          {/* Protected routes */}
-          <Route path="/daycare-profile" element={
-            <ProtectedRoute allowedRoles={['daycare']}>
-              <DaycareProfile />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/parent-dashboard" element={
-            <ProtectedRoute allowedRoles={['parent']}>
-              <ParentDashboard />
-            </ProtectedRoute>
-          } />
-
-        </Routes>
-        <Footer />
-      </div>
+      <AppContent />
     </BrowserRouter>
   );
 }

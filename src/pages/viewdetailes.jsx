@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
+import { FaRegUser } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import './viewdetailes.css';
- 
-/* ─── Data ─────────────────────────────────────────────── */
+import { FiMapPin, FiClock, FiMail, FiUsers, FiSmile } from 'react-icons/fi';
+import { BsCash } from 'react-icons/bs';
+import { LuUtensils  } from 'react-icons/lu';
+import { LuVideo } from 'react-icons/lu';
+import { LuBus } from 'react-icons/lu';
+import { LuBriefcaseMedical } from 'react-icons/lu';
+
+
 const INFO_ROWS = [
-  { icon: '📍', labelKey: 'daycareInfo.campus',     valueKey: 'daycareInfo.campusVal' },
-  { icon: '🕐', labelKey: 'daycareInfo.hours',      valueKey: 'daycareInfo.hoursVal' },
-  { icon: '✉️', labelKey: 'daycareInfo.admissions', valueKey: 'daycareInfo.admissionsVal' },
-  { icon: '👥', labelKey: 'daycareInfo.capacity',   valueKey: 'daycareInfo.capacityVal' },
-  { icon: '🎂', labelKey: 'daycareInfo.age',        valueKey: 'daycareInfo.ageVal' },
-  { icon: '💳', labelKey: 'daycareInfo.tuition',    valueKey: 'daycareInfo.tuitionVal' },
+  { icon: <FiMapPin />, labelKey: 'daycareInfo.campus', valueKey: 'daycareInfo.campusVal' },
+  { icon: <FiClock />, labelKey: 'daycareInfo.hours', valueKey: 'daycareInfo.hoursVal' },
+  { icon: <FiMail />, labelKey: 'daycareInfo.admissions', valueKey: 'daycareInfo.admissionsVal' },
+  { icon: <FiUsers />, labelKey: 'daycareInfo.capacity', valueKey: 'daycareInfo.capacityVal' },
+  { icon: <FiSmile />, labelKey: 'daycareInfo.age', valueKey: 'daycareInfo.ageVal' },
+  { icon: <BsCash />, labelKey: 'daycareInfo.tuition', valueKey: 'daycareInfo.tuitionVal' },
 ];
  
 const FACILITIES = [
-  { icon: '🍽️', name: 'Meals',           sub: 'lunch, snack' },
-  { icon: '📹', name: '24/7 Security',   sub: 'safety first' },
-  { icon: '🚌', name: 'Transport',       sub: 'available or not' },
-  { icon: '🏥', name: 'Wellness Clinic', sub: 'available or not' },
+  { icon: <LuUtensils size={32} />, name: 'Meals', sub: 'lunch, snack' },
+  { icon: <LuVideo size={32} />, name: '24/7 Security', sub: 'safety first' },
+  { icon: <LuBus size={32} />, name: 'Transport', sub: 'available or not' },
+   { icon: <LuBriefcaseMedical size={32} />, name: 'Health', sub: 'on-site nurse' },
 ];
  
 const REVIEWS = [
@@ -71,8 +78,43 @@ const SunshineAcademyPage = () => {
     console.log('Request submitted for child id:', selectedChild);
     handleCloseModal();
   };
+  const [showProfile, setShowProfile] = useState(false);
+  const { i18n } = useTranslation(); // update your existing const { t } to this
+  const toggleLanguage = () => {
+    i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en');
+  };
  
   return (
+      <>
+     <div className="search-navbar">
+      <div className="search-logo">
+        <img className='logo' src="/public/logo.png" alt="HADANATI" />
+      </div>
+      <div className="search-nav-links">
+        <span>{t('navbar.home')}</span>
+        <span>{t('navbar.about')}</span>
+        <span>{t('navbar.help')}</span>
+      </div>
+      <div className="search-nav-right">
+        <div className="language-toggle" onClick={toggleLanguage}>
+          <span className="language-label">{t('navbar.language')}</span>
+          <div className="lang-switch">
+            <span className={i18n.language === 'en' ? 'lang-active' : ''}>EN</span>
+            <span>/</span>
+            <span className={i18n.language === 'ar' ? 'lang-active' : ''}>AR</span>
+          </div>
+        </div>
+        <div className="search-user">
+          <span className="search-user-name">
+            esi mate<br/><small>Parent Member</small>
+          </span>
+          <div className="search-avatar" onClick={() => setShowProfile(true)}>
+            <FaRegUser />
+            {showProfile && <ParentProfile onClose={() => setShowProfile(false)} />}
+          </div>
+        </div>
+      </div>
+    </div>
     <div className="sa-page">
  
       {/* ── Page header ── */}
@@ -140,7 +182,10 @@ const SunshineAcademyPage = () => {
  
         {/* Philosophy */}
         <div className="sa-phil">
-          <span className="sa-badge">{t('sa.phil.badge')}</span>
+            <span className="sa-badge">
+        <span className="sa-badge-icon">★</span>
+        {t('sa.phil.badge')}
+      </span>
           <h2 className="sa-phil-title">{t('sa.phil.title')}</h2>
           <p className="sa-phil-text">{t('sa.phil.text')}</p>
         </div>
@@ -309,6 +354,7 @@ const SunshineAcademyPage = () => {
       )}
  
     </div>
+      </>
   );
 };
  
