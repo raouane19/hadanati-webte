@@ -11,6 +11,8 @@ import { TbMoodKid } from 'react-icons/tb';
 import { LuClipboardList } from 'react-icons/lu';
 import MyChildren from './MyChildren';
 import MyEnrollmentRequests from './Myenrollmentrequests';
+import EditParent from './editparent';
+import MyFavorites from './My Favorites';
 
 const ParentProfile = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -38,6 +40,7 @@ const ParentProfile = ({ onClose }) => {
   ]);
   const [showChildren, setShowChildren] = useState(false);
   const [showRequests, setShowRequests] = useState(false);
+  const [showEditParent, setShowEditParent] = useState(false);
 
   const menuItems = [
     { key: 'profile', label: 'Profile Info', icon: <FiUser /> },
@@ -45,6 +48,7 @@ const ParentProfile = ({ onClose }) => {
     { key: 'favorites', label: 'Favorites', icon: <FiHeart /> },
     { key: 'children', label: 'Children', icon: <FiUsers /> },
   ];
+  const [showFavorites, setShowFavorites] = useState(false);
 
   return (
     <div className="profile-overlay" onClick={onClose}>
@@ -106,7 +110,9 @@ const ParentProfile = ({ onClose }) => {
             <div className="profile-section">
               <div className="profile-section-header">
                 <h3>Personal Information</h3>
-                <button className="edit-btn"><FiEdit2 size={13}/> Edit All</button>
+               <button className="edit-btn" onClick={() => setShowEditParent(true)}>
+                <FiEdit2 size={13}/> Edit All
+              </button>
               </div>
               <div className="profile-info-grid">
                 <div className="profile-info-item">
@@ -160,7 +166,7 @@ const ParentProfile = ({ onClose }) => {
             <div className="profile-section">
               <div className="profile-section-header">
                 <h3>Favorites</h3>
-                <button className="view-all-btn">MANAGE</button>
+               <button className="view-all-btn" onClick={() => setShowFavorites(true)}>MANAGE</button>
               </div>
               <div className="favorites-grid">
                 {favorites.map(fav => (
@@ -220,6 +226,15 @@ const ParentProfile = ({ onClose }) => {
         <MyEnrollmentRequests
           onClose={onClose}
           onBack={() => setShowRequests(false)}
+        />
+      )}
+      {showEditParent && (
+        <EditParent onClose={() => setShowEditParent(false)} />
+      )}
+      {showFavorites && (
+        <MyFavorites
+          onClose={onClose}
+          onBack={() => setShowFavorites(false)}
         />
       )}
     </div>

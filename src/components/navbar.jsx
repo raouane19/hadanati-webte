@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import "./logo.css";
 import "./button.css";
 import "./gird of the top.css";
@@ -22,6 +23,7 @@ const Navbar = () => {
     i18n.changeLanguage(newLang);
     document.body.dir = newLang === 'ar' ? 'rtl' : 'ltr';
   };
+  const navigate = useNavigate();
 
   return (
     <div className="parent">
@@ -45,7 +47,9 @@ const Navbar = () => {
         <button onClick={toggleLanguage} className={`lang ${activeBtn === 'lang' ? 'active' : ''}`}>
           {i18n.language === 'en' ? 'العربية' : 'English'}
         </button>
-        <button className="login">{t('navbar.login')}</button>
+       <button className="login" onClick={() => navigate('/hadanati-login')}>
+        {t('navbar.login')}
+      </button>
       </div>
     </div>
   );

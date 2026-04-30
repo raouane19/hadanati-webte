@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+
+.had-login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.had-login-box {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 48px 44px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06);
+  text-align: left;
+}
+
+/* Title */
+.had-login-title {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  color: #1a1a2e;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.had-login-subtitle {
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* Role Selector */
+.had-role-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 10px;
+  text-align: left;
+  display: block;
+}
+
+.had-role-selector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.had-role-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #b8d8e8;
+  background: #fbfeff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b9cac;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.had-role-btn:hover {
+  border-color: #5a8a9a;
+  color: #5a8a9a;
+}
+
+.had-role-btn.had-role-active {
+  border-color: #6b9cac;
+  background-color: #d0eaf2;
+  color: #3d7a8a;
+  font-weight: 600;
+}
+
+.had-role-icon {
+  font-size: 20px;
+}
+
+/* Error */
+.had-login-error {
+  color: #e05252;
+  font-size: 13px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+/* Form Groups */
+.had-login-form-group {
+  margin-bottom: 18px;
+}
+
+.had-login-form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.had-login-form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #333;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.had-login-form-group input:focus {
+  border-color: #6b9cac;
+  background: #fff;
+}
+
+.had-login-form-group input::placeholder {
+  color: #bbb;
+}
+
+/* Login Button */
+.had-login-btn {
+  width: 100%;
+  padding: 14px;
+  background: #6b9cac;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s ease;
+  letter-spacing: 0.3px;
+}
+
+.had-login-btn:hover {
+  background: #5a8a9a;
+}
+
+.had-login-btn:disabled {
+  background: #a8c8d4;
+  cursor: not-allowed;
+}
+
+/* Footer Links */
+.had-login-footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.had-forgot-link {
+  font-size: 13px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.had-forgot-link:hover {
+  color: #6b9cac;
+}
+
+.had-send-code-link {
+  font-size: 13px;
+  color: #3d7a8a;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.had-send-code-link:hover {
+  color: #2d6070;
+}
+
+/* Secure text */
+.had-login-secure {
+  text-align: center;
+  font-size: 10px;
+  color: #ccc;
+  letter-spacing: 1px;
+  margin-top: 28px;
+  text-transform: uppercase;
+}

@@ -5,12 +5,14 @@ import { LuClipboardList } from 'react-icons/lu';
 import { MdOutlineLocalHospital } from 'react-icons/md';
 import { HiOutlineUserAdd } from 'react-icons/hi';
 import { FiChevronLeft } from "react-icons/fi";
+import ChildrenProfile from './childrenprofile';
 
 const MyChildren = ({ onClose, onBack }) => {
   const [children, setChildren] = useState([
     { id: 1, name: "Leo", age: 8, gender: "Male", medical: "None Disclosed", hasAlert: false },
     { id: 2, name: "Sarah", age: 5, gender: "Female", medical: "Peanut Allergy", hasAlert: true }
   ]);
+  const [showAddChild, setShowAddChild] = useState(false);
 
   return (
     <div className="profile-overlay" onClick={onClose}>
@@ -63,14 +65,20 @@ const MyChildren = ({ onClose, onBack }) => {
             ))}
 
             {/* Add another child */}
-            <div className="add-child-card">
-              <HiOutlineUserAdd size={28} className="add-child-icon" />
-              <p>Add another child?</p>
-            </div>
+          <div className="add-child-card" onClick={() => setShowAddChild(true)}>
+            <HiOutlineUserAdd size={28} className="add-child-icon" />
+            <p>Add another child?</p>
+          </div>
           </div>
 
         </div>
       </div>
+       {showAddChild && (
+      <ChildrenProfile
+        onClose={() => setShowAddChild(false)}
+        onBack={() => setShowAddChild(false)}
+      />
+    )}
     </div>
   );
 };

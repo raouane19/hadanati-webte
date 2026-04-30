@@ -14,6 +14,7 @@ import ParentDashboard from './pages/parentdashboard';
 import SunshineAcademyPage from './pages/viewdetailes';
 import ProtectedRoute from './components/ProtectedRoute';
 import SearchResults from './pages/SearchResults';
+import HadanatiLogin from './pages/Login';
 
 function AppContent() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function AppContent() {
         <Route path="/register-parent" element={<SignUp />} />
         <Route path="/parent-login" element={<ParentLogin />} />
         <Route path="/register-nursery" element={<NurserySignUp />} />
+        <Route path="/hadanati-login" element={<HadanatiLogin />} />
         <Route path="/daycare-profile" element={<DaycareProfile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/daycare/:id" element={<SunshineAcademyPage />} />
