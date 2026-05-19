@@ -337,7 +337,7 @@ body {
  
 /* ── Daycare info card ── */
 .sa-info-card {
-  background-color: #f0f2f8;
+  background-color: #f0f2f8; /*#f0f2f8*/
   border-radius: 16px;
   padding: 20px;
  border: 1px solid #e2e5ef;
@@ -357,7 +357,7 @@ body {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #6b8e9e;
+  background-color: #6b8e9e;/*6b8e9e*/
   flex-shrink: 0;
 }
  
@@ -826,6 +826,47 @@ body {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: #778286;
+}
+.sa-facility-card {
+  transition: all 0.25s ease;
+}
+
+/* Available — highlighted with a soft green tint + border */
+.sa-facility-card.facility-available {
+  background: #f0f2f8;
+  border: 1.5px solid #7788a5;
+  box-shadow: 0 2px 12px rgba(111, 207, 151, 0.18);
+}
+
+.sa-facility-card.facility-available .sa-facility-icon,
+.sa-facility-card.facility-available .sa-facility-name {
+  color: black;
+}
+
+.sub-available {
+  color: black;
+  font-weight: 500;
+}
+
+/* Unavailable — muted gray, no highlight */
+.sa-facility-card.facility-unavailable {
+  background: #f3f4f6;
+  border: 1.5px solid #e5e7eb;
+  opacity: 0.7;
+}
+
+.sa-facility-card.facility-unavailable .sa-facility-icon,
+.sa-facility-card.facility-unavailable .sa-facility-name {
+  color: #4a5568;
+}
+
+.sub-unavailable {
+  color: #9ca3af;
+}
+
+/* Hover feedback */
+.sa-facility-card:hover {
+  transform: scale(1.03);
 }
  
 /* ── Responsive ── */

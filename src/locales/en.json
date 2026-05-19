@@ -106,9 +106,17 @@
     "totalCapacity": "Total Capacity",
     "capacityPlaceholder": "e.g. 45 children",
     "ageRange": "Age Range",
-    "ageRangePlaceholder": "e.g. 6 months to 5 years",
-    "educationalApproach": "Educational Approach",
-    "selectApproach": "Select approach",
+    "ageFrom": "Age From",
+    "ageFromPlaceholder": "e.g. 6 months",
+    "ageTo": "Age To",
+    "ageToPlaceholder": "e.g. 5 years",
+    "activitiesOffered": "Activities Offered",
+    "educationLevels": "Education per Levels",
+    "languageLearning": "Language Learning",
+    "events": "Events",
+    "plays": "Plays",
+    "dayFrom": "Day From",
+    "dayTo": "Day To",
     "opensAt": "Opens At",
     "closesAt": "Closes At",
     "services": "SERVICES & FACILITIES",
@@ -125,10 +133,14 @@
     "uploadLimit": "You can upload up to 5 photos",
     "saveBtn": "Save & Continue",
     "needHelp": "Need help completing your profile?",
-    "contactSupport": "Contact support"
+    "contactSupport": "Contact support",
+    "jobCertification": "Job Certification",
+    "jobCertificationUploadTitle": "Upload Job Certification",
+    "jobCertificationUploadSub": "PDF, JPG or PNG accepted",
+    "jobCertificationUploadLimit": "Max size: 5MB"
   },
   "sa": {
-    "title": "Sunshine Academy ",
+    "title": "Sunshine Academy",
     "subtitle": "A nurturing place where children grow and thrive",
     "info": {
       "title": "Daycare Info"
@@ -165,7 +177,9 @@
     "age": "Age Range",
     "ageVal": "6 weeks - 6 years",
     "tuition": "Tuition",
-    "tuitionVal": "From 3000 DZD/mo"
+    "tuitionVal": "From 3000 DZD/mo",
+     "phone": "Phone",
+  "phoneVal": "+1 (312) 555-0198"
   },
   "reviews": {
     "r1": {
@@ -174,26 +188,14 @@
     }
   },
   "leaders": {
-    "elena": {
-      "name": "Elena Johnson",
-      "role": "Director & Founder"
-    },
-    "jessica": {
-      "name": "Jessica Lee",
-      "role": "Lead Educator"
-    },
-    "mark": {
-      "name": "Mark Thompson",
-      "role": "Child Psychologist"
-    },
-    "amanda": {
-      "name": "Amanda Carter",
-      "role": "Nutrition Specialist"
-    }
+    "elena": { "name": "Elena Johnson",  "role": "Director & Founder"    },
+    "jessica": { "name": "Jessica Lee",  "role": "Lead Educator"         },
+    "mark": { "name": "Mark Thompson",   "role": "Child Psychologist"     },
+    "amanda": { "name": "Amanda Carter", "role": "Nutrition Specialist"   }
   },
   "login": {
     "title": "Daycare login",
-    "subtitle": "Welcome back! Let’s continue your daycare journey.",
+    "subtitle": "Welcome back! Let's continue your daycare journey.",
     "email": "Email Address",
     "emailPlaceholder": "sarah@example.com",
     "password": "Password",
@@ -202,66 +204,165 @@
     "professional": "Secure & confidential professional services"
   },
   "parentDashboard": {
-  "heroTitle1": "Find the perfect",
-  "heroTitle2": "daycare",
-  "heroTitle3": "for your child",
-  "heroSub": "Search thousands of verified childcare providers with real parent reviews, safety ratings, and available spots.",
-  "searchPlaceholder": "Search by daycare name",
-  "locationPlaceholder": "Enter your city or wilaya",
-  "findBtn": "Find Centers",
-  "filters": "Filters",
-  "foodProvided": " Food Provided",
-  "lunchIncluded": "Lunch Included",
-  "healthySnacks": "Healthy Snacks",
-  "healthcareCap": " Healthcare Cap",
-  "amenities": " Amenities",
-  "transport": "Transport Service",
-  "educational": "Educational Program",
-  "applyFilters": "Apply Filters",
-  "centersFound": "centers",
-  "found": "found",
-  "near": "near",
-  "viewDetails": "View Details",
-  "topRated": "TOP RATED",
-  "bestValue": "BEST VALUE"
-},
-"search": {
-  "placeholder_name": "Nursery name",
-  "placeholder_city": "City",
-  "find_btn": "Find Centers",
-  "top_result": "Top Result",
-  "similar": "Similar Centers Nearby",
-  "view_map": "View map",
-  "exact_match": "EXACT MATCH",
-  "view_details": "View Details →",
-  "reviews": "reviews",
-  "no_results": "No centers found. Try a different search! 😊",
-  "nursery_desc_1": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence.",
-  "nursery_desc_2": "Focus on creative arts and outdoor learning.",
-  "nursery_desc_3": "Montessori-inspired learning environment.",
-  "nursery_desc_4": "Large indoor gym and safe outdoor play area.",
-  "nursery_desc_5": "A warm and welcoming environment for children."
-},
-"nurseries": {
-  "sunshine": {
-    "name": "Sunshine Academy",
-    "desc": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence."
+    "heroTitle1": "Find the perfect",
+    "heroTitle2": "daycare",
+    "heroTitle3": "for your child",
+    "heroSub": "Search thousands of verified childcare providers with real parent reviews, safety ratings, and available spots.",
+    "searchPlaceholder": "Search by daycare name",
+    "locationPlaceholder": "Enter your city or wilaya",
+    "findBtn": "Find Centers",
+    "filters": "Filters",
+    "foodProvided": " Food Provided",
+    "lunchIncluded": "Lunch Included",
+    "healthySnacks": "Healthy Snacks",
+    "healthcareCap": " Healthcare Cap",
+    "amenities": " Amenities",
+    "transport": "Transport Service",
+    "educational": "Educational Program",
+    "applyFilters": "Apply Filters",
+    "centersFound": "centers",
+    "found": "found",
+    "near": "near",
+    "viewDetails": "View Details",
+    "topRated": "TOP RATED",
+    "bestValue": "BEST VALUE"
   },
-  "littlesprouts": {
-    "name": "Little Sprouts Daycare",
-    "desc": "Focus on creative arts and outdoor learning."
+  "search": {
+    "placeholder_name": "Nursery name",
+    "placeholder_city": "City",
+    "find_btn": "Find Centers",
+    "top_result": "Top Result",
+    "similar": "Similar Centers Nearby",
+    "view_map": "View map",
+    "exact_match": "EXACT MATCH",
+    "view_details": "View Details →",
+    "reviews": "reviews",
+    "no_results": "No centers found. Try a different search! 😊",
+    "nursery_desc_1": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence.",
+    "nursery_desc_2": "Focus on creative arts and outdoor learning.",
+    "nursery_desc_3": "Montessori-inspired learning environment.",
+    "nursery_desc_4": "Large indoor gym and safe outdoor play area.",
+    "nursery_desc_5": "A warm and welcoming environment for children."
   },
-  "brighthorizons": {
-    "name": "Bright Horizons",
-    "desc": "Montessori-inspired learning environment."
+  "nurseries": {
+    "sunshine":      { "name": "Sunshine Academy",       "desc": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence." },
+    "littlesprouts": { "name": "Little Sprouts Daycare", "desc": "Focus on creative arts and outdoor learning." },
+    "brighthorizons":{ "name": "Bright Horizons",        "desc": "Montessori-inspired learning environment." },
+    "wonderland":    { "name": "Wonderland Prep",         "desc": "Large indoor gym and safe outdoor play area." },
+    "happykids":     { "name": "Happy Kids Center",       "desc": "A warm and welcoming environment for children." }
   },
-  "wonderland": {
-    "name": "Wonderland Prep",
-    "desc": "Large indoor gym and safe outdoor play area."
+  "about": {
+    "hero": {
+      "title": "About Us,",
+      "brand": "HADANATI",
+      "desc": "We are on a mission to make quality childcare accessible, transparent, and trustworthy for every family in Algeria."
+    },
+    "parents": {
+      "heading": "For Parents",
+      "item1": "Browse verified nurseries across Algeria",
+      "item2": "Read real reviews from other parents",
+      "item3": "Compare safety ratings and curricula",
+      "item4": "Apply directly through our platform",
+      "item5": "Stay connected with your child's progress",
+      "cta": "Find a Nursery"
+    },
+    "daycares": {
+      "heading": "For Daycares",
+      "item1": "Showcase your facility to thousands of parents",
+      "item2": "Streamline your admissions process",
+      "item3": "Manage registrations in one place",
+      "item4": "Build trust through verified reviews"
+    },
+    "secure": {
+      "heading": "Safe & Secure",
+      "desc": "Every nursery on our platform is verified and screened. Your child's safety is our highest priority."
+    },
+    "commit": {
+      "title": "Our unwavering",
+      "subtitle": "commitment.",
+      "quote": "At Hadnati, we believe childcare should be accessible, reliable, and trustworthy. By bringing families and daycares together on one platform, we empower parents to make informed decisions while supporting providers in growing their community presence.",
+      "valuesLabel": "OUR VALUES",
+      "value1": "ACCESSIBLE",
+      "value2": "RELIABLE",
+      "value3": "TRUSTWORTHY",
+      "badge": "HADNATI PROMISE"
+    }
   },
-  "happykids": {
-    "name": "Happy Kids Center",
-    "desc": "A warm and welcoming environment for children."
+  "facilityProfile": {
+    "pageTitle": "Facility Profile Editor",
+    "pageSubtitle": "Configure your daycare's public identity and operational details.",
+    "discard": "Discard",
+    "saveChanges": "Save Changes",
+    "sidebar": {
+      "account": "Account",
+      "facilityIdentity": "Facility identity",
+      "contactLocation": "Contact and location",
+      "academyDetails": "Academy details",
+      "operatingHours": "Operating hours",
+      "services": "Services",
+      "manageRequests": "Manage requests",
+      "reviewsToPost": "Reviews to post",
+      "facilityGallery": "Facility gallery",
+      "signOut": "Sign Out"
+    },
+    "identity": {
+      "title": "Facility Identity",
+      "photoHint": "Recommended: 400×400px PNG",
+      "clickToUpload": "Click to upload",
+      "daycareName": "Daycare Name",
+      "tagline": "Tagline/Slogan",
+      "shortBio": "Short Bio"
+    },
+    "contact": {
+      "title": "Contact & Location",
+      "physicalAddress": "Physical Address",
+      "phone": "Phone",
+      "email": "Email"
+    },
+    "academy": {
+      "title": "Academy Details",
+      "ageRange": "Age Range",
+      "capacity": "Capacity",
+      "tuitionStructure": "Tuition Structure"
+    },
+    "hours": {
+      "title": "Operating Hours"
+    },
+    "services": {
+      "servicesTitle": "Services & Facilities",
+      "transport": "Transport Availability",
+      "healthcare": "Healthcare Availability",
+      "foodTitle": "Food Services",
+      "lunch": "Lunch",
+      "snacks": "Snacks",
+      "activitiesTitle": "Activities Offered"
+    },
+    "requests": {
+      "title": "Manage Requests",
+      "viewAll": "View All",
+      "childParent": "Child & Parent",
+      "status": "Status",
+      "action": "Action",
+      "pending": "Pending",
+      "approved": "Approved"
+    },
+    "reviews": {
+      "title": "Reviews to Post",
+      "newPending": "New Pending",
+      "history": "History",
+      "parent": "Parent",
+      "rating": "Rating",
+      "quote": "Quote",
+      "actions": "Actions",
+      "approve": "Approve",
+      "viewAll": "View All",              
+  "allReviewsTitle": "All Reviews"  
+    },
+    "gallery": {
+      "title": "Facility Gallery",
+      "photosUploaded": "photos uploaded",
+      "uploadPhotos": "Upload Photos",
+      "addNew": "ADD NEW"
+    }
   }
-}
 }

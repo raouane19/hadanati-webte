@@ -14,7 +14,12 @@ import ParentDashboard from './pages/parentdashboard';
 import SunshineAcademyPage from './pages/viewdetailes';
 import ProtectedRoute from './components/ProtectedRoute';
 import SearchResults from './pages/SearchResults';
+import FacilityProfileEditor from './pages/editdaycareprofile';
 import HadanatiLogin from './pages/Login';
+
+
+import About from './pages/aboutus';
+
 
 function AppContent() {
   const location = useLocation();
@@ -22,8 +27,8 @@ function AppContent() {
   const hideNavbar =
     location.pathname.startsWith('/daycare/') ||
     location.pathname === '/search' ||
-    location.pathname === '/parent-dashboard';
-
+    location.pathname === '/parent-dashboard'||
+ location.pathname === '/facility-profile';
   return (
     <div className="App">
       {!hideNavbar && <Navbar />}
@@ -40,8 +45,10 @@ function AppContent() {
         <Route path="/register-nursery" element={<NurserySignUp />} />
         <Route path="/hadanati-login" element={<HadanatiLogin />} />
         <Route path="/daycare-profile" element={<DaycareProfile />} />
+        <Route path="/facility-profile" element={<FacilityProfileEditor />} />
         <Route path="/login" element={<Login />} />
         <Route path="/daycare/:id" element={<SunshineAcademyPage />} />
+        <Route path="/about" element={<About />}/>
         <Route path="/daycare-profile" element={
           <ProtectedRoute allowedRoles={['daycare']}>
             <DaycareProfile />

@@ -17,13 +17,37 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
- 
-const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log(formData);
-  localStorage.setItem('userRole', 'daycare');
-  navigate('/dashboard'); // ✅ go straight to dashboard
+
+  try {
+    const res = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+      }),
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      // Save token so other pages can use it
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('userRole', result.user.role);
+
+      // Go straight to the facility profile editor
+      navigate('/facility-profile');
+    } else {
+      alert(result.message || 'Login failed. Check your email and password.');
+    }
+  } catch (err) {
+    console.error('Login error:', err);
+    alert('Could not connect to server.');
+  }
 };
+
   return (
     <div className="login-container">
  

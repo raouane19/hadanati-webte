@@ -9,7 +9,7 @@ import "./background.css";
 const Navbar = () => {
   const [activeBtn, setActiveBtn] = useState(null);
   const { t, i18n } = useTranslation();
-
+const navigate = useNavigate();
   const handleClick = (btnName) => {
     if (activeBtn === btnName) {
       setActiveBtn(null);
@@ -23,7 +23,7 @@ const Navbar = () => {
     i18n.changeLanguage(newLang);
     document.body.dir = newLang === 'ar' ? 'rtl' : 'ltr';
   };
-  const navigate = useNavigate();
+
 
   return (
     <div className="parent">
@@ -35,7 +35,7 @@ const Navbar = () => {
         <button onClick={() => handleClick('home')} className={`home-js ${activeBtn === 'home' ? 'nhome' : 'home'}`}>
           {activeBtn === 'home' ? t('navbar.home')  : t('navbar.home')}
         </button>
-        <button onClick={() => handleClick('about')} className={`about ${activeBtn === 'about' ? 'active' : ''}`}>
+        <button onClick={() => { handleClick('about'); navigate('/about'); }} className={`about ${activeBtn === 'about' ? 'active' : ''}`}>
           {t('navbar.about')}
         </button>
         <button onClick={() => handleClick('help')} className={`help ${activeBtn === 'help' ? 'active' : ''}`}>

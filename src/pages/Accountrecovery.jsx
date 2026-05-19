@@ -18,7 +18,7 @@ const AccountRecovery = ({ onClose }) => {
     setLoading(true);
 
     try {
-      // ⚠️ Replace with your friend's actual forgot password route
+     
       const res = await fetch('http://192.168.12.26:5000/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,7 +33,7 @@ const AccountRecovery = ({ onClose }) => {
       }
 
       setSuccess('Verification code sent! Check your email. ✅');
-    } catch (err) {
+    } catch  {
       setError('Could not connect to server. Try again.');
     } finally {
       setLoading(false);

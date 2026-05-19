@@ -7,22 +7,33 @@ const DaycareProfile = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const photoInputRef = useRef(null);
+  const certInputRef = useRef(null);
+  
+ 
 
   const [form, setForm] = useState({
     fullAddress: '',
     city: '',
-    monthlyFee: '',
+    monthlyFeeMin: '',
+    monthlyFeeMax: '',
     totalCapacity: '',
-    ageRange: '',
-    educationalApproach: '',
+    ageFrom: '',
+    ageTo: '',
+    educationLevels: false,
+    languageLearning: false,
+    events: false,
+    plays: false,
     opensAt: '',
     closesAt: '',
+    dayStart: '',
+    dayEnd: '',
     transport: false,
     healthcare: false,
     lunch: false,
     snacks: false,
     description: '',
     photos: [],
+    certification: null,
   });
 
   const handleChange = (e) => {
@@ -48,7 +59,7 @@ const DaycareProfile = () => {
   const handlePhotos = (e) => {
     const newFiles = Array.from(e.target.files);
     setForm((prev) => {
-      const combined = [...prev.photos, ...newFiles];
+      const combined = [...prev.photos, ...newFiles].slice(0, 5);
       return { ...prev, photos: combined };
     });
     e.target.value = '';
@@ -58,15 +69,75 @@ const DaycareProfile = () => {
     e.preventDefault();
     const newFiles = Array.from(e.dataTransfer.files);
     setForm((prev) => {
-      const combined = [...prev.photos, ...newFiles];
+      const combined = [...prev.photos, ...newFiles].slice(0, 5);
       return { ...prev, photos: combined };
     });
   };
 
-  const handleSubmit = () => {
-    console.log('Daycare profile data:', form);
-    navigate('/dashboard');
+  const handleCertification = (e) => {
+    const file = e.target.files[0];
+    if (file) setForm((prev) => ({ ...prev, certification: file }));
+    e.target.value = '';
   };
+const handleSubmit = async () => {
+  const token = localStorage.getItem('token');
+
+  const data = new FormData();
+
+  // Text fields
+  data.append('fullAddress', form.fullAddress);
+  data.append('city', form.city);
+  data.append('monthlyFeeMin', form.monthlyFeeMin);
+  data.append('monthlyFeeMax', form.monthlyFeeMax);
+  data.append('totalCapacity', form.totalCapacity);
+  data.append('ageFrom', form.ageFrom);
+  data.append('ageTo', form.ageTo);
+  data.append('opensAt', form.opensAt);
+  data.append('closesAt', form.closesAt);
+  data.append('dayStart', form.dayStart);
+  data.append('dayEnd', form.dayEnd);
+  data.append('description', form.description);
+  data.append('transport', form.transport);
+  data.append('healthcare', form.healthcare);
+  data.append('lunch', form.lunch);
+  data.append('snacks', form.snacks);
+  data.append('educationLevels', form.educationLevels);
+  data.append('languageLearning', form.languageLearning);
+  data.append('events', form.events);
+  data.append('plays', form.plays);
+
+  // Files
+  if (form.certification) {
+    data.append('certification', form.certification);
+  }
+  form.photos.forEach((photo) => {
+    data.append('photos', photo);
+  });
+
+  try {
+    const res = await fetch('http://localhost:5000/api/auth/daycare/complete-profile', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // ⚠️ Do NOT add Content-Type here — browser sets it automatically for FormData
+      },
+      body: data,
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      // Navigate to profile page on success
+    navigate('/facility-profile');
+    } else {
+      alert(result.message || 'Something went wrong. Please try again.');
+    }
+  } catch (err) {
+    console.error('Submit error:', err);
+    alert('Could not connect to server.');
+  }
+};
+  
 
   return (
     <div className="daycare-container">
@@ -74,11 +145,13 @@ const DaycareProfile = () => {
 
       <div className="daycare-form-wrapper">
 
+        {/* ── LEFT COLUMN ── */}
         <div className="daycare-left">
           <a className="back-step" onClick={() => navigate(-1)}>
             ← {t('daycare.backStep')}
           </a>
 
+          {/* Full Address */}
           <div className="form-group">
             <label className="form-label">{t('daycare.fullAddress')}</label>
             <input
@@ -92,124 +165,165 @@ const DaycareProfile = () => {
             />
           </div>
 
+          {/* Row 1: City + Monthly Fee */}
           <div className="form-row">
             <div className="form-group">
               <label className="form-label">{t('daycare.city')}</label>
-             <select className="form-select" name="city" value={form.city} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'monthlyFee')}>
-  <option value="">{t('daycare.selectCity')}</option>
-  <option value="01">01 - Adrar</option>
-  <option value="02">02 - Chlef</option>
-  <option value="03">03 - Laghouat</option>
-  <option value="04">04 - Oum El Bouaghi</option>
-  <option value="05">05 - Batna</option>
-  <option value="06">06 - Béjaïa</option>
-  <option value="07">07 - Biskra</option>
-  <option value="08">08 - Béchar</option>
-  <option value="09">09 - Blida</option>
-  <option value="10">10 - Bouira</option>
-  <option value="11">11 - Tamanrasset</option>
-  <option value="12">12 - Tébessa</option>
-  <option value="13">13 - Tlemcen</option>
-  <option value="14">14 - Tiaret</option>
-  <option value="15">15 - Tizi Ouzou</option>
-  <option value="16">16 - Alger</option>
-  <option value="17">17 - Djelfa</option>
-  <option value="18">18 - Jijel</option>
-  <option value="19">19 - Sétif</option>
-  <option value="20">20 - Saïda</option>
-  <option value="21">21 - Skikda</option>
-  <option value="22">22 - Sidi Bel Abbès</option>
-  <option value="23">23 - Annaba</option>
-  <option value="24">24 - Guelma</option>
-  <option value="25">25 - Constantine</option>
-  <option value="26">26 - Médéa</option>
-  <option value="27">27 - Mostaganem</option>
-  <option value="28">28 - M'Sila</option>
-  <option value="29">29 - Mascara</option>
-  <option value="30">30 - Ouargla</option>
-  <option value="31">31 - Oran</option>
-  <option value="32">32 - El Bayadh</option>
-  <option value="33">33 - Illizi</option>
-  <option value="34">34 - Bordj Bou Arreridj</option>
-  <option value="35">35 - Boumerdès</option>
-  <option value="36">36 - El Tarf</option>
-  <option value="37">37 - Tindouf</option>
-  <option value="38">38 - Tissemsilt</option>
-  <option value="39">39 - El Oued</option>
-  <option value="40">40 - Khenchela</option>
-  <option value="41">41 - Souk Ahras</option>
-  <option value="42">42 - Tipaza</option>
-  <option value="43">43 - Mila</option>
-  <option value="44">44 - Aïn Defla</option>
-  <option value="45">45 - Naâma</option>
-  <option value="46">46 - Aïn Témouchent</option>
-  <option value="47">47 - Ghardaïa</option>
-  <option value="48">48 - Relizane</option>
-  <option value="49">49 - Timimoun</option>
-  <option value="50">50 - Bordj Badji Mokhtar</option>
-  <option value="51">51 - Ouled Djellal</option>
-  <option value="52">52 - Béni Abbès</option>
-  <option value="53">53 - In Salah</option>
-  <option value="54">54 - In Guezzam</option>
-  <option value="55">55 - Touggourt</option>
-  <option value="56">56 - Djanet</option>
-  <option value="57">57 - El M'Ghair</option>
-  <option value="58">58 - El Meniaa</option>
-  <option value="59">59 - Aflou</option>
-  <option value="60">60 - Aïn Oussera</option>
-  <option value="61">61 - Barika</option>
-  <option value="62">62 - Bir el-Ater</option>
-  <option value="63">63 - Bou Saâda</option>
-  <option value="64">64 - El Abiodh Sidi Cheikh</option>
-  <option value="65">65 - El Aricha</option>
-  <option value="66">66 - El Kantara</option>
-  <option value="67">67 - Ksar Chellala</option>
-  <option value="68">68 - Ksar El Boukhari</option>
-  <option value="69">69 - Messaad</option>
-</select>
+              <select className="form-select" name="city" value={form.city} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'monthlyFeeMin')}>
+                <option value="">{t('daycare.selectCity')}</option>
+                <option value="01">01 - Adrar</option>
+                <option value="02">02 - Chlef</option>
+                <option value="03">03 - Laghouat</option>
+                <option value="04">04 - Oum El Bouaghi</option>
+                <option value="05">05 - Batna</option>
+                <option value="06">06 - Béjaïa</option>
+                <option value="07">07 - Biskra</option>
+                <option value="08">08 - Béchar</option>
+                <option value="09">09 - Blida</option>
+                <option value="10">10 - Bouira</option>
+                <option value="11">11 - Tamanrasset</option>
+                <option value="12">12 - Tébessa</option>
+                <option value="13">13 - Tlemcen</option>
+                <option value="14">14 - Tiaret</option>
+                <option value="15">15 - Tizi Ouzou</option>
+                <option value="16">16 - Alger</option>
+                <option value="17">17 - Djelfa</option>
+                <option value="18">18 - Jijel</option>
+                <option value="19">19 - Sétif</option>
+                <option value="20">20 - Saïda</option>
+                <option value="21">21 - Skikda</option>
+                <option value="22">22 - Sidi Bel Abbès</option>
+                <option value="23">23 - Annaba</option>
+                <option value="24">24 - Guelma</option>
+                <option value="25">25 - Constantine</option>
+                <option value="26">26 - Médéa</option>
+                <option value="27">27 - Mostaganem</option>
+                <option value="28">28 - M'Sila</option>
+                <option value="29">29 - Mascara</option>
+                <option value="30">30 - Ouargla</option>
+                <option value="31">31 - Oran</option>
+                <option value="32">32 - El Bayadh</option>
+                <option value="33">33 - Illizi</option>
+                <option value="34">34 - Bordj Bou Arreridj</option>
+                <option value="35">35 - Boumerdès</option>
+                <option value="36">36 - El Tarf</option>
+                <option value="37">37 - Tindouf</option>
+                <option value="38">38 - Tissemsilt</option>
+                <option value="39">39 - El Oued</option>
+                <option value="40">40 - Khenchela</option>
+                <option value="41">41 - Souk Ahras</option>
+                <option value="42">42 - Tipaza</option>
+                <option value="43">43 - Mila</option>
+                <option value="44">44 - Aïn Defla</option>
+                <option value="45">45 - Naâma</option>
+                <option value="46">46 - Aïn Témouchent</option>
+                <option value="47">47 - Ghardaïa</option>
+                <option value="48">48 - Relizane</option>
+                <option value="49">49 - Timimoun</option>
+                <option value="50">50 - Bordj Badji Mokhtar</option>
+                <option value="51">51 - Ouled Djellal</option>
+                <option value="52">52 - Béni Abbès</option>
+                <option value="53">53 - In Salah</option>
+                <option value="54">54 - In Guezzam</option>
+                <option value="55">55 - Touggourt</option>
+                <option value="56">56 - Djanet</option>
+                <option value="57">57 - El M'Ghair</option>
+                <option value="58">58 - El Meniaa</option>
+                <option value="59">59 - Aflou</option>
+                <option value="60">60 - Aïn Oussera</option>
+                <option value="61">61 - Barika</option>
+                <option value="62">62 - Bir el-Ater</option>
+                <option value="63">63 - Bou Saâda</option>
+                <option value="64">64 - El Abiodh Sidi Cheikh</option>
+                <option value="65">65 - El Aricha</option>
+                <option value="66">66 - El Kantara</option>
+                <option value="67">67 - Ksar Chellala</option>
+                <option value="68">68 - Ksar El Boukhari</option>
+                <option value="69">69 - Messaad</option>
+              </select>
             </div>
             <div className="form-group">
               <label className="form-label">{t('daycare.monthlyFee')}</label>
-              <input className="form-input" type="number" name="monthlyFee" placeholder="0.00" value={form.monthlyFee} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'totalCapacity')} />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <input className="form-input" type="number" name="monthlyFeeMin" placeholder="e.g. 3000" value={form.monthlyFeeMin} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'monthlyFeeMax')} />
+                <input className="form-input" type="number" name="monthlyFeeMax" placeholder="e.g. 5000" value={form.monthlyFeeMax} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'totalCapacity')} />
+              </div>
             </div>
           </div>
 
+          {/* Row 2: Total Capacity + Age Range */}
           <div className="form-row">
             <div className="form-group">
               <label className="form-label">{t('daycare.totalCapacity')}</label>
-              <input className="form-input" type="text" name="totalCapacity" placeholder={t('daycare.capacityPlaceholder')} value={form.totalCapacity} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'ageRange')} />
+              <input className="form-input" type="text" name="totalCapacity" placeholder={t('daycare.capacityPlaceholder')} value={form.totalCapacity} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'ageFrom')} />
             </div>
             <div className="form-group">
               <label className="form-label">{t('daycare.ageRange')}</label>
-              <input className="form-input" type="text" name="ageRange" placeholder={t('daycare.ageRangePlaceholder')} value={form.ageRange} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'educationalApproach')} />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <input className="form-input" type="text" name="ageFrom" placeholder={t('daycare.ageFromPlaceholder')} value={form.ageFrom} onChange={handleChange} />
+                <input className="form-input" type="text" name="ageTo"   placeholder={t('daycare.ageToPlaceholder')}   value={form.ageTo}   onChange={handleChange} />
+              </div>
             </div>
           </div>
 
+          {/* Row 3: Activities Offered + Hours */}
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">{t('daycare.educationalApproach')}</label>
-              <select className="form-select" name="educationalApproach" value={form.educationalApproach} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'opensAt')}>
-                <option value="">{t('daycare.selectApproach')}</option>
-                <option value="montessori">Montessori</option>
-                <option value="waldorf">Waldorf</option>
-                <option value="reggio">Reggio Emilia</option>
-                <option value="play-based">Play-Based</option>
-                <option value="traditional">Traditional</option>
-                 <option value="language-learning">Language Learning</option>
-              </select>
-            </div>
-            <div className="form-group time-group">
-              <div className="form-group">
-                <label className="form-label">{t('daycare.opensAt')}</label>
-                <input className="form-input" type="time" name="opensAt" value={form.opensAt} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'closesAt')} />
+              <label className="form-label services-title">{t('daycare.activitiesOffered')}</label>
+              <div className="activities-box">
+                <div className="checkbox-row">
+                  <input type="checkbox" id="educationLevels" name="educationLevels" checked={form.educationLevels} onChange={handleChange} />
+                  <label htmlFor="educationLevels" className="checkbox-label">{t('daycare.educationLevels')}</label>
+                </div>
+                <div className="checkbox-row">
+                  <input type="checkbox" id="languageLearning" name="languageLearning" checked={form.languageLearning} onChange={handleChange} />
+                  <label htmlFor="languageLearning" className="checkbox-label">{t('daycare.languageLearning')}</label>
+                </div>
+                <div className="checkbox-row">
+                  <input type="checkbox" id="events" name="events" checked={form.events} onChange={handleChange} />
+                  <label htmlFor="events" className="checkbox-label">{t('daycare.events')}</label>
+                </div>
+                <div className="checkbox-row">
+                  <input type="checkbox" id="plays" name="plays" checked={form.plays} onChange={handleChange} />
+                  <label htmlFor="plays" className="checkbox-label">{t('daycare.plays')}</label>
+                </div>
               </div>
-              <div className="form-group">
-                <label className="form-label">{t('daycare.closesAt')}</label>
-                <input className="form-input" type="time" name="closesAt" value={form.closesAt} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'description')} />
+            </div>
+            <div className="form-group">
+              <div className="time-group">
+                <div className="form-group">
+                  <label className="form-label">{t('daycare.opensAt')}</label>
+                  <input className="form-input" type="time" name="opensAt" value={form.opensAt} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'closesAt')} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">{t('daycare.closesAt')}</label>
+                  <input className="form-input" type="time" name="closesAt" value={form.closesAt} onChange={handleChange} onKeyDown={(e) => handleKeyDown(e, 'description')} />
+                </div>
+              </div>
+              <div className="time-group" style={{ marginTop: '10px' }}>
+                <div className="form-group">
+                  <label className="form-label">{t('daycare.dayFrom')}</label>
+                  <select className="form-select" name="dayStart" value={form.dayStart} onChange={handleChange}>
+                    <option value="">--</option>
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">{t('daycare.dayTo')}</label>
+                  <select className="form-select" name="dayEnd" value={form.dayEnd} onChange={handleChange}>
+                    <option value="">--</option>
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* Services */}
           <div className="form-row services-row">
             <div className="form-group">
               <label className="form-label services-title">{t('daycare.services')}</label>
@@ -226,7 +340,6 @@ const DaycareProfile = () => {
                 </div>
               </div>
             </div>
-
             <div className="form-group">
               <label className="form-label services-title">{t('daycare.foodServices')}</label>
               <div className="checkbox-row">
@@ -240,13 +353,71 @@ const DaycareProfile = () => {
             </div>
           </div>
 
+          {/* Description */}
           <div className="form-group">
             <label className="form-label">{t('daycare.description')}</label>
             <textarea className="form-textarea" name="description" placeholder={t('daycare.descriptionPlaceholder')} value={form.description} onChange={handleChange} />
           </div>
         </div>
 
+        {/* ── RIGHT COLUMN: Uploads ── */}
         <div className="daycare-right">
+
+          {/* 1. Job Certification */}
+          <label className="form-label">
+            {t('daycare.jobCertification')} <span style={{ color: '#e8a0a0' }}>*</span>
+          </label>
+          <div
+            className="upload-area"
+            onClick={() => certInputRef.current.click()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.files[0];
+              if (file) setForm((prev) => ({ ...prev, certification: file }));
+            }}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            <div className="upload-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E8A0A0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="12" y1="12" x2="12" y2="18" />
+                <line x1="9" y1="15" x2="15" y2="15" />
+              </svg>
+            </div>
+            <p className="upload-title">{t('daycare.jobCertificationUploadTitle')}</p>
+            <p className="upload-sub">{t('daycare.jobCertificationUploadSub')}</p>
+            <p className="upload-limit">{t('daycare.jobCertificationUploadLimit')}</p>
+            <input
+              ref={certInputRef}
+              type="file"
+              accept=".pdf,image/*"
+              style={{ display: 'none' }}
+              onChange={handleCertification}
+            />
+          </div>
+
+          {form.certification && (
+            <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: '#fdf4f4', border: '1px solid #f0d8d8', borderRadius: '8px' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8A0A0" strokeWidth="1.5">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              <span style={{ fontSize: '13px', color: '#666', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {form.certification.name}
+              </span>
+              <button
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', fontSize: '16px', lineHeight: 1 }}
+                onClick={(e) => { e.stopPropagation(); setForm((prev) => ({ ...prev, certification: null })); }}
+              >
+                ×
+              </button>
+            </div>
+          )}
+
+          <div style={{ height: '24px' }} />
+
+          {/* 2. Facility Gallery */}
           <label className="form-label">{t('daycare.gallery')}</label>
           <div
             className="upload-area"
@@ -256,9 +427,9 @@ const DaycareProfile = () => {
           >
             <div className="upload-icon">
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E8A0A0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
               </svg>
             </div>
             <p className="upload-title">{t('daycare.uploadTitle')}</p>
@@ -284,9 +455,10 @@ const DaycareProfile = () => {
               ))}
             </div>
           )}
+
         </div>
 
-        {/* ✅ NOW INSIDE THE CARD */}
+        {/* Actions */}
         <div className="daycare-actions">
           <button className="btn-back-step" onClick={() => navigate(-1)}>
             {t('daycare.backStep')}
@@ -296,12 +468,11 @@ const DaycareProfile = () => {
           </button>
         </div>
 
-      
+      </div>
 
-      </div> {/* ✅ end of daycare-form-wrapper */}
-  <p className="help-text">
-          {t('daycare.needHelp')} <a href="#!" className="help-link">{t('daycare.contactSupport')}</a>
-        </p>
+      <p className="help-text">
+        {t('daycare.needHelp')} <a href="#!" className="help-link">{t('daycare.contactSupport')}</a>
+      </p>
     </div>
   );
 };
