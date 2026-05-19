@@ -176,17 +176,7 @@
   color: #6b9cac;
 }
 
-.had-send-code-link {
-  font-size: 13px;
-  color: #3d7a8a;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s;
-}
 
-.had-send-code-link:hover {
-  color: #2d6070;
-}
 
 /* Secure text */
 .had-login-secure {

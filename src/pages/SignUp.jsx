@@ -3,10 +3,14 @@ import React, { useState } from 'react';
 import './SignUp.css';
 import { useTranslation } from 'react-i18next';
 import { FiPhone } from 'react-icons/fi';
+import { registerParent } from '../api/auth'; // ✅ import the API call
 
 const SignUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // ✅ loading state
+  const [error, setError] = useState('');         // ✅ error state
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -19,27 +23,50 @@ const SignUp = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-const handleSubmit = (e) => {
-  e.preventDefault();
 
-  // Optional: check passwords match
-  if (formData.password !== formData.confirmPassword) {
-    alert("Passwords don't match!");
-    return;
-  }
+  const handleSubmit = async (e) => {  // ✅ async
+    e.preventDefault();
+    setError('');
 
-  // Save user role as "parent" so ProtectedRoute allows access
-  localStorage.setItem('userRole', 'parent');
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords don't match!");
+      return;
+    }
 
-  console.log(formData);
-  navigate('/parent-dashboard');
-};
+    try {
+      setLoading(true);
+
+      const payload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+      };
+
+      const response = await registerParent(payload); // ✅ call backend
+
+      // Save token and role from backend response
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userRole', 'parent');
+
+      navigate('/parent-dashboard');
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="signup-container">
       <div className="signup-box">
         <h2 className="signup-title">{t('signup.title')}</h2>
         <p className="signup-subtitle">{t('signup.subtitle')}</p>
+
+        {/* ✅ Show error message */}
+        {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-row">
@@ -77,10 +104,12 @@ const handleSubmit = (e) => {
             </div>
           </div>
 
-          <button type="submit" className="signup-btn">{t('signup.btn')}</button>
+          {/* ✅ Show loading state on button */}
+          <button type="submit" className="signup-btn" disabled={loading}>
+            {loading ? 'Signing up...' : t('signup.btn')}
+          </button>
         </form>
 
-        {/* Updated login link with react-router-dom Link */}
         <p className="login-link">
           {t('signup.loginLink')}{' '}
           <Link to="/parent-login">{t('signup.login')}</Link>
@@ -91,4 +120,5 @@ const handleSubmit = (e) => {
     </div>
   );
 };
+
 export default SignUp;

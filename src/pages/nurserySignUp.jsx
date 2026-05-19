@@ -7,10 +7,13 @@ import { FiPhone } from 'react-icons/fi';
 import { LiaLockSolid } from 'react-icons/lia';
 import { GoShieldCheck } from 'react-icons/go';
 import { useNavigate, Link } from 'react-router-dom';
+import { registerNursery } from '../api/auth'; // ✅ import API call
 
 const NurserySignUp = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const [formData, setFormData] = useState({
     daycareName: '',
@@ -25,10 +28,38 @@ const NurserySignUp = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {  // ✅ async
     e.preventDefault();
-    console.log(formData);
-    navigate('/daycare-profile');
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords don't match!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const payload = {
+        name: formData.daycareName,       // ✅ backend expects "name"
+        ownerName: formData.ownerName,    // ✅ backend expects "ownerName"
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+      };
+
+      const response = await registerNursery(payload); // ✅ call backend
+
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userRole', 'daycare');
+
+      navigate('/daycare-profile');
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,6 +67,9 @@ const NurserySignUp = () => {
       <div className="nursery-box">
         <h2 className="nursery-title">{t('nursery.title')}</h2>
         <p className="nursery-subtitle">{t('nursery.subtitle')}</p>
+
+        {/* ✅ Show error message */}
+        {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -84,12 +118,12 @@ const NurserySignUp = () => {
             </div>
           </div>
 
-          <button type="submit" className="nursery-btn">
-            {t('nursery.btn')} →
+          {/* ✅ loading state on button */}
+          <button type="submit" className="nursery-btn" disabled={loading}>
+            {loading ? 'Registering...' : `${t('nursery.btn')} →`}
           </button>
         </form>
 
-        {/* ✅ FIXED HERE */}
         <p className="login-link">
           {t('nursery.loginLink')}{' '}
           <Link to="/login">{t('nursery.login')}</Link>

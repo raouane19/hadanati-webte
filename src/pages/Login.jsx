@@ -116,7 +116,7 @@ const Login = () => {
           <span className="had-forgot-link" onClick={() => setShowRecovery(true)}>
             forgot password?
           </span>
-          <span className="had-send-code-link">send code</span>
+        
         </div>
 
         <p className="had-login-secure">SECURE & CONFIDENTIAL PROFESSIONAL SERVICES</p>
