@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './daycarelogin.css';
 import { useTranslation } from 'react-i18next';
 
-const BASE_URL = 'http://192.168.0.151:5000';
+const BASE_URL = 'http://192.168.0.152:5000';
 
 const ParentLogin = () => {
   const { t } = useTranslation();
@@ -56,7 +56,7 @@ const ParentLogin = () => {
 
       navigate('/parent-dashboard');
 
-    } catch (err) {
+    } catch  {
       setError('Cannot reach the server. Please try again later.');
     } finally {
       setLoading(false);

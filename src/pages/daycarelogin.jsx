@@ -56,7 +56,7 @@ const Login = () => {
 
       navigate('/facility-profile'); 
 
-    } catch (err) {
+    } catch {
       setError('Cannot reach the server. Please try again later.');
     } finally {
       setLoading(false);
