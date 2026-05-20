@@ -49,8 +49,8 @@ const SignUp = () => {
       // Save token and role from backend response
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userRole', 'parent');
-
-      navigate('/parent-dashboard');
+localStorage.setItem('userEmail', formData.email);
+      navigate('/parent-verification');
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || 'Registration failed. Please try again.');

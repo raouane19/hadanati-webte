@@ -364,5 +364,11 @@
       "uploadPhotos": "Upload Photos",
       "addNew": "ADD NEW"
     }
-  }
+  },
+  "allReviews": {
+  "title": "All Reviews",
+  "back": "← Back",
+  "subtitle": "reviews from parents",
+  "noReviews": "No reviews yet."
+}
 }

@@ -3,60 +3,78 @@ import React, { useState } from 'react';
 import './daycarelogin.css';
 import { useTranslation } from 'react-i18next';
 
- 
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
- 
-  
- 
+
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
- const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  try {
-    const res = await fetch('http://localhost:5000/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: formData.email,
-        password: formData.password,
-      }),
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-    const result = await res.json();
+    try {
+      const res = await fetch(`${BASE_URL}/auth/login`, { // 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          role: 'daycare', 
+        }),
+      });
 
-    if (result.success) {
-      // Save token so other pages can use it
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('userRole', result.user.role);
+      const data = await res.json();
 
-      // Go straight to the facility profile editor
-      navigate('/facility-profile');
-    } else {
-      alert(result.message || 'Login failed. Check your email and password.');
+      if (!res.ok) {
+        if (res.status === 401 && data.message?.includes('not verified')) {
+          setError('Your account is not verified yet. Please check your email for the OTP.');
+        } else if (res.status === 401) {
+          setError('Wrong password. Please try again.');
+        } else if (res.status === 404) {
+          setError('No account found with this email.');
+        } else {
+          setError(data.message || 'Login failed. Please try again.');
+        }
+        return;
+      }
+
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userRole', data.user.role);
+      localStorage.setItem('userId', String(data.user.id));
+      localStorage.setItem('userName', data.user.name);
+
+      navigate('/facility-profile'); 
+
+    } catch (err) {
+      setError('Cannot reach the server. Please try again later.');
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error('Login error:', err);
-    alert('Could not connect to server.');
-  }
-};
+  };
 
   return (
     <div className="login-container">
- 
-
- 
       <div className="login-box">
         <h2 className="login-title">{t('login.title')}</h2>
         <p className="login-subtitle">{t('login.subtitle')}</p>
- 
+
+        {error && (
+          <p style={{ color: '#f87171', marginBottom: '12px', fontSize: '13px' }}>
+            {error}
+          </p>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>{t('login.email')}</label>
@@ -65,9 +83,10 @@ const Login = () => {
               name="email"
               placeholder={t('login.emailPlaceholder')}
               onChange={handleChange}
+              required
             />
           </div>
- 
+
           <div className="form-group">
             <label>{t('login.password')}</label>
             <input
@@ -75,22 +94,22 @@ const Login = () => {
               name="password"
               placeholder="••••••••"
               onChange={handleChange}
+              required
             />
           </div>
- 
-        <button type="submit" className="login-btn">
-  {t('login.btn')}
-</button>
+
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? 'Logging in...' : t('login.btn')}
+          </button>
         </form>
- 
+
         <p className="forgot-link">
           <a href="#">{t('login.forgotPassword')}</a>
         </p>
- 
         <p className="professional-link">{t('login.professional')}</p>
       </div>
     </div>
   );
 };
- 
+
 export default Login;

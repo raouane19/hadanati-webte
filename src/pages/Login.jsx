@@ -44,7 +44,8 @@ const Login = () => {
       if (role === 'parent') {
         navigate('/search');
       } else if (role === 'daycare') {
-        navigate('/nursery-dashboard');
+          localStorage.setItem('userRole', 'daycare');
+  navigate('/facility-profile');
       }
 
     } catch (err) {

@@ -15,6 +15,8 @@ import { MdOutlineAssignment } from 'react-icons/md';
 import { TbMoodSmile } from 'react-icons/tb';
 import { MdOutlineCheckCircle } from 'react-icons/md';
 
+import { AiOutlineStar } from 'react-icons/ai'; // or keep using existing icons
+
 // ✅ These are fine outside — plain arrays, no hooks
 const INFO_ROWS = [
   { icon: <FiMapPin />, labelKey: 'daycareInfo.campus',    valueKey: 'daycareInfo.campusVal' },
@@ -35,15 +37,19 @@ const FACILITIES = [
 
 const REVIEWS = [
   { id: 1, score: '5.0', textKey: 'reviews.r1.text', authorKey: 'reviews.r1.author' },
+    { id: 2, score: '4.8', textKey: 'reviews.r2.text', authorKey: 'reviews.r2.author' },
+  { id: 3, score: '4.7', textKey: 'reviews.r3.text', authorKey: 'reviews.r3.author' },
+  { id: 4, score: '5.0', textKey: 'reviews.r4.text', authorKey: 'reviews.r4.author' },
+  { id: 5, score: '4.5', textKey: 'reviews.r5.text', authorKey: 'reviews.r5.author' },
 ];
 
-const LEADERS = [
-  { id: 1, avatar: null, initials: 'EJ', color: '#dbeafe', textColor: '#1d4ed8', nameKey: 'leaders.elena.name',   roleKey: 'leaders.elena.role' },
-  { id: 2, avatar: null, initials: 'JL', color: '#fce7f3', textColor: '#be185d', nameKey: 'leaders.jessica.name', roleKey: 'leaders.jessica.role' },
-  { id: 3, avatar: null, initials: 'MT', color: '#dcfce7', textColor: '#15803d', nameKey: 'leaders.mark.name',    roleKey: 'leaders.mark.role' },
-  { id: 4, avatar: null, initials: 'AC', color: '#fef3c7', textColor: '#b45309', nameKey: 'leaders.amanda.name',  roleKey: 'leaders.amanda.role' },
-];
-
+const OWNER = {
+  initials: 'EJ',
+  color: '#dbeafe',
+  textColor: '#1d4ed8',
+  nameKey: 'leaders.elena.name',
+  roleKey: 'leaders.elena.role',
+};
 const MOCK_CHILDREN = [
   { id: 1, name: 'Leo',   initials: 'L', color: '#dbeafe', textColor: '#1d4ed8' },
   { id: 2, name: 'Sarah', initials: 'S', color: '#f3f4f6', textColor: '#374151' },
@@ -59,13 +65,31 @@ const SunshineAcademyPage = () => {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [selectedChild, setSelectedChild]       = useState(null);
   const [showProfile, setShowProfile]           = useState(false);
+  
   const facilityStatus   = {
     'Meals': true,
     '24/7 Security': true,
     'Transport': false,
     'Wellness Clinic': true,
   };
+const [showReviewModal, setShowReviewModal] = useState(false);
+const [reviewRating, setReviewRating]       = useState(0);
+const [reviewHovered, setReviewHovered]     = useState(0);
+const [reviewComment, setReviewComment]     = useState('');
 
+const handleCloseReview = () => {
+  setShowReviewModal(false);
+  setReviewRating(0);
+  setReviewHovered(0);
+  setReviewComment('');
+};
+
+const handleSubmitReview = () => {
+  if (!reviewRating || !reviewComment.trim()) return;
+  console.log('Review submitted:', { rating: reviewRating, comment: reviewComment });
+  // call your backend here
+  handleCloseReview();
+};
   useEffect(() => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -150,9 +174,9 @@ const SunshineAcademyPage = () => {
               </h2>
               <p className="sa-hero-desc">{t('sa.hero.desc')}</p>
               <div className="sa-hero-btns">
-                <button className="sa-btn-white" onClick={() => navigate('/reviews')}>
-                  {t('sa.hero.btn1')}
-                </button>
+               <button className="sa-btn-white" onClick={() => setShowReviewModal(true)}>
+  {t('sa.hero.btn1')}
+</button>
                 <button className="sa-btn-ghost" onClick={() => setShowRequestModal(true)}>
                   {t('sa.hero.btn2')}
                 </button>
@@ -219,9 +243,9 @@ const SunshineAcademyPage = () => {
         <div className="sa-section">
           <div className="sa-section-row">
             <h2 className="sa-section-title">{t('sa.reviews.title')}</h2>
-            <button className="sa-read-all" onClick={() => navigate('/reviews')}>
-              {t('sa.reviews.readAll')}
-            </button>
+          <button className="sa-read-all" onClick={() => navigate('/reviews', { state: { reviews: REVIEWS } })}>
+  {t('sa.reviews.readAll')}
+</button>
           </div>
           {REVIEWS.map((r) => (
             <div className="sa-review-card" key={r.id}>
@@ -238,30 +262,26 @@ const SunshineAcademyPage = () => {
         </div>
 
         {/* ── Leadership ── */}
-        <div className="sa-section">
-          <h2 className="sa-section-title">{t('sa.leaders.title')}</h2>
-          <div className="sa-leaders-grid">
-            {LEADERS.map((l) => (
-              <div className="sa-leader-card" key={l.id}>
-                <div className="sa-leader-avatar">
-                  {l.avatar
-                    ? <img src={l.avatar} alt={t(l.nameKey)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <div style={{
-                        width: '100%', height: '100%', borderRadius: '50%',
-                        background: l.color, color: l.textColor,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '24px', fontWeight: '500',
-                      }}>
-                        {l.initials}
-                      </div>
-                  }
-                </div>
-                <div className="sa-leader-name">{t(l.nameKey)}</div>
-                <div className="sa-leader-role">{t(l.roleKey)}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* ── Leadership → Owner only ── */}
+<div className="sa-section">
+  <h2 className="sa-section-title">{t('sa.leaders.title')}</h2>
+  <div className="sa-owner-card">
+    <div className="sa-leader-avatar">
+      <div style={{
+        width: '100%', height: '100%', borderRadius: '50%',
+        background: OWNER.color, color: OWNER.textColor,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: '24px', fontWeight: '500',
+      }}>
+        {OWNER.initials}
+      </div>
+    </div>
+    <div>
+      <div className="sa-leader-name">{t(OWNER.nameKey)}</div>
+      <div className="sa-leader-role">{t(OWNER.roleKey)}</div>
+    </div>
+  </div>
+</div>
 
       </div> {/* ✅ closes sa-page */}
 
@@ -317,6 +337,65 @@ const SunshineAcademyPage = () => {
           </div>
         </div>
       )}
+      {showReviewModal && (
+  <div className="modal-overlay">
+    <div className="modal-box">
+
+      <div className="modal-header">
+        <div className="modal-header-left">
+          <div className="modal-header-icon">
+            <MdOutlineAssignment size={18} color="#4f6d8f" />
+          </div>
+          <span className="modal-header-label">Review Form</span>
+        </div>
+        <button className="modal-close" onClick={handleCloseReview}>✕</button>
+      </div>
+
+      <h3 className="modal-title">
+        <TbMoodSmile size={28} color="#4f6d8f" /> Leave a review
+      </h3>
+
+      <div className="review-stars-row">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            className={`review-star ${star <= (reviewHovered || reviewRating) ? 'lit' : ''}`}
+            onClick={() => setReviewRating(star)}
+            onMouseEnter={() => setReviewHovered(star)}
+            onMouseLeave={() => setReviewHovered(0)}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+
+      {reviewRating > 0 && (
+        <p className="review-rating-label">
+          {['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent'][reviewRating]}
+        </p>
+      )}
+
+      <div className="review-comment-wrap">
+        <label>Your review</label>
+        <textarea
+          rows={4}
+          placeholder="Share your experience with this daycare..."
+          value={reviewComment}
+          onChange={(e) => setReviewComment(e.target.value)}
+        />
+      </div>
+
+      <button
+        className={`modal-submit ${reviewRating > 0 && reviewComment.trim() ? 'active' : ''}`}
+        disabled={!reviewRating || !reviewComment.trim()}
+        onClick={handleSubmitReview}
+      >
+        Submit review <span>➤</span>
+      </button>
+
+    </div>
+  </div>
+)}
     </>
   );
 };

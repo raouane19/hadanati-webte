@@ -61,6 +61,8 @@ const FacilityProfileEditor = () => {
   };
 
   // ── Profile photo (Facility Identity card) ────────────────────────────────
+  const location = useLocation();
+const incoming = location.state?.profileData || {};
   const [profilePhoto, setProfilePhoto] = useState(incoming.profilePhotoURL || null);
 
   const handleProfilePhoto = (e) => {
@@ -68,8 +70,7 @@ const FacilityProfileEditor = () => {
     if (file) setProfilePhoto(URL.createObjectURL(file));
     e.target.value = "";
   };
-const location = useLocation();
-const incoming = location.state?.profileData || {};
+
   // ── Form state ────────────────────────────────────────────────────────────
   const [facilityName, setFacilityName] = useState(incoming.daycareName  || "EliteCare Academy North");
   const [tagline,      setTagline]      = useState(incoming.tagline       || "Nurturing Brilliance, One Step at a Time");
@@ -99,7 +100,7 @@ useEffect(() => {
 
 const fetchProfile = async () => {
   const token = localStorage.getItem("token");
-
+  const userId = localStorage.getItem('userId');
   try {
     const res = await fetch(
       "http://localhost:5000/api/daycares/profile/me",

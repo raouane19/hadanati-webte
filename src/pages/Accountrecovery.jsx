@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import './AccountRecovery.css';
 import { LiaFileAlt } from 'react-icons/lia';
 import { LiaTelegramPlane } from 'react-icons/lia';
+import { useNavigate } from 'react-router-dom';
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const AccountRecovery = ({ onClose }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+
+  const role = localStorage.getItem('userRole') || 'parent';
 
   const handleSend = async () => {
     if (!email) {
@@ -15,14 +21,14 @@ const AccountRecovery = ({ onClose }) => {
       return;
     }
     setError('');
+    setSuccess('');
     setLoading(true);
 
     try {
-     
-      const res = await fetch('http://192.168.12.26:5000/auth/forgot-password', {
+      const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, role }),
       });
 
       const data = await res.json();
@@ -32,8 +38,15 @@ const AccountRecovery = ({ onClose }) => {
         return;
       }
 
-      setSuccess('Verification code sent! Check your email. ✅');
-    } catch  {
+      localStorage.setItem('userEmail', email);
+      setSuccess('Code sent! Redirecting...');
+
+      setTimeout(() => {
+        onClose();
+        navigate('/reset-password');
+      }, 1500);
+
+    } catch {
       setError('Could not connect to server. Try again.');
     } finally {
       setLoading(false);
@@ -63,7 +76,7 @@ const AccountRecovery = ({ onClose }) => {
             <label>Email Address</label>
             <input
               type="email"
-              placeholder=".j@example.com"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -74,7 +87,7 @@ const AccountRecovery = ({ onClose }) => {
             onClick={handleSend}
             disabled={loading}
           >
-            {loading ? 'Sending...' : 'send  verification code'}
+            {loading ? 'Sending...' : 'Send verification code'}
             {!loading && <LiaTelegramPlane className="send-icon" />}
           </button>
 

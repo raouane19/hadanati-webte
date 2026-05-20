@@ -16,10 +16,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import SearchResults from './pages/SearchResults';
 import FacilityProfileEditor from './pages/editdaycareprofile';
 import HadanatiLogin from './pages/Login';
-
-
+import AccountVerification from './pages/accountverification';
+import AllReviews from './pages/AllReviews';
 import About from './pages/aboutus';
-
+import ResetPassword from './pages/ResetPassword';
 
 function AppContent() {
   const location = useLocation();
@@ -41,15 +41,13 @@ function AppContent() {
         } />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/register-parent" element={<SignUp />} />
+        <Route path="/parent-verification" element={<AccountVerification />} />
+        <Route path="/account-verification" element={<AccountVerification />} />
         <Route path="/parent-login" element={<ParentLogin />} />
+       
         <Route path="/register-nursery" element={<NurserySignUp />} />
-        <Route path="/hadanati-login" element={<HadanatiLogin />} />
-        <Route path="/daycare-profile" element={<DaycareProfile />} />
-        <Route path="/facility-profile" element={<FacilityProfileEditor />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/daycare/:id" element={<SunshineAcademyPage />} />
-        <Route path="/about" element={<About />}/>
-        <Route path="/daycare-profile" element={
+        
+         <Route path="/daycare-profile" element={
           <ProtectedRoute allowedRoles={['daycare']}>
             <DaycareProfile />
           </ProtectedRoute>
@@ -59,7 +57,16 @@ function AppContent() {
             <ParentDashboard />
           </ProtectedRoute>
         } />
+        <Route path="/hadanati-login" element={<HadanatiLogin />} />
+        <Route path="/daycare-profile" element={<DaycareProfile />} />
+        <Route path="/facility-profile" element={<FacilityProfileEditor />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/daycare/:id" element={<SunshineAcademyPage />} />
+        <Route path="/reviews" element={<AllReviews />} />
+        <Route path="/about" element={<About />}/>
+        
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
       <Footer />
     </div>

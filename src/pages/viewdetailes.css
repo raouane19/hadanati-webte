@@ -170,6 +170,7 @@ body {
   gap: 16px;
   padding: 0 28px 20px;
   align-items: start;
+  gap: 30px;
 }
  
 .sa-mid {
@@ -342,6 +343,7 @@ body {
   padding: 20px;
  border: 1px solid #e2e5ef;
   box-shadow: none;
+  width: 270px;
 }
  
 .sa-info-head {
@@ -635,7 +637,7 @@ body {
 }
  
 .sa-phil-title {
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 2rem;
   font-weight: 800;
   line-height: 1.2;
@@ -671,15 +673,19 @@ body {
   justify-content: center;
   gap: 8px;
   background: #eef0f7;
+   border: 1px solid #e2e5ef; 
   border-radius: 16px;
   padding: 20px 12px;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
  
 .sa-facility-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  z-index: 2;
 }
  
 .sa-facility-icon {
@@ -721,6 +727,7 @@ body {
   font-weight: 800;
   color: #1a1a2e;
   margin: 0 0 16px;
+  font-family: 'Inter', sans-serif;
 }
  
 .sa-section-row .sa-section-title {
@@ -834,7 +841,7 @@ body {
 /* Available — highlighted with a soft green tint + border */
 .sa-facility-card.facility-available {
   background: #f0f2f8;
-  border: 1.5px solid #7788a5;
+  border: 1.5px solid #7e899b75;
   box-shadow: 0 2px 12px rgba(111, 207, 151, 0.18);
 }
 
@@ -868,7 +875,73 @@ body {
 .sa-facility-card:hover {
   transform: scale(1.03);
 }
- 
+ .review-stars-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 4px 20px 8px;
+}
+
+.review-star {
+  font-size: 34px;
+  cursor: pointer;
+  color: #ddd;
+  transition: transform 0.1s, color 0.1s;
+  line-height: 1;
+}
+
+.review-star.lit {
+  color: #F5A623;
+}
+
+.review-star:hover {
+  transform: scale(1.15);
+}
+
+.review-rating-label {
+  text-align: center;
+  font-size: 13px;
+  color: #6B8E9E;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.review-comment-wrap {
+  margin: 0 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.review-comment-wrap label {
+  font-size: 13px;
+  color: #555;
+}
+
+.review-comment-wrap textarea {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  color: #333;
+}
+
+.review-comment-wrap textarea:focus {
+  border-color: #6B8E9E;
+}
+.sa-owner-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 20px 24px;
+  max-width: 320px;
+}
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .sa-two-col {

@@ -58,8 +58,9 @@ const NurserySignUp = () => {
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userRole', 'daycare');
+      localStorage.setItem('userEmail', formData.email);
 
-      navigate('/daycare-profile');
+      navigate('/account-verification');
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || 'Registration failed. Please try again.');

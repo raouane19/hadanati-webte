@@ -32,9 +32,12 @@ const navigate = useNavigate();
       </div>
 
       <div className="buttons-div">
-        <button onClick={() => handleClick('home')} className={`home-js ${activeBtn === 'home' ? 'nhome' : 'home'}`}>
-          {activeBtn === 'home' ? t('navbar.home')  : t('navbar.home')}
-        </button>
+        <button
+  onClick={() => { handleClick('home'); navigate('/'); }}
+  className={`home-js ${activeBtn === 'home' ? 'nhome' : 'home'}`}
+>
+  {t('navbar.home')}
+</button>
         <button onClick={() => { handleClick('about'); navigate('/about'); }} className={`about ${activeBtn === 'about' ? 'active' : ''}`}>
           {t('navbar.about')}
         </button>
