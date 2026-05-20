@@ -42,7 +42,7 @@ const Login = () => {
 
       // Navigate based on role
       if (role === 'parent') {
-        navigate('/search');
+        navigate('/parent-dashboard');
       } else if (role === 'daycare') {
           localStorage.setItem('userRole', 'daycare');
   navigate('/facility-profile');

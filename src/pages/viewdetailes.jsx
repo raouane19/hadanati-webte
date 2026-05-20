@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import './viewdetailes.css';
 import ParentProfile from './parentprfile';
+import Gallery from './Gallery';
+import { LuImages } from 'react-icons/lu';
 import { FiMapPin, FiClock, FiMail, FiUsers, FiSmile, FiPhone } from 'react-icons/fi';
 import { BsCash } from 'react-icons/bs';
 import { LuUtensils } from 'react-icons/lu';
@@ -110,6 +112,7 @@ const handleSubmitReview = () => {
     console.log('Request submitted for child id:', selectedChild);
     handleCloseModal();
   };
+  const [showGallery, setShowGallery] = useState(false);
 
   return (
     <>
@@ -166,6 +169,15 @@ const handleSubmitReview = () => {
                 <span className="sa-scene-student">🧒</span>
               </div>
             )}
+              {/* ✅ Gallery icon button — top right of hero */}
+              <button
+                className="sa-gallery-btn"
+                onClick={() => setShowGallery(true)}
+                title="View Gallery"
+              >
+                <LuImages size={20} />
+                <span>+12</span>
+              </button>
             <div className="sa-hero-overlay" />
             <div className="sa-hero-content">
               <h2 className="sa-hero-title">
@@ -395,6 +407,9 @@ const handleSubmitReview = () => {
 
     </div>
   </div>
+)}
+{showGallery && (
+  <Gallery onClose={() => setShowGallery(false)} />
 )}
     </>
   );

@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next'; // ✅
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { FiX, FiUser, FiCalendar, FiEdit2 } from 'react-icons/fi';
 import { LuClipboardList } from 'react-icons/lu';
 import { PiGenderIntersex } from 'react-icons/pi';
 import './childrenprofile.css';
 
-const ChildrenProfile = ({ onClose, onBack }) => {
-  const [portrait, setPortrait] = useState(null);
+const ChildrenProfile = ({ onClose, onBack, onSave, initialData }) => {
+  const { t } = useTranslation(); // ✅
+  const isEditing = !!initialData;
+
+  const [portrait, setPortrait] = useState(initialData?.photo || null);
   const [form, setForm] = useState({
-    fullName: '',
-    dob: '',
-    gender: '',
-    medicalNotes: '',
+    fullName: initialData?.name || '',
+    dob: initialData?.dob || '',
+    gender: initialData?.gender?.toLowerCase() || '',
+    medicalNotes: initialData?.medical !== 'None Disclosed' ? initialData?.medical || '' : '',
   });
 
   const handlePhotoChange = (e) => {
@@ -25,11 +29,26 @@ const ChildrenProfile = ({ onClose, onBack }) => {
 
   const handleSubmit = () => {
     if (!form.fullName || !form.dob || !form.gender) {
-      alert('Please fill in all required fields.');
+      alert(t('childrenProfile.requiredAlert')); // ✅
       return;
     }
-    alert(`Child "${form.fullName}" added successfully!`);
-    onBack();
+
+    const birthDate = new Date(form.dob);
+    const age = new Date().getFullYear() - birthDate.getFullYear();
+
+    const savedChild = {
+      id: initialData?.id || null,
+      name: form.fullName,
+      age,
+      gender: form.gender.charAt(0).toUpperCase() + form.gender.slice(1),
+      medical: form.medicalNotes || 'None Disclosed',
+      hasAlert: !!form.medicalNotes,
+      photo: portrait,
+      dob: form.dob,
+    };
+
+    if (onSave) onSave(savedChild);
+    else onBack();
   };
 
   return (
@@ -40,7 +59,7 @@ const ChildrenProfile = ({ onClose, onBack }) => {
         <div className="mc-header">
           <div className="mc-header-left">
             <LuClipboardList size={14} color="#2d4a6e" />
-            <span>profile info</span>
+            <span>{t('childrenProfile.title')}</span> {/* ✅ */}
           </div>
           <button className="mc-close" onClick={onClose}><FiX /></button>
         </div>
@@ -48,7 +67,12 @@ const ChildrenProfile = ({ onClose, onBack }) => {
         {/* Title */}
         <div className="mc-title-row">
           <button className="mc-back" onClick={onBack}>‹</button>
-          <h2 className="mc-title">My Children</h2>
+          <h2 className="mc-title">
+            {isEditing
+              ? t('childrenProfile.editTitle', { name: initialData.name }) // ✅ interpolation
+              : t('childrenProfile.addTitle')
+            }
+          </h2>
         </div>
 
         <div className="mc-body">
@@ -60,7 +84,7 @@ const ChildrenProfile = ({ onClose, onBack }) => {
                 <img src={portrait} alt="Child" className="mc-portrait-img" />
               ) : (
                 <div className="mc-portrait-placeholder">
-                 <IoCloudUploadOutline size={38} color="#ffffff" />
+                  <IoCloudUploadOutline size={38} color="#ffffff" />
                 </div>
               )}
               <label className="mc-portrait-edit" htmlFor="child-photo">
@@ -75,25 +99,25 @@ const ChildrenProfile = ({ onClose, onBack }) => {
               />
             </div>
             <div className="mc-portrait-info">
-              <p className="mc-portrait-title">Child's Portrait</p>
-              <p className="mc-portrait-desc">High-resolution headshot recommended.</p>
-              <p className="mc-portrait-desc">Accepted formats: JPG, PNG (Max 5MB)</p>
+              <p className="mc-portrait-title">{t('childrenProfile.portrait')}</p> {/* ✅ */}
+              <p className="mc-portrait-desc">{t('childrenProfile.portraitDesc')}</p> {/* ✅ */}
+              <p className="mc-portrait-desc">{t('childrenProfile.portraitFormats')}</p> {/* ✅ */}
               <label htmlFor="child-photo" className="mc-upload-btn">
-                <IoCloudUploadOutline size={14} /> Upload New Photo
+                <IoCloudUploadOutline size={14} /> {t('childrenProfile.uploadPhoto')} {/* ✅ */}
               </label>
             </div>
           </div>
 
           {/* Full Name */}
           <div className="mc-field">
-            <label className="mc-label">CHILD'S FULL LEGAL NAME</label>
+            <label className="mc-label">{t('childrenProfile.fullName')}</label> {/* ✅ */}
             <div className="mc-input-row">
               <FiUser size={14} color="#2d4a6e" />
               <input
                 name="fullName"
                 value={form.fullName}
                 onChange={handleChange}
-                placeholder="Enter full name as per identity documents"
+                placeholder={t('childrenProfile.fullNamePlaceholder')} 
                 className="mc-input"
               />
             </div>
@@ -102,7 +126,7 @@ const ChildrenProfile = ({ onClose, onBack }) => {
           {/* DOB + Gender */}
           <div className="mc-row-two">
             <div className="mc-field">
-              <label className="mc-label">DATE OF BIRTH</label>
+              <label className="mc-label">{t('childrenProfile.dob')}</label> {/* ✅ */}
               <div className="mc-input-row">
                 <FiCalendar size={14} color="#2d4a6e" />
                 <input
@@ -116,7 +140,7 @@ const ChildrenProfile = ({ onClose, onBack }) => {
             </div>
 
             <div className="mc-field">
-              <label className="mc-label">GENDER</label>
+              <label className="mc-label">{t('childrenProfile.gender')}</label> {/* ✅ */}
               <div className="mc-input-row">
                 <PiGenderIntersex size={14} color="#2d4a6e" />
                 <select
@@ -125,9 +149,9 @@ const ChildrenProfile = ({ onClose, onBack }) => {
                   onChange={handleChange}
                   className="mc-input mc-select"
                 >
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
+                  <option value="">{t('childrenProfile.selectGender')}</option> {/* ✅ */}
+                  <option value="male">{t('childrenProfile.male')}</option> {/* ✅ */}
+                  <option value="female">{t('childrenProfile.female')}</option> {/* ✅ */}
                 </select>
               </div>
             </div>
@@ -135,12 +159,12 @@ const ChildrenProfile = ({ onClose, onBack }) => {
 
           {/* Medical Notes */}
           <div className="mc-field">
-            <label className="mc-label">MEDICAL NOTES / ALLERGIES</label>
+            <label className="mc-label">{t('childrenProfile.medicalNotes')}</label> {/* ✅ */}
             <textarea
               name="medicalNotes"
               value={form.medicalNotes}
               onChange={handleChange}
-              placeholder="Enter any critical health information, dietary restrictions, or known allergies..."
+              placeholder={t('childrenProfile.medicalPlaceholder')} 
               className="mc-textarea"
               rows={4}
             />
@@ -148,9 +172,15 @@ const ChildrenProfile = ({ onClose, onBack }) => {
 
           {/* Actions */}
           <div className="mc-actions">
-            <button className="mc-cancel" onClick={onBack}>Cancel</button>
+            <button className="mc-cancel" onClick={onBack}>
+              {t('childrenProfile.cancel')} 
+            </button>
             <button className="mc-submit" onClick={handleSubmit}>
-              <FiUser size={13} /> Add Child to Program
+              <FiUser size={13} />
+              {isEditing
+                ? t('childrenProfile.saveChanges')  // ✅
+                : t('childrenProfile.addChild')      // ✅
+              }
             </button>
           </div>
 

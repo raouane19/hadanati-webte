@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './ParentProfile.css';
+import { useTranslation } from 'react-i18next';  // ✅ ADD THIS
 import {
   FiX, FiEdit2, FiUser, FiList, FiHeart,
   FiUsers, FiLogOut, FiMapPin, FiCalendar,
@@ -15,7 +16,14 @@ import EditParent from './editparent';
 import MyFavorites from './My Favorites';
 
 const ParentProfile = ({ onClose }) => {
+  const { t } = useTranslation();  // ✅ ADD THIS
   const [activeTab, setActiveTab] = useState('profile');
+
+  const profileRef = useRef(null);
+  const requestsRef = useRef(null);
+  const favoritesRef = useRef(null);
+  const childrenRef = useRef(null);
+  const contentRef = useRef(null);
 
   const [user] = useState({
     fullName: "Parent Full Name",
@@ -25,30 +33,58 @@ const ParentProfile = ({ onClose }) => {
   });
 
   const [enrollmentRequests] = useState([
-    { id: 1, nursery: "Bright Horizons Center", child: "Liam D.", date: "Oct 12, 2023", status: "PENDING" },
-    { id: 2, nursery: "Kindercare Academy", child: "Liam D.", date: "Sep 28, 2023", status: "APPROVED" }
-  ]);
-
-  const [favorites] = useState([
-    { id: 1, name: "The Goddard School", location: "oran", rating: 4.9, image: "/public/little-day.jpg" },
-    { id: 2, name: "Stepping Stones", location: "sba", rating: 4.7, image: "/public/bright-day.jpg" }
+    { id: 1, nursery: "Bright Horizons Center", child: "Liam D.", date: "Oct 12, 2023", status: "pending" },
+    { id: 2, nursery: "Kindercare Academy", child: "Liam D.", date: "Sep 28, 2023", status: "approved" }
   ]);
 
   const [children] = useState([
-    { id: 1, name: "Leo Wright", age: "AGE: 4 YEARS" },
-    { id: 2, name: "Sarah Wright", age: "AGE: 2 YEARS" }
+    { id: 1, name: "Leo Wright", age: "4" },
+    { id: 2, name: "Sarah Wright", age: "2" }
   ]);
+
   const [showChildren, setShowChildren] = useState(false);
   const [showRequests, setShowRequests] = useState(false);
   const [showEditParent, setShowEditParent] = useState(false);
-
-  const menuItems = [
-    { key: 'profile', label: 'Profile Info', icon: <FiUser /> },
-    { key: 'requests', label: 'My Requests', icon: <LuClipboardList /> },
-    { key: 'favorites', label: 'Favorites', icon: <FiHeart /> },
-    { key: 'children', label: 'Children', icon: <FiUsers /> },
-  ];
   const [showFavorites, setShowFavorites] = useState(false);
+
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem('profileFavorites');
+    return saved ? JSON.parse(saved) : [
+      { id: 1, name: "The Goddard School", location: "oran", rating: 4.9, image: "/public/little-day.jpg" },
+      { id: 2, name: "Stepping Stones", location: "sba", rating: 4.7, image: "/public/bright-day.jpg" }
+    ];
+  });
+
+  useEffect(() => {
+    const saved = localStorage.getItem('profileFavorites');
+    if (saved) setFavorites(JSON.parse(saved));
+  }, []);
+
+  const sectionRefs = {
+    profile: profileRef,
+    requests: requestsRef,
+    favorites: favoritesRef,
+    children: childrenRef,
+  };
+
+  const handleMenuClick = (key) => {
+    setActiveTab(key);
+    const ref = sectionRefs[key];
+    if (ref?.current && contentRef?.current) {
+      contentRef.current.scrollTo({
+        top: ref.current.offsetTop - 16,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // ✅ Use t() for menu labels
+  const menuItems = [
+    { key: 'profile',   label: t('profile.profileInfo'), icon: <FiUser /> },
+    { key: 'requests',  label: t('profile.myRequests'),  icon: <LuClipboardList /> },
+    { key: 'favorites', label: t('profile.favorites'),   icon: <FiHeart /> },
+    { key: 'children',  label: t('profile.children'),    icon: <FiUsers /> },
+  ];
 
   return (
     <div className="profile-overlay" onClick={onClose}>
@@ -58,7 +94,7 @@ const ParentProfile = ({ onClose }) => {
         <div className="profile-header">
           <div className="profile-header-title">
             <LuClipboardList className="profile-header-icon" />
-            <span>profile info</span>
+            <span>{t('profile.title')}</span>  {/* ✅ */}
           </div>
           <button className="profile-close-btn" onClick={onClose}>
             <FiX />
@@ -85,12 +121,12 @@ const ParentProfile = ({ onClose }) => {
             </div>
 
             <div className="profile-menu">
-              <p className="profile-menu-label">ACCOUNT</p>
+              <p className="profile-menu-label">{t('profile.account')}</p>  {/* ✅ */}
               {menuItems.map(item => (
                 <button
                   key={item.key}
                   className={`profile-menu-item ${activeTab === item.key ? 'active' : ''}`}
-                  onClick={() => setActiveTab(item.key)}
+                  onClick={() => handleMenuClick(item.key)}
                 >
                   {item.icon}
                   <span>{item.label}</span>
@@ -98,47 +134,49 @@ const ParentProfile = ({ onClose }) => {
               ))}
               <button className="profile-menu-item signout">
                 <FiLogOut />
-                <span>Sign Out</span>
+                <span>{t('profile.signOut')}</span>  {/* ✅ */}
               </button>
             </div>
           </div>
 
           {/* Right Content */}
-          <div className="profile-content">
+          <div className="profile-content" ref={contentRef}>
 
             {/* Personal Information */}
-            <div className="profile-section">
+            <div className="profile-section" ref={profileRef}>
               <div className="profile-section-header">
-                <h3>Personal Information</h3>
-               <button className="edit-btn" onClick={() => setShowEditParent(true)}>
-                <FiEdit2 size={13}/> Edit All
-              </button>
+                <h3>{t('profile.personalInfo')}</h3>  {/* ✅ */}
+                <button className="edit-btn" onClick={() => setShowEditParent(true)}>
+                  <FiEdit2 size={13}/> {t('profile.editAll')}  {/* ✅ */}
+                </button>
               </div>
               <div className="profile-info-grid">
                 <div className="profile-info-item">
-                  <label>FULL NAME</label>
+                  <label>{t('profile.fullName')}</label>  {/* ✅ */}
                   <p>{user.fullName}</p>
                 </div>
                 <div className="profile-info-item">
-                  <label>EMAIL ADDRESS</label>
+                  <label>{t('profile.emailAddress')}</label>  {/* ✅ */}
                   <p>{user.email}</p>
                 </div>
                 <div className="profile-info-item">
-                  <label>PHONE NUMBER</label>
+                  <label>{t('profile.phoneNumber')}</label>  {/* ✅ */}
                   <p>{user.phone}</p>
                 </div>
                 <div className="profile-info-item">
-                  <label>LOCATION</label>
+                  <label>{t('profile.location')}</label>  {/* ✅ */}
                   <p>{user.location}</p>
                 </div>
               </div>
             </div>
 
             {/* Enrollment Requests */}
-            <div className="profile-section">
+            <div className="profile-section" ref={requestsRef}>
               <div className="profile-section-header">
-                <h3>Enrollment Requests</h3>
-               <button className="view-all-btn" onClick={() => setShowRequests(true)}>VIEW ALL</button>
+                <h3>{t('profile.enrollmentRequests')}</h3>  {/* ✅ */}
+                <button className="view-all-btn" onClick={() => setShowRequests(true)}>
+                  {t('profile.viewAll')}  {/* ✅ */}
+                </button>
               </div>
               <div className="enrollment-list">
                 {enrollmentRequests.map(req => (
@@ -153,8 +191,8 @@ const ParentProfile = ({ onClose }) => {
                         <span><FiCalendar size={11}/> {req.date}</span>
                       </div>
                     </div>
-                    <span className={`enrollment-status ${req.status.toLowerCase()}`}>
-                      {req.status}
+                    <span className={`enrollment-status ${req.status}`}>
+                      {t(`profile.${req.status}`)}  {/* ✅ dynamic: pending/approved */}
                     </span>
                     <FiChevronRight className="enrollment-arrow" />
                   </div>
@@ -163,10 +201,12 @@ const ParentProfile = ({ onClose }) => {
             </div>
 
             {/* Favorites */}
-            <div className="profile-section">
+            <div className="profile-section" ref={favoritesRef}>
               <div className="profile-section-header">
-                <h3>Favorites</h3>
-               <button className="view-all-btn" onClick={() => setShowFavorites(true)}>MANAGE</button>
+                <h3>{t('profile.favorites')}</h3>  {/* ✅ */}
+                <button className="view-all-btn" onClick={() => setShowFavorites(true)}>
+                  {t('profile.manage')}  {/* ✅ */}
+                </button>
               </div>
               <div className="favorites-grid">
                 {favorites.map(fav => (
@@ -184,7 +224,7 @@ const ParentProfile = ({ onClose }) => {
                       <span className="favorite-location"><FiMapPin size={11}/> {fav.location}</span>
                       <div className="favorite-bottom">
                         <span className="favorite-rating"><FiStar size={11} style={{color:'#f4a523', fill:'#f4a523'}}/> {fav.rating}</span>
-                        <button className="favorite-details-btn">Details</button>
+                        <button className="favorite-details-btn">{t('profile.details')}</button>  {/* ✅ */}
                       </div>
                     </div>
                   </div>
@@ -193,16 +233,18 @@ const ParentProfile = ({ onClose }) => {
             </div>
 
             {/* Children */}
-            <div className="profile-section">
+            <div className="profile-section" ref={childrenRef}>
               <div className="profile-section-header">
-                <h3>Children</h3>
-                 <button className="view-all-btn" onClick={() => setShowChildren(true)}>MANAGE</button>
+                <h3>{t('profile.children')}</h3>  {/* ✅ */}
+                <button className="view-all-btn" onClick={() => setShowChildren(true)}>
+                  {t('profile.manage')}  {/* ✅ */}
+                </button>
               </div>
               <div className="children-grid">
                 {children.map(child => (
                   <div key={child.id} className="child-item">
                     <div className="child-avatar">
-                     <TbMoodKid size={20} />
+                      <TbMoodKid size={20} />
                     </div>
                     <div>
                       <p className="child-name">{child.name}</p>
@@ -216,17 +258,12 @@ const ParentProfile = ({ onClose }) => {
           </div>
         </div>
       </div>
-        {showChildren && (
-        <MyChildren
-          onClose={onClose}
-          onBack={() => setShowChildren(false)}
-        />
+
+      {showChildren && (
+        <MyChildren onClose={onClose} onBack={() => setShowChildren(false)} />
       )}
       {showRequests && (
-        <MyEnrollmentRequests
-          onClose={onClose}
-          onBack={() => setShowRequests(false)}
-        />
+        <MyEnrollmentRequests onClose={onClose} onBack={() => setShowRequests(false)} />
       )}
       {showEditParent && (
         <EditParent onClose={() => setShowEditParent(false)} />
@@ -235,6 +272,8 @@ const ParentProfile = ({ onClose }) => {
         <MyFavorites
           onClose={onClose}
           onBack={() => setShowFavorites(false)}
+          favorites={favorites}
+          setFavorites={setFavorites}
         />
       )}
     </div>

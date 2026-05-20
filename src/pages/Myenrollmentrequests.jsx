@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next'; // ✅
 import './MyEnrollmentRequests.css';
 import { FiX, FiChevronLeft, FiEdit2 } from 'react-icons/fi';
 import { LuClipboardList } from 'react-icons/lu';
 import { FiUser, FiCalendar, FiArrowRight } from 'react-icons/fi';
 
 const MyEnrollmentRequests = ({ onClose, onBack }) => {
+  const { t } = useTranslation(); // ✅
+
   const [requests] = useState([
     {
       id: 1,
       nursery: "Sunshine Academy",
       child: "Leo",
       date: "Oct 12, 2026",
-      status: "IN REVIEW",
       statusKey: "in-review",
       image: "/public/sunshine-academy.jpg"
     },
@@ -20,7 +22,6 @@ const MyEnrollmentRequests = ({ onClose, onBack }) => {
       nursery: "Little Steps Institute",
       child: "Sarah",
       date: "Sep 28, 2026",
-      status: "WAITLISTED",
       statusKey: "waitlisted",
       image: "/public/little-steps.jpg"
     },
@@ -29,25 +30,24 @@ const MyEnrollmentRequests = ({ onClose, onBack }) => {
       nursery: "Evergreen Montessori",
       child: "Leo",
       date: "Aug 15, 2026",
-      status: "CONFIRMED",
       statusKey: "confirmed",
       image: "/public/evergreen.jpg"
     }
   ]);
 
- return (
-  <div className="enrollment-wrapper" onClick={onClose}>
-    <div className="enrollment-modal" onClick={e => e.stopPropagation()}>
+  return (
+    <div className="enrollment-wrapper" onClick={onClose}>
+      <div className="enrollment-modal" onClick={e => e.stopPropagation()}>
 
         {/* Header */}
         <div className="profile-header">
           <div className="profile-header-title">
             <LuClipboardList className="profile-header-icon" />
-            <span>profile info</span>
+            <span>{t('enrollmentRequests.title')}</span> {/* ✅ */}
           </div>
           <button className="enrollment-close-btn" onClick={onClose}>
             <FiX />
-        </button>
+          </button>
         </div>
 
         {/* Content */}
@@ -60,14 +60,14 @@ const MyEnrollmentRequests = ({ onClose, onBack }) => {
                 <FiChevronLeft size={28} />
               </button>
               <div>
-                <h2>My Enrollment Requests</h2>
+                <h2>{t('enrollmentRequests.pageTitle')}</h2> {/* ✅ */}
                 <p className="enrollment-subtitle">
-                  Track and manage your daycare applications and enrollment status across our network.
+                  {t('enrollmentRequests.subtitle')} {/* ✅ */}
                 </p>
               </div>
             </div>
             <button className="edit-all-btn">
-              <FiEdit2 size={13} /> Edit All
+              <FiEdit2 size={13} /> {t('enrollmentRequests.editAll')} {/* ✅ */}
             </button>
           </div>
 
@@ -91,17 +91,21 @@ const MyEnrollmentRequests = ({ onClose, onBack }) => {
 
                 <div className="enrollment-card-info">
                   <span className={`enrollment-status-badge ${req.statusKey}`}>
-                    {req.status}
+                    {t(`enrollmentRequests.status.${req.statusKey}`)} {/* ✅ */}
                   </span>
                   <h3 className="enrollment-card-name">{req.nursery}</h3>
                   <div className="enrollment-card-meta">
-                    <span><FiUser size={11} /> Child: <strong>{req.child}</strong></span>
-                    <span><FiCalendar size={11} /> Applied: <strong>{req.date}</strong></span>
+                    <span>
+                      <FiUser size={11} /> {t('enrollmentRequests.child')}: <strong>{req.child}</strong> {/* ✅ */}
+                    </span>
+                    <span>
+                      <FiCalendar size={11} /> {t('enrollmentRequests.applied')}: <strong>{req.date}</strong> {/* ✅ */}
+                    </span>
                   </div>
                 </div>
 
                 <button className="view-details-btn">
-                  View Details <FiArrowRight size={14} />
+                  {t('enrollmentRequests.viewDetails')} <FiArrowRight size={14} /> {/* ✅ */}
                 </button>
               </div>
             ))}
