@@ -20,15 +20,12 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const url =
-        role === 'parent'
-          ? 'http://192.168.12.26:5000/auth/login/parent'
-          : 'http://192.168.12.26:5000/auth/login/daycare';
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-      const res = await fetch(url, {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, role }),
       });
 
       const data = await res.json();
@@ -38,14 +35,18 @@ const Login = () => {
         return;
       }
 
+      // Store token, role, and user info
       localStorage.setItem('token', data.token);
-      localStorage.setItem('role', role);
+      localStorage.setItem('role', data.user.role);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
+      // Navigate based on role
       if (role === 'parent') {
         navigate('/search');
-      } else {
+      } else if (role === 'daycare') {
         navigate('/nursery-dashboard');
       }
+
     } catch (err) {
       setError('Something went wrong. Try again.');
     } finally {
@@ -107,16 +108,15 @@ const Login = () => {
           </div>
 
           <button type="submit" className="had-login-btn" disabled={loading}>
-            {loading ? 'Logging in...' : 'log in'}
+            {loading ? 'Logging in...' : 'Log in'}
           </button>
 
         </form>
 
         <div className="had-login-footer-links">
           <span className="had-forgot-link" onClick={() => setShowRecovery(true)}>
-            forgot password?
+            Forgot password?
           </span>
-        
         </div>
 
         <p className="had-login-secure">SECURE & CONFIDENTIAL PROFESSIONAL SERVICES</p>
