@@ -390,7 +390,11 @@
   "manage": "MANAGE",
   "details": "Details",
   "pending": "PENDING",
-  "approved": "APPROVED"
+  "approved": "APPROVED",
+  "noRequests": "No requests yet.",
+"noFavorites": "No saved daycares yet.",
+"noChildren": "No children added yet.",
+"yearsOld": "yrs"
 },
 "editProfile": {
   "title": "profile info",

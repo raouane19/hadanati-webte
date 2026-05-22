@@ -42,6 +42,8 @@ const Login = () => {
 
       // Navigate based on role
       if (role === 'parent') {
+         localStorage.setItem('userRole', 'parent');
+         localStorage.setItem('userEmail', email);
          navigate('/parent-dashboard');
       } else if (role === 'daycare') {
           localStorage.setItem('userRole', 'daycare');

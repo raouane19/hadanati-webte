@@ -54,11 +54,12 @@ const NurserySignUp = () => {
         password: formData.password,
       };
 
-      const response = await registerNursery(payload); // ✅ call backend
+    await registerNursery(payload); // ✅ call backend
 
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userRole', 'daycare');
-      localStorage.setItem('userEmail', formData.email);
+      // localStorage.setItem('token', response.data.token);
+      // localStorage.setItem('userRole', 'daycare');
+      // localStorage.setItem('userEmail', formData.email);
+      localStorage.setItem('pendingUser', JSON.stringify({ email: formData.email, role: 'daycare' }));
 
       navigate('/account-verification');
     } catch (err) {

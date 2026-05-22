@@ -87,3 +87,22 @@
   color: #aaa;
   letter-spacing: 0.5px;
 }
+/* Smooth fade-in on page load */
+.login-container.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* Fade-out + slide up on success */
+.login-container.fade-out {
+  animation: fadeOut 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-16px); }
+}

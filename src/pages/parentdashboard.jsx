@@ -61,8 +61,8 @@ const ParentDashboard = () => {
     transport:   false,
     educational: false,
     maxPrice:    25000,
-    city:        '',      // ← new: client-side city filter
-    openingTime: '',      // ← new: client-side opening hours filter
+    city:        '',
+    openingTime: '',
   });
 
   const [daycares, setDaycares]       = useState([]);
@@ -152,28 +152,27 @@ const ParentDashboard = () => {
     fetchDaycares(search, location);
   };
 
+  // ── FIX: navigate to SearchResults page with query params ──────────────────
   const handleFind = () => {
     if (search.trim() === '' && location.trim() === '') {
       alert('Please enter a daycare name or city first!');
       return;
     }
-    fetchDaycares(search, location);
+    navigate(`/search-results?name=${encodeURIComponent(search)}&city=${encodeURIComponent(location)}`);
   };
 
   // ── Client-side filtering for city + opening time ──────────────────────────
   const clientFiltered = daycares.filter((d) => {
-    // City filter
     if (filters.city) {
       const daycareCity = (d.City || d.address || '').toLowerCase();
       if (!daycareCity.includes(filters.city.toLowerCase())) return false;
     }
 
-    // Opening time filter — keep only daycares that open AT or BEFORE the chosen time
     if (filters.openingTime) {
       const chosenMinutes = parseHourToMinutes(filters.openingTime);
       const openingMinutes = getOpeningMinutes(d.hours);
-      if (openingMinutes === null) return false;       // unknown hours → hide
-      if (openingMinutes > chosenMinutes) return false; // opens too late
+      if (openingMinutes === null) return false;
+      if (openingMinutes > chosenMinutes) return false;
     }
 
     return true;

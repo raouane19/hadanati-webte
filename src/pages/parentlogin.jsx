@@ -1,17 +1,314 @@
-import { useNavigate } from 'react-router-dom';
+// // import { useNavigate } from 'react-router-dom';
+
+// // import React, { useState } from 'react';
+// // import './daycarelogin.css';
+// // import { useTranslation } from 'react-i18next';
+
+
+// //  const API_URL = import.meta.env.VITE_API_URL ;
+// // const ParentLogin = () => {
+// //   const { t } = useTranslation();
+// //   const navigate = useNavigate();
+// //   const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('userRole') === 'parent';
+// //   const [formData, setFormData] = useState({ email: '', password: '' });
+// //   const [error, setError] = useState('');
+// //   const [loading, setLoading] = useState(false);
+
+// //   const handleChange = (e) => {
+// //     setFormData({ ...formData, [e.target.name]: e.target.value });
+// //   };
+
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault();
+// //     setError('');
+// //     setLoading(true);
+
+// //     try {
+// //       const res = await fetch(`${API_URL}/auth/login`, {
+// //         method: 'POST',
+// //         headers: { 'Content-Type': 'application/json' },
+// //         body: JSON.stringify({
+// //           email: formData.email,
+// //           password: formData.password,
+// //           role: 'parent',  // ✅ hardcoded since role was chosen on previous page
+// //         }),
+// //       });
+
+// //       const data = await res.json();
+
+// //       if (!res.ok) {
+// //         if (res.status === 401 && data.message?.includes('not verified')) {
+// //           setError('Your account is not verified yet. Please check your email for the OTP.');
+// //         } else if (res.status === 401) {
+// //           setError('Wrong password. Please try again.');
+// //         } else if (res.status === 404) {
+// //           setError('No account found with this email.');
+// //         } else {
+// //           setError(data.message || 'Login failed. Please try again.');
+// //         }
+// //         return;
+// //       }
+
+// //       // ✅ Save token + user info
+// //       localStorage.setItem('token', data.token);
+// //       localStorage.setItem('userRole', data.user.role);
+// //       localStorage.setItem('userId', String(data.user.id));
+// //       localStorage.setItem('userName', data.user.name);
+// // localStorage.setItem('user', JSON.stringify(data.user));
+// //       navigate('/parent-dashboard');
+
+// //     } catch  {
+// //       setError('Cannot reach the server. Please try again later.');
+// //     } finally {
+// //       setLoading(false);
+// //     }
+// //   };
+
+
+
+
+
+
+// //   if (isLoggedIn) {
+// //     return (
+// //       <div className="login-container">
+// //         <div className="login-box">
+// //           <h2 className="login-title">Welcome Back! 👋</h2>
+// //           <p className="login-subtitle">You're already logged in.</p>
+// //           <button
+// //             className="login-btn"
+// //             onClick={() => navigate('/parent-dashboard')}
+// //           >
+// //             Go to Dashboard
+// //           </button>
+// //         </div>
+// //       </div>
+// //     );
+// //   }
+
+
+// //   return (
+// //     <div className="login-container">
+// //       <div className="login-box">
+
+// //         <h2 className="login-title">Parent Login</h2>
+// //         <p className="login-subtitle">
+// //           Welcome back! Let's continue your parenting journey.
+// //         </p>
+
+// //         {error && (
+// //           <p style={{ color: '#f87171', marginBottom: '12px', fontSize: '13px' }}>
+// //             {error}
+// //           </p>
+// //         )}
+
+// //         <form onSubmit={handleSubmit}>
+// //           <div className="form-group">
+// //             <label>{t('login.email')}</label>
+// //             <input
+// //               type="email"
+// //               name="email"
+// //               placeholder={t('login.emailPlaceholder')}
+// //               onChange={handleChange}
+// //               required
+// //             />
+// //           </div>
+
+// //           <div className="form-group">
+// //             <label>{t('login.password')}</label>
+// //             <input
+// //               type="password"
+// //               name="password"
+// //               placeholder="••••••••"
+// //               onChange={handleChange}
+// //               required
+// //             />
+// //           </div>
+
+// //           <button type="submit" className="login-btn" disabled={loading}>
+// //             {loading ? 'Logging in...' : t('login.btn')}
+// //           </button>
+// //         </form>
+
+// //         <p className="forgot-link">
+// //           <a href="#">{t('login.forgotPassword')}</a>
+// //         </p>
+// //         <p className="professional-link">{t('login.professional')}</p>
+
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default ParentLogin;
+// import { useNavigate, useLocation } from 'react-router-dom';
+// import React, { useState } from 'react';
+// import './daycarelogin.css';
+// import { useTranslation } from 'react-i18next';
+
+// const API_URL = import.meta.env.VITE_API_URL;
+
+// const ParentLogin = () => {
+//   const { t } = useTranslation();
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   // ── Read state passed from AccountVerification after OTP success ───────────
+//   const verified    = location.state?.verified || false;
+//   const prefillEmail = location.state?.email   || '';
+
+//   const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('userRole') === 'parent';
+
+//   const [formData, setFormData] = useState({ email: prefillEmail, password: '' });
+//   const [error,   setError]   = useState('');
+//   const [loading, setLoading] = useState(false);
+
+//   const handleChange = (e) => {
+//     setFormData({ ...formData, [e.target.name]: e.target.value });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError('');
+//     setLoading(true);
+
+//     try {
+//       const res = await fetch(`${API_URL}/auth/login`, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           email:    formData.email,
+//           password: formData.password,
+//           role:     'parent',
+//         }),
+//       });
+
+//       const data = await res.json();
+
+//       if (!res.ok) {
+//         if (res.status === 401 && data.message?.includes('not verified')) {
+//           setError('Your account is not verified yet. Please check your email for the OTP.');
+//         } else if (res.status === 401) {
+//           setError('Wrong password. Please try again.');
+//         } else if (res.status === 404) {
+//           setError('No account found with this email.');
+//         } else {
+//           setError(data.message || 'Login failed. Please try again.');
+//         }
+//         return;
+//       }
+
+//       // ── Save token + full user object ──────────────────────────────────────
+//       localStorage.setItem('token',    data.token);
+//       localStorage.setItem('userRole', data.user.role);
+//       localStorage.setItem('userId',   String(data.user.id));
+//       localStorage.setItem('userName', data.user.name);
+//       localStorage.setItem('user',     JSON.stringify(data.user));
+
+//       navigate('/parent-dashboard');
+
+//     } catch {
+//       setError('Cannot reach the server. Please try again later.');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   if (isLoggedIn) {
+//     return (
+//       <div className="login-container">
+//         <div className="login-box">
+//           <h2 className="login-title">Welcome Back! 👋</h2>
+//           <p className="login-subtitle">You're already logged in.</p>
+//           <button className="login-btn" onClick={() => navigate('/parent-dashboard')}>
+//             Go to Dashboard
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="login-container">
+//       <div className="login-box">
+
+//         <h2 className="login-title">Parent Login</h2>
+//         <p className="login-subtitle">
+//           Welcome back! Let's continue your parenting journey.
+//         </p>
+
+//         {/* ── Show success banner when coming from OTP verification ── */}
+//         {verified && (
+//           <p style={{ color: '#38a169', marginBottom: '12px', fontSize: '13px' }}>
+//             ✅ Account verified! Please log in to continue.
+//           </p>
+//         )}
+
+//         {error && (
+//           <p style={{ color: '#f87171', marginBottom: '12px', fontSize: '13px' }}>
+//             {error}
+//           </p>
+//         )}
+
+//         <form onSubmit={handleSubmit}>
+//           <div className="form-group">
+//             <label>{t('login.email')}</label>
+//             <input
+//               type="email"
+//               name="email"
+//               placeholder={t('login.emailPlaceholder')}
+//               value={formData.email}
+//               onChange={handleChange}
+//               required
+//             />
+//           </div>
+
+//           <div className="form-group">
+//             <label>{t('login.password')}</label>
+//             <input
+//               type="password"
+//               name="password"
+//               placeholder="••••••••"
+//               onChange={handleChange}
+//               required
+//             />
+//           </div>
+
+//           <button type="submit" className="login-btn" disabled={loading}>
+//             {loading ? 'Logging in...' : t('login.btn')}
+//           </button>
+//         </form>
+
+//         <p className="forgot-link">
+//           <a href="#">{t('login.forgotPassword')}</a>
+//         </p>
+//         <p className="professional-link">{t('login.professional')}</p>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ParentLogin;
+import { useNavigate, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 import './daycarelogin.css';
 import { useTranslation } from 'react-i18next';
-
-const BASE_URL = 'http://192.168.0.152:5000';
+import { loginParent } from '../api/auth'; // uses clearSession internally
 
 const ParentLogin = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
+  const location  = useLocation();
 
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const verified     = location.state?.verified  || false;
+  const prefillEmail = location.state?.email     || '';
+
+  const isLoggedIn = localStorage.getItem('token') && localStorage.getItem('userRole') === 'parent';
+
+  const [formData, setFormData] = useState({ email: prefillEmail, password: '' });
+  const [error,    setError]    = useState('');
+  const [loading,  setLoading]  = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,45 +320,41 @@ const ParentLogin = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          role: 'parent',  // ✅ hardcoded since role was chosen on previous page
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 401 && data.message?.includes('not verified')) {
-          setError('Your account is not verified yet. Please check your email for the OTP.');
-        } else if (res.status === 401) {
-          setError('Wrong password. Please try again.');
-        } else if (res.status === 404) {
-          setError('No account found with this email.');
-        } else {
-          setError(data.message || 'Login failed. Please try again.');
-        }
-        return;
-      }
-
-      // ✅ Save token + user info
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userRole', data.user.role);
-      localStorage.setItem('userId', String(data.user.id));
-      localStorage.setItem('userName', data.user.name);
-
+      // loginParent calls clearSession() before saving new user —
+      // guarantees no old user data ever bleeds into this session
+      await loginParent({ email: formData.email, password: formData.password });
       navigate('/parent-dashboard');
+    } catch (err) {
+      const status  = err.response?.status;
+      const message = err.response?.data?.message || '';
 
-    } catch  {
-      setError('Cannot reach the server. Please try again later.');
+      if (status === 401 && message.includes('not verified')) {
+        setError('Your account is not verified yet. Please check your email for the OTP.');
+      } else if (status === 401) {
+        setError('Wrong password. Please try again.');
+      } else if (status === 404) {
+        setError('No account found with this email.');
+      } else {
+        setError(message || 'Login failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  if (isLoggedIn) {
+    return (
+      <div className="login-container">
+        <div className="login-box">
+          <h2 className="login-title">Welcome Back! 👋</h2>
+          <p className="login-subtitle">You're already logged in.</p>
+          <button className="login-btn" onClick={() => navigate('/parent-dashboard')}>
+            Go to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="login-container">
@@ -71,6 +364,12 @@ const ParentLogin = () => {
         <p className="login-subtitle">
           Welcome back! Let's continue your parenting journey.
         </p>
+
+        {verified && (
+          <p style={{ color: '#38a169', marginBottom: '12px', fontSize: '13px' }}>
+            ✅ Account verified! Please log in to continue.
+          </p>
+        )}
 
         {error && (
           <p style={{ color: '#f87171', marginBottom: '12px', fontSize: '13px' }}>
@@ -85,6 +384,7 @@ const ParentLogin = () => {
               type="email"
               name="email"
               placeholder={t('login.emailPlaceholder')}
+              value={formData.email}
               onChange={handleChange}
               required
             />

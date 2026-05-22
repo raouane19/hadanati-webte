@@ -20,21 +20,33 @@ const [showRecovery, setShowRecovery] = useState(false);
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
 
-    setError('');
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+      }),
+    });
 
-    // TEMPORARY FRONTEND LOGIN
-    if (
-      formData.email === 'admin@gmail.com' &&
-      formData.password === '123456'
-    ) {
-      navigate('/admin/daycares');
-    } else {
-      setError('Invalid email or password');
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.message || 'Login failed');
+      return;
     }
-  };
+
+    localStorage.setItem('adminToken', data.token);
+    navigate('/admin/daycares');
+  } catch  {
+    setError('Network error. Try again.');
+  }
+};
 
   return (
     <div className="admin-login-container">

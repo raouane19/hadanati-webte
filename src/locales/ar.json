@@ -386,7 +386,11 @@
   "manage": "إدارة",
   "details": "التفاصيل",
   "pending": "قيد الانتظار",
-  "approved": "موافق عليه"
+  "approved": "موافق عليه",
+  "noRequests": "لا توجد طلبات بعد.",
+"noFavorites": "لا توجد حضانات محفوظة بعد.",
+"noChildren": "لم يتم إضافة أطفال بعد.",
+"yearsOld": "سنة"
 },
 "editProfile": {
   "title": "معلومات الملف الشخصي",

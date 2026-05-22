@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import "./editdaycareprofile.css";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -41,7 +41,8 @@ const ACTIVITIES = [
 const FacilityProfileEditor = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const incoming = location.state?.profileData || {};
 
   const [activeNav, setActiveNav] = useState(null);
   const [activeSection, setActiveSection] = useState("facility-identity");
@@ -60,9 +61,6 @@ const FacilityProfileEditor = () => {
     "facility-gallery":  useRef(null),
   };
 
-  // ── Profile photo (Facility Identity card) ────────────────────────────────
-  const location = useLocation();
-const incoming = location.state?.profileData || {};
   const [profilePhoto, setProfilePhoto] = useState(incoming.profilePhotoURL || null);
 
   const handleProfilePhoto = (e) => {
@@ -71,167 +69,28 @@ const incoming = location.state?.profileData || {};
     e.target.value = "";
   };
 
-  // ── Form state ────────────────────────────────────────────────────────────
-  const [facilityName, setFacilityName] = useState(incoming.daycareName  || "EliteCare Academy North");
-  const [tagline,      setTagline]      = useState(incoming.tagline       || "Nurturing Brilliance, One Step at a Time");
-  const [bio,          setBio]          = useState(incoming.description   || "A state-of-the-art facility focused on holistic development through play-based learning and nurturing care.");
-  const [address,      setAddress]      = useState(incoming.fullAddress   || "");
-  const [phoneNumber,  setPhoneNumber]  = useState(incoming.phoneNumber   || "");
-  const [email,        setEmail]        = useState(incoming.email         || "");
-  const [ageStart,     setAgeStart]     = useState(incoming.ageFrom       || "");
-  const [ageEnd,       setAgeEnd]       = useState(incoming.ageTo         || "");
-  const [capacity,     setCapacity]     = useState(incoming.totalCapacity || "");
-  const [tuitionMin,   setTuitionMin]   = useState(incoming.monthlyFeeMin || "");
-  const [tuitionMax,   setTuitionMax]   = useState(incoming.monthlyFeeMax || "");
-  const [opensAt,      setOpensAt]      = useState(incoming.opensAt       || "");
-  const [closesAt,     setClosesAt]     = useState(incoming.closesAt      || "");
-  const [dayStart,     setDayStart]     = useState(incoming.dayStart      || "Mon");
-  const [dayEnd,       setDayEnd]       = useState(incoming.dayEnd        || "Fri");
-  const [healthcare,   setHealthcare]   = useState(incoming.healthcare    || false);
-  const [transport,    setTransport]    = useState(incoming.transport     || false);
-  const [lunch,        setLunch]        = useState(incoming.lunch         || false);
-  const [snacks,       setSnacks]       = useState(incoming.snacks        || false);
-  const [activities,   setActivities]   = useState(incoming.activities    || []);
+  const [facilityName, setFacilityName] = useState(incoming.daycareName   || "EliteCare Academy North");
+  const [tagline,      setTagline]      = useState(incoming.tagline        || "Nurturing Brilliance, One Step at a Time");
+  const [bio,          setBio]          = useState(incoming.description    || "A state-of-the-art facility focused on holistic development through play-based learning and nurturing care.");
+  const [address,      setAddress]      = useState(incoming.fullAddress    || "");
+  const [phoneNumber,  setPhoneNumber]  = useState(incoming.phoneNumber    || "");
+  const [email,        setEmail]        = useState(incoming.email          || "");
+  const [ageStart,     setAgeStart]     = useState(incoming.ageFrom        || "");
+  const [ageEnd,       setAgeEnd]       = useState(incoming.ageTo          || "");
+  const [capacity,     setCapacity]     = useState(incoming.totalCapacity  || "");
+  const [tuitionMin,   setTuitionMin]   = useState(incoming.monthlyFeeMin  || "");
+  const [tuitionMax,   setTuitionMax]   = useState(incoming.monthlyFeeMax  || "");
+  const [opensAt,      setOpensAt]      = useState(incoming.opensAt        || "");
+  const [closesAt,     setClosesAt]     = useState(incoming.closesAt       || "");
+  const [dayStart,     setDayStart]     = useState(incoming.dayStart       || "Mon");
+  const [dayEnd,       setDayEnd]       = useState(incoming.dayEnd         || "Fri");
+  const [healthcare,   setHealthcare]   = useState(incoming.healthcare     || false);
+  const [transport,    setTransport]    = useState(incoming.transport      || false);
+  const [lunch,        setLunch]        = useState(incoming.lunch          || false);
+  const [snacks,       setSnacks]       = useState(incoming.snacks         || false);
+  const [activities,   setActivities]   = useState(incoming.activities     || []);
   const [showAllRequests, setShowAllRequests] = useState(false);
-const [showAllReviews,  setShowAllReviews]  = useState(false);
-useEffect(() => {
-  fetchProfile();
-}, []);
-
-const fetchProfile = async () => {
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem('userId');
-  try {
-    const res = await fetch(
-      "http://localhost:5000/api/daycares/profile/me",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    const data = await res.json();
-
-    if (data.success) {
-      const p = data.profile;
-
-      setFacilityName(p.daycareName || "");
-      setTagline(p.tagline || "");
-      setBio(p.description || "");
-      setAddress(p.fullAddress || "");
-      setPhoneNumber(p.phoneNumber || "");
-      setEmail(p.email || "");
-      setAgeStart(p.ageFrom || "");
-      setAgeEnd(p.ageTo || "");
-      setCapacity(p.totalCapacity || "");
-      setTuitionMin(p.monthlyFeeMin || "");
-      setTuitionMax(p.monthlyFeeMax || "");
-      setOpensAt(p.opensAt || "");
-      setClosesAt(p.closesAt || "");
-      setDayStart(p.dayStart || "Mon");
-      setDayEnd(p.dayEnd || "Fri");
-      setHealthcare(p.healthcare || false);
-      setTransport(p.transport || false);
-      setLunch(p.lunch || false);
-      setSnacks(p.snacks || false);
-      setActivities(p.activities || []);
-      setGalleryImages(p.photoURLs || []);
-      setProfilePhoto(p.profilePhotoURL || null);
-
-      // Save original state for discard button
-      setSavedState({
-        facilityName: p.daycareName || "",
-        tagline: p.tagline || "",
-        bio: p.description || "",
-        address: p.fullAddress || "",
-        phoneNumber: p.phoneNumber || "",
-        email: p.email || "",
-        ageStart: p.ageFrom || "",
-        ageEnd: p.ageTo || "",
-        capacity: p.totalCapacity || "",
-        tuitionMin: p.monthlyFeeMin || "",
-        tuitionMax: p.monthlyFeeMax || "",
-        opensAt: p.opensAt || "",
-        closesAt: p.closesAt || "",
-        transport: p.transport || false,
-        healthcare: p.healthcare || false,
-        lunch: p.lunch || false,
-        snacks: p.snacks || false,
-        dayStart: p.dayStart || "Mon",
-        dayEnd: p.dayEnd || "Fri",
-        activities: p.activities || [],
-        profilePhoto: p.profilePhotoURL || null,
-        galleryImages: p.photoURLs || [],
-        requests,
-        reviews,
-      });
-    }
-  } catch (err) {
-    console.error("Fetch profile error:", err);
-  }
-};
-const handleSave = async () => {
-  const token = localStorage.getItem('token');
-
-  try {
-    const res = await fetch('http://localhost:5000/api/daycares/profile/me', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        daycareName: facilityName,
-        description: bio,
-        fullAddress: address,
-        phoneNumber,
-        email,
-        ageFrom: ageStart,
-        ageTo: ageEnd,
-        totalCapacity: capacity,
-        monthlyFeeMin: tuitionMin,
-        monthlyFeeMax: tuitionMax,
-        opensAt,
-        closesAt,
-        dayStart,
-        dayEnd,
-        transport,
-        healthcare,
-        lunch,
-        snacks,
-        activities,
-      }),
-    });
-
-    const result = await res.json();
-    if (result.success) {
-      alert('Profile saved!');
-      // update local saved state for discard
-      setSavedState({ facilityName, tagline, bio, address, phoneNumber,
-        email, ageStart, ageEnd, capacity, tuitionMin, tuitionMax,
-        opensAt, closesAt, transport, healthcare, lunch, snacks,
-        dayStart, dayEnd, activities, profilePhoto, galleryImages,
-        requests, reviews,
-      });
-    } else {
-      alert(result.message || 'Save failed.');
-    }
-  } catch (err) {
-    console.error('Save error:', err);
-    alert('Could not connect to server.');
-  }
-};
-
-
-
-
-
-  const toggleActivity = (key) => {
-    setActivities((prev) =>
-      prev.includes(key) ? prev.filter((a) => a !== key) : [...prev, key]
-    );
-  };
+  const [showAllReviews,  setShowAllReviews]  = useState(false);
 
   const defaultGallery = [
     "https://images.unsplash.com/photo-1566454419431-4af1d5e4ddc9?w=160&h=160&fit=crop",
@@ -252,33 +111,32 @@ const handleSave = async () => {
   ]);
 
   const [reviews, setReviews] = useState([
-    { id: 1, parent: "Catherine Bell",    group: "Toddler",    rating: 5, quote: '"The teachers here go above and...' },
-    { id: 2, parent: "Robert Henderson",  group: "Pre-K Class", rating: 4, quote: '"Outstanding facility and safety...' },
-    { id: 3, parent: "Michelle Wu",       group: "Infant Care", rating: 5, quote: '"The parent app is a game changer."' },
+    { id: 1, parent: "Catherine Bell",   group: "Toddler",    rating: 5, quote: '"The teachers here go above and...' },
+    { id: 2, parent: "Robert Henderson", group: "Pre-K Class", rating: 4, quote: '"Outstanding facility and safety...' },
+    { id: 3, parent: "Michelle Wu",      group: "Infant Care", rating: 5, quote: '"The parent app is a game changer."' },
   ]);
 
-  // ── Saved state (for Discard) ─────────────────────────────────────────────
   const [savedState, setSavedState] = useState({
-    facilityName: incoming.daycareName  || "EliteCare Academy North",
-    tagline:      incoming.tagline      || "Nurturing Brilliance, One Step at a Time",
-    bio:          incoming.description  || "A state-of-the-art facility focused on holistic development through play-based learning and nurturing care.",
-    address:      incoming.fullAddress  || "",
-    phoneNumber:  incoming.phoneNumber  || "",
-    email:        incoming.email        || "",
-    ageStart:     incoming.ageFrom      || "",
-    ageEnd:       incoming.ageTo        || "",
-    capacity:     incoming.totalCapacity|| "",
-    tuitionMin:   incoming.monthlyFeeMin|| "",
-    tuitionMax:   incoming.monthlyFeeMax|| "",
-    opensAt:      incoming.opensAt      || "",
-    closesAt:     incoming.closesAt     || "",
-    transport:    incoming.transport    || false,
-    healthcare:   incoming.healthcare   || false,
-    lunch:        incoming.lunch        || false,
-    snacks:       incoming.snacks       || false,
-    dayStart:     incoming.dayStart     || "Mon",
-    dayEnd:       incoming.dayEnd       || "Fri",
-    activities:   incoming.activities   || [],
+    facilityName: incoming.daycareName   || "EliteCare Academy North",
+    tagline:      incoming.tagline       || "Nurturing Brilliance, One Step at a Time",
+    bio:          incoming.description   || "A state-of-the-art facility focused on holistic development through play-based learning and nurturing care.",
+    address:      incoming.fullAddress   || "",
+    phoneNumber:  incoming.phoneNumber   || "",
+    email:        incoming.email         || "",
+    ageStart:     incoming.ageFrom       || "",
+    ageEnd:       incoming.ageTo         || "",
+    capacity:     incoming.totalCapacity || "",
+    tuitionMin:   incoming.monthlyFeeMin || "",
+    tuitionMax:   incoming.monthlyFeeMax || "",
+    opensAt:      incoming.opensAt       || "",
+    closesAt:     incoming.closesAt      || "",
+    transport:    incoming.transport     || false,
+    healthcare:   incoming.healthcare    || false,
+    lunch:        incoming.lunch         || false,
+    snacks:       incoming.snacks        || false,
+    dayStart:     incoming.dayStart      || "Mon",
+    dayEnd:       incoming.dayEnd        || "Fri",
+    activities:   incoming.activities    || [],
     profilePhoto: incoming.profilePhotoURL || null,
     galleryImages: incoming.photoURLs?.length > 0 ? incoming.photoURLs : defaultGallery,
     requests: [
@@ -293,15 +151,16 @@ const handleSave = async () => {
     ],
   });
 
-  // ── Handlers ──────────────────────────────────────────────────────────────
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const urls  = files.map((file) => URL.createObjectURL(file));
-    setGalleryImages((prev) => [...prev, ...urls]);
-    e.target.value = "";
+  const handleSave = () => {
+    setSavedState({
+      facilityName, tagline, bio, address, phoneNumber,
+      email, ageStart, ageEnd, capacity, tuitionMin, tuitionMax,
+      opensAt, closesAt, transport, healthcare, lunch, snacks,
+      dayStart, dayEnd, activities, profilePhoto, galleryImages,
+      requests, reviews,
+    });
+    alert('Profile saved!');
   };
-
-  
 
   const handleDiscard = () => {
     if (!savedState) return;
@@ -331,6 +190,19 @@ const handleSave = async () => {
     setReviews(savedState.reviews);
   };
 
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const urls  = files.map((file) => URL.createObjectURL(file));
+    setGalleryImages((prev) => [...prev, ...urls]);
+    e.target.value = "";
+  };
+
+  const toggleActivity = (key) => {
+    setActivities((prev) =>
+      prev.includes(key) ? prev.filter((a) => a !== key) : [...prev, key]
+    );
+  };
+
   const toggleLanguage = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
     i18n.changeLanguage(newLang);
@@ -353,7 +225,6 @@ const handleSave = async () => {
     { key: "facility-gallery",  label: t("facilityProfile.sidebar.facilityGallery"),  icon: "grid"     },
   ];
 
-  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="fpe-page">
 
@@ -422,7 +293,6 @@ const handleSave = async () => {
         {/* Content */}
         <div className="fpe-content">
 
-          {/* ── Row 1: Facility Identity + Contact & Location ── */}
           <div className="fpe-row-top">
 
             {/* Facility Identity */}
@@ -431,8 +301,6 @@ const handleSave = async () => {
                 <Icon type="user" />{t("facilityProfile.identity.title")}
               </div>
               <div className="fpe-identity-grid">
-
-                {/* ── Clickable profile photo box ── */}
                 <div
                   className="fpe-photo-box"
                   onClick={() => profilePhotoInputRef.current.click()}
@@ -446,33 +314,15 @@ const handleSave = async () => {
                       onError={(e) => { e.target.style.background = "#f3f4f6"; e.target.removeAttribute("src"); }}
                     />
                   ) : (
-                    <div
-                      className="fpe-photo-preview"
-                      style={{
-                        display: "flex", flexDirection: "column",
-                        alignItems: "center", justifyContent: "center",
-                        background: "#f3f4f6", gap: "8px",
-                        color: "#bbb", fontSize: "12px", textAlign: "center",
-                      }}
-                    >
+                    <div className="fpe-photo-preview" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "#f3f4f6", gap: "8px", color: "#bbb", fontSize: "12px", textAlign: "center" }}>
                       <Icon type="camera" />
                       <span>Click to upload</span>
                     </div>
                   )}
-                  <p className="fpe-photo-hint">
-                    {t("facilityProfile.identity.photoHint")}
-                  </p>
-                  {/* Hidden input */}
-                  <input
-                    ref={profilePhotoInputRef}
-                    type="file"
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    onChange={handleProfilePhoto}
-                  />
+                  <p className="fpe-photo-hint">{t("facilityProfile.identity.photoHint")}</p>
+                  <input ref={profilePhotoInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleProfilePhoto} />
                 </div>
 
-                {/* Form fields */}
                 <div className="fpe-form-col">
                   <div>
                     <label className="fpe-label">{t("facilityProfile.identity.daycareName")}</label>
@@ -515,7 +365,7 @@ const handleSave = async () => {
             </div>
           </div>
 
-          {/* ── CARD: Academy Details ── */}
+          {/* Academy Details */}
           <div ref={sectionRefs["academy-details"]} className="fpe-card">
             <div className="fpe-card-title">
               <Icon type="info" />{t("facilityProfile.academy.title")}
@@ -526,7 +376,7 @@ const handleSave = async () => {
                 <div className="fpe-hours-times">
                   <input className="fpe-time-pill fpe-time-pill--input fpe-time-pill--wide" value={ageStart} onChange={(e) => setAgeStart(e.target.value)} placeholder="6 weeks" />
                   <span className="fpe-time-sep">—</span>
-                  <input className="fpe-time-pill fpe-time-pill--input fpe-time-pill--wide" value={ageEnd}   onChange={(e) => setAgeEnd(e.target.value)}   placeholder="6 years" />
+                  <input className="fpe-time-pill fpe-time-pill--input fpe-time-pill--wide" value={ageEnd} onChange={(e) => setAgeEnd(e.target.value)} placeholder="6 years" />
                 </div>
               </div>
               <div>
@@ -543,7 +393,7 @@ const handleSave = async () => {
             </div>
           </div>
 
-          {/* ── CARD: Operating Hours + Services + Activities ── */}
+          {/* Operating Hours + Services */}
           <div ref={sectionRefs["operating-hours"]} className="fpe-card">
             <div className="fpe-card-title">
               <Icon type="clock" />{t("facilityProfile.hours.title")}
@@ -552,10 +402,10 @@ const handleSave = async () => {
               <div className="fpe-hours-times">
                 <input className="fpe-time-pill fpe-time-pill--input" value={dayStart} onChange={(e) => setDayStart(e.target.value)} placeholder="Mon" />
                 <span className="fpe-time-sep">—</span>
-                <input className="fpe-time-pill fpe-time-pill--input" value={dayEnd}   onChange={(e) => setDayEnd(e.target.value)}   placeholder="Fri" />
+                <input className="fpe-time-pill fpe-time-pill--input" value={dayEnd} onChange={(e) => setDayEnd(e.target.value)} placeholder="Fri" />
               </div>
               <div className="fpe-hours-times">
-                <input className="fpe-time-pill fpe-time-pill--input" type="time" value={opensAt}  onChange={(e) => setOpensAt(e.target.value)} />
+                <input className="fpe-time-pill fpe-time-pill--input" type="time" value={opensAt} onChange={(e) => setOpensAt(e.target.value)} />
                 <span className="fpe-time-sep">—</span>
                 <input className="fpe-time-pill fpe-time-pill--input" type="time" value={closesAt} onChange={(e) => setClosesAt(e.target.value)} />
               </div>
@@ -563,10 +413,7 @@ const handleSave = async () => {
 
             <div className="fpe-card-divider" />
 
-            {/* 3-column: Services | Food | Activities */}
             <div ref={sectionRefs["services"]} className="fpe-services-grid fpe-services-grid--3col">
-
-              {/* Services & Facilities */}
               <div>
                 <div className="fpe-section-label">{t("facilityProfile.services.servicesTitle")}</div>
                 <div className="fpe-toggle-row">
@@ -578,12 +425,10 @@ const handleSave = async () => {
                   <Toggle value={healthcare} onChange={setHealthcare} />
                 </div>
               </div>
-
-              {/* Food Services */}
               <div>
                 <div className="fpe-section-label">{t("facilityProfile.services.foodTitle")}</div>
                 <label className="fpe-checkbox-row">
-                  <input type="checkbox" checked={lunch}  onChange={(e) => setLunch(e.target.checked)}  className="fpe-cb" />
+                  <input type="checkbox" checked={lunch} onChange={(e) => setLunch(e.target.checked)} className="fpe-cb" />
                   {t("facilityProfile.services.lunch")}
                 </label>
                 <label className="fpe-checkbox-row">
@@ -591,39 +436,30 @@ const handleSave = async () => {
                   {t("facilityProfile.services.snacks")}
                 </label>
               </div>
-
-              {/* Activities Offered */}
               <div>
                 <div className="fpe-section-label">{t("daycare.activitiesOffered")}</div>
                 <div className="fpe-activities-box">
                   {ACTIVITIES.map(({ key, label }) => (
                     <label key={key} className="fpe-checkbox-row">
-                      <input
-                        type="checkbox"
-                        checked={activities.includes(key)}
-                        onChange={() => toggleActivity(key)}
-                        className="fpe-cb"
-                      />
+                      <input type="checkbox" checked={activities.includes(key)} onChange={() => toggleActivity(key)} className="fpe-cb" />
                       {t(`daycare.${key}`) || label}
                     </label>
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
 
-          {/* ── Row 2: Manage Requests + Reviews ── */}
+          {/* Requests + Reviews */}
           <div className="fpe-row-bottom">
-
             <div ref={sectionRefs["manage-requests"]} className="fpe-card">
               <div className="fpe-card-header-row">
                 <div className="fpe-card-title" style={{ marginBottom: 0 }}>
                   <Icon type="mail" />{t("facilityProfile.requests.title")}
                 </div>
-        <button className="fpe-view-all" onClick={() => setShowAllRequests(true)}>
-  <Icon type="eye" /> {t("facilityProfile.requests.viewAll")}
-</button>
+                <button className="fpe-view-all" onClick={() => setShowAllRequests(true)}>
+                  <Icon type="eye" /> {t("facilityProfile.requests.viewAll")}
+                </button>
               </div>
               <table className="fpe-table">
                 <thead>
@@ -647,10 +483,7 @@ const handleSave = async () => {
                       </td>
                       <td className="fpe-actions-cell">
                         {r.status === "Pending" ? (
-                          <button
-                            className="fpe-btn-approve"
-                            onClick={() => setRequests(prev => prev.map(req => req.id === r.id ? { ...req, status: "Approved" } : req))}
-                          >
+                          <button className="fpe-btn-approve" onClick={() => setRequests(prev => prev.map(req => req.id === r.id ? { ...req, status: "Approved" } : req))}>
                             {t("facilityProfile.reviews.approve")}
                           </button>
                         ) : (
@@ -668,9 +501,9 @@ const handleSave = async () => {
                 <div className="fpe-card-title" style={{ marginBottom: 0 }}>
                   <Icon type="list" />{t("facilityProfile.reviews.title")}
                 </div>
-         <button className="fpe-view-all" onClick={() => setShowAllReviews(true)}>
-  <Icon type="eye" /> {t("facilityProfile.requests.viewAll")}
-</button>
+                <button className="fpe-view-all" onClick={() => setShowAllReviews(true)}>
+                  <Icon type="eye" /> {t("facilityProfile.requests.viewAll")}
+                </button>
               </div>
               <table className="fpe-table fpe-table--reviews">
                 <thead>
@@ -694,7 +527,7 @@ const handleSave = async () => {
                         <button className="fpe-btn-approve" onClick={() => setReviews(prev => prev.filter(r => r.id !== rv.id))}>
                           {t("facilityProfile.reviews.approve")}
                         </button>
-                        <button className="fpe-btn-delete"  onClick={() => setReviews(prev => prev.filter(r => r.id !== rv.id))}>🗑</button>
+                        <button className="fpe-btn-delete" onClick={() => setReviews(prev => prev.filter(r => r.id !== rv.id))}>🗑</button>
                       </td>
                     </tr>
                   ))}
@@ -703,7 +536,7 @@ const handleSave = async () => {
             </div>
           </div>
 
-          {/* ── Facility Gallery ── */}
+          {/* Gallery */}
           <div ref={sectionRefs["facility-gallery"]} className="fpe-card">
             <div className="fpe-card-header-row">
               <div className="fpe-card-title" style={{ marginBottom: 0 }}>
@@ -713,14 +546,7 @@ const handleSave = async () => {
                 <span className="fpe-gallery-count">
                   {galleryImages.length} / 20 {t("facilityProfile.gallery.photosUploaded")}
                 </span>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  style={{ display: "none" }}
-                  onChange={handleFileUpload}
-                />
+                <input ref={fileInputRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={handleFileUpload} />
                 <button className="fpe-upload-btn" onClick={() => fileInputRef.current.click()}>
                   <Icon type="upload" /> {t("facilityProfile.gallery.uploadPhotos")}
                 </button>
@@ -740,60 +566,62 @@ const handleSave = async () => {
 
         </div>
       </div>
-      {/* Requests Modal */}
-{showAllRequests && (
-  <div className="fpe-modal-backdrop" onClick={() => setShowAllRequests(false)}>
-    <div className="fpe-modal" onClick={(e) => e.stopPropagation()}>
-      <div className="fpe-modal-header">
-        <span className="fpe-card-title"><Icon type="mail" /> All Requests</span>
-        <button className="fpe-btn-discard" onClick={() => setShowAllRequests(false)}>✕ Close</button>
-      </div>
-      <table className="fpe-table">
-        <thead><tr><th>Child &amp; Parent</th><th>Status</th><th>Action</th></tr></thead>
-        <tbody>
-          {requests.map((r) => (
-            <tr key={r.id}>
-              <td><div className="fpe-child-name">{r.child}</div><div className="fpe-parent-sub">{r.parent}</div></td>
-              <td><span className={`fpe-status fpe-status--${r.status.toLowerCase()}`}>● {r.status}</span></td>
-              <td>{r.status === "Pending"
-                ? <button className="fpe-btn-approve" onClick={() => setRequests(prev => prev.map(req => req.id === r.id ? {...req, status: "Approved"} : req))}>Approve</button>
-                : <span className="fpe-status fpe-status--approved">✓ Approved</span>}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </div>
-)}
 
-{/* Reviews Modal */}
-{showAllReviews && (
-  <div className="fpe-modal-backdrop" onClick={() => setShowAllReviews(false)}>
-    <div className="fpe-modal" onClick={(e) => e.stopPropagation()}>
-      <div className="fpe-modal-header">
-        <span className="fpe-card-title"><Icon type="list" /> All Reviews</span>
-        <button className="fpe-btn-discard" onClick={() => setShowAllReviews(false)}>✕ Close</button>
-      </div>
-      <table className="fpe-table fpe-table--reviews">
-        <thead><tr><th>Parent</th><th>Rating</th><th>Quote</th><th>Actions</th></tr></thead>
-        <tbody>
-          {reviews.map((rv) => (
-            <tr key={rv.id}>
-              <td><div className="fpe-child-name">{rv.parent}</div><div className="fpe-parent-sub">{rv.group}</div></td>
-              <td><Stars rating={rv.rating} /></td>
-              <td><span className="fpe-quote">{rv.quote}</span></td>
-              <td className="fpe-actions-cell">
-                <button className="fpe-btn-approve" onClick={() => setReviews(prev => prev.filter(r => r.id !== rv.id))}>Approve</button>
-                <button className="fpe-btn-delete"  onClick={() => setReviews(prev => prev.filter(r => r.id !== rv.id))}>🗑</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </div>
-)}
+      {/* Requests Modal */}
+      {showAllRequests && (
+        <div className="fpe-modal-backdrop" onClick={() => setShowAllRequests(false)}>
+          <div className="fpe-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="fpe-modal-header">
+              <span className="fpe-card-title"><Icon type="mail" /> All Requests</span>
+              <button className="fpe-btn-discard" onClick={() => setShowAllRequests(false)}>✕ Close</button>
+            </div>
+            <table className="fpe-table">
+              <thead><tr><th>Child &amp; Parent</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody>
+                {requests.map((r) => (
+                  <tr key={r.id}>
+                    <td><div className="fpe-child-name">{r.child}</div><div className="fpe-parent-sub">{r.parent}</div></td>
+                    <td><span className={`fpe-status fpe-status--${r.status.toLowerCase()}`}>● {r.status}</span></td>
+                    <td>{r.status === "Pending"
+                      ? <button className="fpe-btn-approve" onClick={() => setRequests(prev => prev.map(req => req.id === r.id ? { ...req, status: "Approved" } : req))}>Approve</button>
+                      : <span className="fpe-status fpe-status--approved">✓ Approved</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Reviews Modal */}
+      {showAllReviews && (
+        <div className="fpe-modal-backdrop" onClick={() => setShowAllReviews(false)}>
+          <div className="fpe-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="fpe-modal-header">
+              <span className="fpe-card-title"><Icon type="list" /> All Reviews</span>
+              <button className="fpe-btn-discard" onClick={() => setShowAllReviews(false)}>✕ Close</button>
+            </div>
+            <table className="fpe-table fpe-table--reviews">
+              <thead><tr><th>Parent</th><th>Rating</th><th>Quote</th><th>Actions</th></tr></thead>
+              <tbody>
+                {reviews.map((rv) => (
+                  <tr key={rv.id}>
+                    <td><div className="fpe-child-name">{rv.parent}</div><div className="fpe-parent-sub">{rv.group}</div></td>
+                    <td><Stars rating={rv.rating} /></td>
+                    <td><span className="fpe-quote">{rv.quote}</span></td>
+                    <td className="fpe-actions-cell">
+                      <button className="fpe-btn-approve" onClick={() => setReviews(prev => prev.filter(r => r.id !== rv.id))}>Approve</button>
+                      <button className="fpe-btn-delete"  onClick={() => setReviews(prev => prev.filter(r => r.id !== rv.id))}>🗑</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

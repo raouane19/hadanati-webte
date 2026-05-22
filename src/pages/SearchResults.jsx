@@ -1,124 +1,189 @@
-import React, { useState,useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './SearchResults.css';
-import { FiSearch, FiMapPin, FiHeart, FiStar } from 'react-icons/fi';
-import { MdOutlineVerified } from "react-icons/md";
-import { FaRegUser } from "react-icons/fa";
+import { FiSearch, FiMapPin, FiStar } from 'react-icons/fi';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { MdOutlineVerified } from 'react-icons/md';
+import { FaRegUser } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import ParentProfile from './parentprfile';
- // ← add useEffect here
+import {
+  searchDaycares,
+  saveDaycare,
+  unsaveDaycare,
+  getSavedDaycares,
+  getUser,
+} from '../api/auth';
+
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const getImageUrl = (profileImage) => {
+  if (!profileImage) return '/sun-day.jpg';
+  if (profileImage.startsWith('http')) return profileImage;
+  return `${BASE_URL}/${profileImage}`;
+};
+
+const normalizeDaycare = (d) => ({
+  id: d.id,
+  name: d.name,
+  city: d.City || d.city || '',
+  rating: parseFloat(d.avg_rating ?? d.rating ?? 0).toFixed(1),
+  reviews: d.review_count ?? d.reviews ?? 0,
+  description: [
+    d.education_info,
+    d.healthcare_info,
+    d.age_range ? `Ages ${d.age_range}` : null,
+    d.price ? `${Number(d.price).toLocaleString()} DA/mo` : null,
+    d.hours || null,
+  ]
+    .filter(Boolean)
+    .join(' · ') || d.address || '',
+  image: getImageUrl(d.profile_image),
+  distance: d.distance_km != null ? `${Number(d.distance_km).toFixed(1)} KM` : '',
+  exactMatch: (d.match_score ?? 0) >= 5,
+  raw: d,
+});
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 const SearchResults = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [showProfile, setShowProfile] = useState(false);
 
-  // ← nurseries MUST be here, inside the component
-  const nurseries = [
-    { id: 1, name: t('nurseries.sunshine.name'), city: "Sidi Bel Abbas", rating: 4.9, reviews: 128, description: t('nurseries.sunshine.desc'), image: "/public/sun-day.jpg", distance: "0.4 MI", exactMatch: true },
-    { id: 2, name: t('nurseries.littlesprouts.name'), city: "Sidi Bel Abbas", rating: 4.7, reviews: 85, description: t('nurseries.littlesprouts.desc'), image: "/public/little-day.jpg", distance: "0.4 MI", exactMatch: false },
-    { id: 3, name: t('nurseries.brighthorizons.name'), city: "Sidi Bel Abbas", rating: 4.8, reviews: 102, description: t('nurseries.brighthorizons.desc'), image: "/public/bright-day.jpg", distance: "1.2 MI", exactMatch: false },
-    { id: 4, name: t('nurseries.wonderland.name'), city: "Oran", rating: 4.5, reviews: 76, description: t('nurseries.wonderland.desc'), image: "/public/wonder-day.jpg", distance: "0.8 MI", exactMatch: false },
-    { id: 5, name: t('nurseries.happykids.name'), city: "Oran", rating: 4.6, reviews: 90, description: t('nurseries.happykids.desc'), image: "https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=400", distance: "1.5 MI", exactMatch: false }
-  ];
-
+  // ✅ Initialize as empty — useEffect will set from URL params
   const [searchName, setSearchName] = useState('');
-  const [searchCity, setSearchCity] = useState('sidi bel abbas');
-  const [results, setResults] = useState(nurseries);
-  const [searched, setSearched] = useState(true);
-const [liked, setLiked] = useState(() => {
-  const saved = localStorage.getItem('likedNurseries');
-  return saved ? JSON.parse(saved) : {};
-});
+  const [searchCity, setSearchCity] = useState('');
 
-  // ← this updates results when language changes
-  useEffect(() => {
-    setResults(nurseries);
-  }, [i18n.language]);
+  const [results, setResults]   = useState([]);
+  const [searched, setSearched] = useState(false);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
+  const [liked, setLiked]       = useState(new Set());
+  const [ setSavedMap] = useState({});
 
+  const user = getUser();
+
+  // ── Language toggle ────────────────────────────────────────────────────────
   const toggleLanguage = () => {
     const newLang = i18n.language === 'en' ? 'ar' : 'en';
     i18n.changeLanguage(newLang);
     document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
   };
 
- const handleSearch = () => {
-  // if no name entered → show all from city
-  if (searchName.trim() === '') {
-    const all = nurseries.filter(n =>
-      n.city.toLowerCase().includes(searchCity.toLowerCase())
-    );
-    setResults(all);
-    setSearched(true);
-    return;
-  }
+  // ── Load saved daycares on mount ───────────────────────────────────────────
+  useEffect(() => {
+    if (!user?.id) return;
+    getSavedDaycares(user.id)
+      .then((res) => {
+        const ids = new Set((res.data || []).map((d) => d.id));
+        setLiked(ids);
+      })
+      .catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const filtered = nurseries.filter(n =>
-    n.name.toLowerCase().includes(searchName.toLowerCase()) &&
-    n.city.toLowerCase().includes(searchCity.toLowerCase())
+  // ── Core search function ───────────────────────────────────────────────────
+  const handleSearch = useCallback(
+    async (nameOverride, cityOverride) => {
+      const name = nameOverride !== undefined ? nameOverride : searchName;
+      const city = cityOverride !== undefined ? cityOverride : searchCity;
+
+      setLoading(true);
+      setError('');
+      try {
+        const params = {};
+        if (name.trim()) params.name = name.trim();
+        if (city.trim()) params.city = city.trim();
+
+        const res = await searchDaycares(params);
+        const normalized = (res.data || []).map(normalizeDaycare);
+        setResults(normalized);
+        setSearched(true);
+      } catch (err) {
+        const msg =
+          err.response?.data?.message ||
+          t('search.error') ||
+          'Search failed. Please try again.';
+        setError(msg);
+        setResults([]);
+        setSearched(true);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [searchName, searchCity, t]
   );
 
-  // similar = same city but exclude ALL filtered results (not just first)
-  const filteredIds = filtered.map(n => n.id);
-  const similar = nurseries.filter(n =>
-    n.city.toLowerCase().includes(searchCity.toLowerCase()) &&
-    !filteredIds.includes(n.id)
-  );
+  // ✅ KEY FIX: re-runs whenever URL params change (e.g. new search from dashboard)
+  useEffect(() => {
+    const name = searchParams.get('name') || '';
+    const city = searchParams.get('city') || '';
+    setSearchName(name);
+    setSearchCity(city);
+    handleSearch(name, city);
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  setResults([...filtered, ...similar]);
-  setSearched(true);
-};
+  // ── Save / unsave ──────────────────────────────────────────────────────────
+  const toggleLike = async (id) => {
+    if (!user?.id) {
+      navigate('/login');
+      return;
+    }
 
- const toggleLike = (id) => {
-  const nursery = nurseries.find(n => n.id === id);
-  const isLiked = liked[id];
+    const isLiked = liked.has(id);
 
-  // ✅ Update liked state
-  const newLiked = { ...liked, [id]: !isLiked };
-  setLiked(newLiked);
-  localStorage.setItem('likedNurseries', JSON.stringify(newLiked));
+    // Optimistic UI update
+    const newLiked = new Set(liked);
+    if (isLiked) newLiked.delete(id);
+    else newLiked.add(id);
+    setLiked(newLiked);
 
-  // ✅ Update favorites in localStorage
-  const savedFavs = localStorage.getItem('profileFavorites');
-  let favs = savedFavs ? JSON.parse(savedFavs) : [];
+    try {
+      if (isLiked) {
+        await unsaveDaycare(user.id, id);
+        setSavedMap((prev) => {
+          const next = { ...prev };
+          delete next[id];
+          return next;
+        });
+      } else {
+        const res = await saveDaycare(user.id, id);
+        if (res.data?.savedId) {
+          setSavedMap((prev) => ({ ...prev, [id]: res.data.savedId }));
+        }
+      }
+    } catch {
+      // Roll back on failure
+      setLiked(new Set(liked));
+    }
+  };
 
-  if (isLiked) {
-    // remove from favorites
-    favs = favs.filter(f => f.id !== id);
-  } else {
-    // add to favorites
-    favs.push({
-      id: nursery.id,
-      name: nursery.name,
-      location: nursery.city,
-      rating: nursery.rating,
-      image: nursery.image,
-    });
-  }
-  localStorage.setItem('profileFavorites', JSON.stringify(favs));
-};
-const handleSelectNursery = (nursery) => {
-  // ✅ Move clicked nursery to top, rest become similar
-  const newResults = [nursery, ...results.filter(n => n.id !== nursery.id)];
-  setResults(newResults);
-  window.scrollTo({ top: 0, behavior: 'smooth' }); // ✅ scroll to top to see it
-};
+  // ── Move card to top ───────────────────────────────────────────────────────
+  const handleSelectNursery = (nursery) => {
+    setResults([nursery, ...results.filter((n) => n.id !== nursery.id)]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  const topResult = results[0];
+  const topResult      = results[0];
   const similarResults = results.slice(1);
-  const navigate = useNavigate();
 
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="search-page">
 
       {/* Navbar */}
       <div className="search-navbar">
         <div className="search-logo">
-          <img className='logo' src="/public/logo.png" alt="HADANATI" />
+          <img className="logo" src="/logo.png" alt="HADANATI" />
         </div>
         <div className="search-nav-links">
-          <span>{t('navbar.home')}</span>
-          <span>{t('navbar.about')}</span>
-          <span>{t('navbar.help')}</span>
+          <span onClick={() => navigate('/')}>{t('navbar.home')}</span>
+          <span onClick={() => navigate('/about')}>{t('navbar.about')}</span>
+          <span onClick={() => navigate('/help')}>{t('navbar.help')}</span>
         </div>
         <div className="search-nav-right">
           <div className="language-toggle" onClick={toggleLanguage}>
@@ -130,13 +195,17 @@ const handleSelectNursery = (nursery) => {
             </div>
           </div>
           <div className="search-user">
-            <span className="search-user-name">
-              esi mate<br/><small>Parent Member</small>
-            </span>
-           <div className="search-avatar" onClick={() => setShowProfile(true)}>
-            <FaRegUser />
-            {showProfile && <ParentProfile onClose={() => setShowProfile(false)} />}
-          </div>
+           <span className="search-user-name">
+  {user?.name || 'Guest'}
+  <br />
+  <small>Parent Member</small>
+</span>
+            <div className="search-avatar" onClick={() => setShowProfile(true)}>
+              <FaRegUser />
+              {showProfile && (
+                <ParentProfile onClose={() => setShowProfile(false)} />
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -145,39 +214,60 @@ const handleSelectNursery = (nursery) => {
       <div className="search-bar-container">
         <div className="search-bar">
           <div className="search-input-group">
-            <FiSearch className="search-icon"/>
+            <FiSearch className="search-icon" />
             <input
               type="text"
               placeholder={t('search.placeholder_name')}
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
           </div>
-          <div className="search-divider"/>
+          <div className="search-divider" />
           <div className="search-input-group">
-            <FiMapPin className="search-icon"/>
+            <FiMapPin className="search-icon" />
             <input
               type="text"
               placeholder={t('search.placeholder_city')}
               value={searchCity}
               onChange={(e) => setSearchCity(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
           </div>
-          <button className="find-btn" onClick={handleSearch}>
-            {t('search.find_btn')}
+          <button
+            className="find-btn"
+            onClick={() => handleSearch()}
+            disabled={loading}
+          >
+            {loading ? '…' : t('search.find_btn')}
           </button>
         </div>
       </div>
 
+      {/* Loading */}
+      {loading && (
+        <div className="no-results">
+          <p>{t('search.loading') || 'Searching…'}</p>
+        </div>
+      )}
+
+      {/* Error */}
+      {!loading && error && (
+        <div className="no-results">
+          <p>{error}</p>
+        </div>
+      )}
+
       {/* Results */}
-      {searched && results.length > 0 && (
+      {!loading && !error && searched && results.length > 0 && (
         <div className="results-container">
 
           {/* Top Result */}
           {topResult && (
             <div className="top-result-section">
               <h1 className="section-title">
-                <MdOutlineVerified className="title-icon"/> {t('search.top_result')}
+                <MdOutlineVerified className="title-icon" />
+                {t('search.top_result')}
               </h1>
               <div className="top-result-card">
                 <div className="top-result-image">
@@ -186,56 +276,96 @@ const handleSelectNursery = (nursery) => {
                     <span className="exact-match">{t('search.exact_match')}</span>
                   )}
                   <button
-                    className={`like-btn ${liked[topResult.id] ? 'liked' : ''}`}
+                    className={`like-btn ${liked.has(topResult.id) ? 'liked' : ''}`}
                     onClick={() => toggleLike(topResult.id)}
+                    title={liked.has(topResult.id) ? 'Remove from saved' : 'Save'}
                   >
-                    <FiHeart/>
+                    {liked.has(topResult.id)
+                      ? <FaHeart color="#e05c5c" />
+                      : <FaRegHeart />
+                    }
                   </button>
                 </div>
                 <div className="top-result-info">
                   <div className="top-result-header">
                     <h2>{topResult.name}</h2>
                     <div className="rating">
-                      <FiStar className="star-icon"/>
-                      <span>{topResult.rating}</span>
+                      <FiStar className="star-icon" />
+                      <span>{topResult.rating > 0 ? topResult.rating : '–'}</span>
                       <small>({topResult.reviews} {t('search.reviews')})</small>
                     </div>
                   </div>
+                  {topResult.city && (
+                    <p className="result-city">
+                      <FiMapPin style={{ marginInlineEnd: 4 }} />
+                      {topResult.city}
+                    </p>
+                  )}
                   <p>{topResult.description}</p>
-                      <button 
-            className="view-details-btn" 
-            onClick={() => navigate(`/daycare/${topResult.id}`)}
-          >
-            {t('search.view_details')}
-          </button>
-              </div>
+                  <button
+                    className="view-details-btn"
+                    onClick={() => navigate(`/daycare/${topResult.id}`)}
+                  >
+                    {t('search.view_details')}
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Similar Centers */}
+          {/* Similar Results */}
           {similarResults.length > 0 && (
             <div className="similar-section">
               <div className="similar-header">
                 <h3 className="section-title">{t('search.similar')}</h3>
-              
               </div>
               <div className="similar-grid">
-                {similarResults.map(nursery => (
+                {similarResults.map((nursery) => (
                   <div key={nursery.id} className="nursery-card">
                     <div className="nursery-card-image">
                       <img src={nursery.image} alt={nursery.name} />
                       <span className="nursery-rating">
-                        <FiStar style={{color: '#f4a523', fill: '#f4a523'}}/> {nursery.rating}
+                        <FiStar style={{ color: '#f4a523', fill: '#f4a523' }} />
+                        {nursery.rating > 0 ? nursery.rating : '–'}
                       </span>
+                      <button
+                        className={`like-btn like-btn--card ${liked.has(nursery.id) ? 'liked' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); toggleLike(nursery.id); }}
+                        title={liked.has(nursery.id) ? 'Remove from saved' : 'Save'}
+                      >
+                        {liked.has(nursery.id)
+                          ? <FaHeart color="#e05c5c" />
+                          : <FaRegHeart />
+                        }
+                      </button>
                     </div>
                     <div className="nursery-card-info">
                       <div className="nursery-card-header">
                         <h4>{nursery.name}</h4>
                         <span className="nursery-distance">{nursery.distance}</span>
                       </div>
+                      {nursery.city && (
+                        <p className="result-city" style={{ fontSize: 12 }}>
+                          <FiMapPin style={{ marginInlineEnd: 4 }} />{nursery.city}
+                        </p>
+                      )}
                       <p>{nursery.description}</p>
-                     <button className="card-arrow-btn" onClick={() => handleSelectNursery(nursery)}>›</button>
+                      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                        <button
+                          className="view-details-btn"
+                          style={{ flex: 1, fontSize: 12 }}
+                          onClick={() => navigate(`/daycare/${nursery.id}`)}
+                        >
+                          {t('search.view_details')}
+                        </button>
+                        <button
+                          className="card-arrow-btn"
+                          onClick={() => handleSelectNursery(nursery)}
+                          title="Set as top result"
+                        >
+                          ›
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -247,7 +377,7 @@ const handleSelectNursery = (nursery) => {
       )}
 
       {/* No Results */}
-      {searched && results.length === 0 && (
+      {!loading && !error && searched && results.length === 0 && (
         <div className="no-results">
           <p>{t('search.no_results')}</p>
         </div>
