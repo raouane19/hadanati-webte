@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './accountverification.css';
 import axios from 'axios';
-import { loginParent } from '../api/auth'; // ✅ for auto-login after OTP
 
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
@@ -18,11 +17,8 @@ const AccountVerification = () => {
   const [error, setError] = useState('');
   const [resendMsg, setResendMsg] = useState('');
 
-  // Read from pendingUser set during registration
-  const pendingUser = JSON.parse(localStorage.getItem('pendingUser') || '{}');
-  const role     = pendingUser.role  || localStorage.getItem('userRole');
-  const email    = pendingUser.email || localStorage.getItem('userEmail');
-  const password = localStorage.getItem('pendingPassword'); // ✅ for auto-login
+  const role  = localStorage.getItem('userRole');
+  const email = localStorage.getItem('userEmail');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,26 +33,28 @@ const AccountVerification = () => {
     try {
       setLoading(true);
 
-      // 1. Verify OTP
-      await API.post('/auth/verify-otp', { email, code, role });
+      // await API.post('/auth/verify-otp', { email, code, role });
 
-      // 2. Auto-login so user goes straight to dashboard
-      if (role === 'daycare') {
-        // Clean up and send daycare to their login
-        localStorage.removeItem('pendingUser');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('pendingPassword');
-        navigate('/login'); // daycare login page
-      } else {
-        // Parent: auto-login then go to dashboard
-        await loginParent({ email, password });
+  
 
-        // Clean up pending state
-        localStorage.removeItem('pendingUser');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('pendingPassword');
+      // if (role === 'daycare') {
+      //   navigate('/daycare-profile', { state: { verified: true, email } });
+      
+    const res = await API.post('/auth/verify-otp', { email, code, role });
 
-        navigate('/parent-dashboard'); // ✅ straight to dashboard
+// Save token so the next page can make authenticated requests
+if (res.data.token) {
+  localStorage.setItem('token', res.data.token);
+  localStorage.setItem('user', JSON.stringify(res.data.user));
+}
+if (res.data.user) {
+  localStorage.setItem('user', JSON.stringify(res.data.user));
+}
+
+if (role === 'daycare') {
+  navigate('/daycare-profile', { state: { verified: true, email } });
+    } else {
+        navigate('/parent-dashboard', { state: { verified: true, email } });
       }
 
     } catch (err) {
@@ -70,7 +68,7 @@ const AccountVerification = () => {
     setError('');
     setResendMsg('');
     try {
-      await API.post('/auth/resend-otp', { email, role });
+      await API.post('/auth/forgot-password', { email, role });
       setResendMsg('A new code has been sent to your email.');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to resend. Try again.');

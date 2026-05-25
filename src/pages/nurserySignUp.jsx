@@ -60,7 +60,8 @@ const NurserySignUp = () => {
       // localStorage.setItem('userRole', 'daycare');
       // localStorage.setItem('userEmail', formData.email);
       localStorage.setItem('pendingUser', JSON.stringify({ email: formData.email, role: 'daycare' }));
-
+localStorage.setItem('userEmail', formData.email);  
+localStorage.setItem('userRole', 'daycare'); 
       navigate('/account-verification');
     } catch (err) {
       console.error(err);

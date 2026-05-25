@@ -392,7 +392,38 @@
   align-items: center;
   margin-bottom: 16px;
 }
+/* Add these to your editdaycareprofile.css */
 
+.fpe-gallery-thumb {
+  position: relative;
+  display: inline-block;
+}
+
+.fpe-gallery-thumb:hover .fpe-gallery-delete {
+  opacity: 1;
+}
+
+.fpe-gallery-delete {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(220, 38, 38, 0.85);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  padding: 4px 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.fpe-gallery-delete:hover {
+  background: #dc2626;
+}
 /* ─── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 960px) {
   .fpe-row-top { grid-template-columns: 1fr; }
