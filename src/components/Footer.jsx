@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './Footer.css';
 
 const Footer = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <footer className="footer">
@@ -30,9 +32,22 @@ const Footer = () => {
         <div className="footer-column">
           <h4 className="footer-heading">{t('footer.help.title')}</h4>
           <ul className="footer-links">
-            <li><a href="#!">{t('footer.help.support')}</a></li>
-            <li><a href="#!">{t('footer.help.faq')}</a></li>
-            <li><a href="#!">{t('footer.help.center')}</a></li>
+            {/* Both "Parent Support" and "Help Center" go to /help */}
+            <li>
+              <a href="#!" onClick={(e) => { e.preventDefault(); navigate('/help'); }}>
+                {t('footer.help.support')}
+              </a>
+            </li>
+            <li>
+              <a href="#!" onClick={(e) => { e.preventDefault(); navigate('/help?tab=faq'); }}>
+                {t('footer.help.faq')}
+              </a>
+            </li>
+            <li>
+              <a href="#!" onClick={(e) => { e.preventDefault(); navigate('/help'); }}>
+                {t('footer.help.center')}
+              </a>
+            </li>
             <li><a href="#!">{t('footer.help.guides')}</a></li>
           </ul>
         </div>

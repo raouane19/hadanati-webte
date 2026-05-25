@@ -420,10 +420,10 @@
   "confirmPassword": "CONFIRM NEW PASSWORD",
   "newPasswordPlaceholder": "New Password",
   "confirmPasswordPlaceholder": "Confirm Password",
-  "warning": "PASSWORD MUST BE AT LEAST 8 CHARACTERS AND INCLUDE A SYMBOL.",
+  "warning": "PASSWORD MUST BE AT LEAST 4 CHARACTERS AND INCLUDE A SYMBOL.",
   "savedAlert": "Profile saved successfully!",
   "passwordUpdatedAlert": "Password updated successfully!",
-  "passwordErrorAlert": "Password must be at least 8 characters and include a symbol!"
+  "passwordErrorAlert": "Password must be at least 4 characters and include a symbol!"
 },
 "enrollmentRequests": {
   "title": "profile info",

@@ -22,54 +22,39 @@ import './ParentDashboard.css';
 const BASE_URL = import.meta.env.VITE_API_URL;
 const CARDS_PER_PAGE = 3;
 
-// Helper: parse "7am-6pm" / "07:00-18:00" into minutes-since-midnight
-const parseHourToMinutes = (str) => {
+// Convert "HH:MM:SS" to total minutes
+const timeStringToMinutes = (str) => {
   if (!str) return null;
-  const clean = str.trim().toLowerCase();
-  const ampm = clean.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)/);
-  if (ampm) {
-    let h = parseInt(ampm[1]);
-    const m = parseInt(ampm[2] || '0');
-    if (ampm[3] === 'pm' && h !== 12) h += 12;
-    if (ampm[3] === 'am' && h === 12) h = 0;
-    return h * 60 + m;
-  }
-  const colon = clean.match(/^(\d{1,2}):(\d{2})/);
-  if (colon) return parseInt(colon[1]) * 60 + parseInt(colon[2]);
-  return null;
-};
-
-// Returns opening minutes from a "7am-6pm" style string
-const getOpeningMinutes = (hoursStr) => {
-  if (!hoursStr) return null;
-  const parts = hoursStr.split('-');
-  return parseHourToMinutes(parts[0]);
+  const parts = str.split(':');
+  if (parts.length < 2) return null;
+  return parseInt(parts[0]) * 60 + parseInt(parts[1]);
 };
 
 const ParentDashboard = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-
   const currentUser = getUser();
 
   const [showProfile, setShowProfile] = useState(false);
-  const [search, setSearch]           = useState('');
-  const [location, setLocation]       = useState('');
-  const [filters, setFilters]         = useState({
-    lunch:       false,
-    snacks:      false,
-    transport:   false,
-    educational: false,
-    maxPrice:    25000,
-    city:        '',
-    openingTime: '',
+  const [search,      setSearch]      = useState('');
+  const [location,    setLocation]    = useState('');
+  const [filters, setFilters] = useState({
+    lunch:        false,
+    snacks:       false,
+    transport:    false,
+    educational:  false,
+    maxPrice:     25000,
+    city:         '',
+    openingTime:  '',
+    closingTime:  '',
   });
 
-  const [daycares, setDaycares]       = useState([]);
-  const [savedIds, setSavedIds]       = useState(new Set());
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [daycares,     setDaycares]     = useState([]);
+  const [savedIds,     setSavedIds]     = useState(new Set());
+  const [loading,      setLoading]      = useState(false);
+  const [error,        setError]        = useState('');
+  const [currentPage,  setCurrentPage]  = useState(1);
+  const [navAvatar,    setNavAvatar]    = useState(null);
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'en' ? 'ar' : 'en';
@@ -85,11 +70,13 @@ const ParentDashboard = () => {
         ...(nameQuery ? { name: nameQuery } : {}),
         ...(cityQuery ? { city: cityQuery } : {}),
         ...(!nameQuery && {
-          ...(filters.lunch        ? { has_lunch: 1 }      : {}),
-          ...(filters.snacks       ? { has_snacks: 1 }     : {}),
-          ...(filters.transport    ? { has_transport: 1 }  : {}),
-          ...(filters.educational  ? { has_activities: 1 } : {}),
+          ...(filters.lunch       ? { has_lunch: 1 }      : {}),
+          ...(filters.snacks      ? { has_snacks: 1 }     : {}),
+          ...(filters.transport   ? { has_transport: 1 }  : {}),
+          ...(filters.educational ? { has_activities: 1 } : {}),
           price_max: filters.maxPrice,
+          ...(filters.openingTime ? { open_time:  filters.openingTime } : {}),
+          ...(filters.closingTime ? { close_time: filters.closingTime } : {}),
         }),
       };
 
@@ -103,37 +90,43 @@ const ParentDashboard = () => {
     }
   }, [filters]);
 
-  useEffect(() => {
-    fetchDaycares();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { fetchDaycares(); }, []); // eslint-disable-line
 
   useEffect(() => {
     if (!currentUser?.id) return;
     getSavedDaycares(currentUser.id)
       .then((res) => {
-        if (Array.isArray(res.data)) {
+        if (Array.isArray(res.data))
           setSavedIds(new Set(res.data.map((d) => d.id)));
-        }
       })
       .catch(() => {});
   }, [currentUser?.id]);
 
+  // Avatar
+  useEffect(() => {
+    const u = getUser();
+    const img = u?.profile_image || u?.Profile_image || u?.profileImage || null;
+    if (!img) return;
+    const url = img.startsWith('http') ? img
+      : img.startsWith('/uploads/') ? `${BASE_URL}${img}`
+      : `${BASE_URL}/uploads/${img}`;
+    fetch(url, { headers: { 'ngrok-skip-browser-warning': 'true' } })
+      .then(r => r.ok ? r.blob() : null)
+      .then(blob => blob && setNavAvatar(URL.createObjectURL(blob)))
+      .catch(() => {});
+  }, []);
+
   const toggleLike = async (daycareId) => {
     if (!currentUser?.id) return;
     const alreadySaved = savedIds.has(daycareId);
-
     setSavedIds((prev) => {
       const next = new Set(prev);
       alreadySaved ? next.delete(daycareId) : next.add(daycareId);
       return next;
     });
-
     try {
-      if (alreadySaved) {
-        await unsaveDaycare(currentUser.id, daycareId);
-      } else {
-        await saveDaycare(currentUser.id, daycareId);
-      }
+      if (alreadySaved) await unsaveDaycare(currentUser.id, daycareId);
+      else              await saveDaycare(currentUser.id, daycareId);
     } catch (err) {
       if (err.response?.status !== 409) {
         setSavedIds((prev) => {
@@ -148,11 +141,8 @@ const ParentDashboard = () => {
   const handleFilterChange = (name) =>
     setFilters((prev) => ({ ...prev, [name]: !prev[name] }));
 
-  const handleApplyFilters = () => {
-    fetchDaycares(search, location);
-  };
+  const handleApplyFilters = () => fetchDaycares(search, location);
 
-  // ── FIX: navigate to SearchResults page with query params ──────────────────
   const handleFind = () => {
     if (search.trim() === '' && location.trim() === '') {
       alert('Please enter a daycare name or city first!');
@@ -161,20 +151,26 @@ const ParentDashboard = () => {
     navigate(`/search-results?name=${encodeURIComponent(search)}&city=${encodeURIComponent(location)}`);
   };
 
-  // ── Client-side filtering for city + opening time ──────────────────────────
+  // Client-side filtering using HH:MM:SS format from backend
   const clientFiltered = daycares.filter((d) => {
     if (filters.city) {
       const daycareCity = (d.City || d.address || '').toLowerCase();
       if (!daycareCity.includes(filters.city.toLowerCase())) return false;
     }
-
     if (filters.openingTime) {
-      const chosenMinutes = parseHourToMinutes(filters.openingTime);
-      const openingMinutes = getOpeningMinutes(d.hours);
-      if (openingMinutes === null) return false;
-      if (openingMinutes > chosenMinutes) return false;
+      const chosen  = timeStringToMinutes(filters.openingTime);
+      // d.open_time comes from backend as "HH:MM:SS"
+      const opening = timeStringToMinutes(d.open_time);
+      // daycare must open AT or BEFORE chosen time
+      if (opening === null || opening > chosen) return false;
     }
-
+    if (filters.closingTime) {
+      const chosen  = timeStringToMinutes(filters.closingTime);
+      // d.close_time comes from backend as "HH:MM:SS"
+      const closing = timeStringToMinutes(d.close_time);
+      // daycare must close AT or AFTER chosen time
+      if (closing === null || closing < chosen) return false;
+    }
     return true;
   });
 
@@ -216,8 +212,26 @@ const ParentDashboard = () => {
               {currentUser?.name || 'User'}<br /><small>Parent Member</small>
             </span>
             <div className="search-avatar" onClick={() => setShowProfile(true)}>
-              <FaRegUser />
-              {showProfile && <ParentProfile onClose={() => setShowProfile(false)} />}
+              {navAvatar
+                ? <img src={navAvatar} alt="avatar"
+                    style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                : <FaRegUser />
+              }
+              {showProfile && (
+                <ParentProfile onClose={() => {
+                  setShowProfile(false);
+                  const u = getUser();
+                  const img = u?.profile_image || u?.Profile_image || u?.profileImage || null;
+                  if (!img) return;
+                  const url = img.startsWith('http') ? img
+                    : img.startsWith('/uploads/') ? `${BASE_URL}${img}`
+                    : `${BASE_URL}/uploads/${img}`;
+                  fetch(url, { headers: { 'ngrok-skip-browser-warning': 'true' } })
+                    .then(r => r.ok ? r.blob() : null)
+                    .then(blob => blob && setNavAvatar(URL.createObjectURL(blob)))
+                    .catch(() => {});
+                }} />
+              )}
             </div>
           </div>
         </div>
@@ -269,7 +283,7 @@ const ParentDashboard = () => {
           <aside className="pd-filters">
             <h3 className="pd-filters-title">{t('parentDashboard.filters')}</h3>
 
-            {/* ── CITY FILTER ── */}
+            {/* ── CITY ── */}
             <div className="pd-filter-section">
               <h4 className="pd-filter-heading">
                 <MdOutlineLocationOn size={14} />
@@ -278,9 +292,7 @@ const ParentDashboard = () => {
               <select
                 className="pd-filter-select"
                 value={filters.city}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, city: e.target.value }))
-                }
+                onChange={(e) => setFilters((prev) => ({ ...prev, city: e.target.value }))}
               >
                 <option value="">{t('parentDashboard.allCities', 'All cities')}</option>
                 <option value="Oran">Oran</option>
@@ -294,7 +306,7 @@ const ParentDashboard = () => {
               </select>
             </div>
 
-            {/* ── OPENING TIME FILTER ── */}
+            {/* ── OPENING TIME ── */}
             <div className="pd-filter-section">
               <h4 className="pd-filter-heading">
                 <MdOutlineAccessTime size={14} />
@@ -303,17 +315,37 @@ const ParentDashboard = () => {
               <select
                 className="pd-filter-select"
                 value={filters.openingTime}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, openingTime: e.target.value }))
-                }
+                onChange={(e) => setFilters((prev) => ({ ...prev, openingTime: e.target.value }))}
               >
                 <option value="">{t('parentDashboard.anyTime', 'Any time')}</option>
-                <option value="6am">6:00 am</option>
-                <option value="7am">7:00 am</option>
-                <option value="7:30am">7:30 am</option>
-                <option value="8am">8:00 am</option>
-                <option value="8:30am">8:30 am</option>
-                <option value="9am">9:00 am</option>
+                <option value="06:00:00">6:00 am</option>
+                <option value="07:00:00">7:00 am</option>
+                <option value="07:30:00">7:30 am</option>
+                <option value="08:00:00">8:00 am</option>
+                <option value="08:30:00">8:30 am</option>
+                <option value="09:00:00">9:00 am</option>
+              </select>
+            </div>
+
+            {/* ── CLOSING TIME ── */}
+            <div className="pd-filter-section">
+              <h4 className="pd-filter-heading">
+                <MdOutlineAccessTime size={14} />
+                {t('parentDashboard.closingTime', 'Closes after')}
+              </h4>
+              <select
+                className="pd-filter-select"
+                value={filters.closingTime}
+                onChange={(e) => setFilters((prev) => ({ ...prev, closingTime: e.target.value }))}
+              >
+                <option value="">{t('parentDashboard.anyTime', 'Any time')}</option>
+                <option value="16:00:00">4:00 pm</option>
+                <option value="16:30:00">4:30 pm</option>
+                <option value="17:00:00">5:00 pm</option>
+                <option value="17:30:00">5:30 pm</option>
+                <option value="18:00:00">6:00 pm</option>
+                <option value="18:30:00">6:30 pm</option>
+                <option value="19:00:00">7:00 pm</option>
               </select>
             </div>
 
@@ -391,9 +423,7 @@ const ParentDashboard = () => {
           {/* ── LISTINGS ── */}
           <div className="pd-listings">
 
-            {error && (
-              <div className="pd-error-banner">⚠️ {error}</div>
-            )}
+            {error && <div className="pd-error-banner">⚠️ {error}</div>}
 
             <p className="pd-results-count">
               <strong>
@@ -478,25 +508,20 @@ const ParentDashboard = () => {
                   )}
                 </div>
 
-                {/* ── PAGINATION ── */}
                 {totalPages > 1 && (
                   <div className="pd-pagination">
                     <button
                       className="pd-page-btn"
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}
-                    >
-                      ‹
-                    </button>
+                    >‹</button>
 
                     {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => (
                       <button
                         key={p}
                         className={`pd-page-btn ${currentPage === p ? 'active' : ''}`}
                         onClick={() => setCurrentPage(p)}
-                      >
-                        {p}
-                      </button>
+                      >{p}</button>
                     ))}
 
                     {totalPages > 5 && <span className="pd-page-dots">…</span>}
@@ -505,15 +530,12 @@ const ParentDashboard = () => {
                       className="pd-page-btn"
                       onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                       disabled={currentPage === totalPages}
-                    >
-                      ›
-                    </button>
+                    >›</button>
                   </div>
                 )}
               </>
             )}
           </div>
-
         </div>
       </div>
     </>

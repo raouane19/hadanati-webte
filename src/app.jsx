@@ -23,6 +23,7 @@ import About from './pages/aboutus';
 import ResetPassword from './pages/ResetPassword';
 import AdminLogin from './pages/Admin/adminlogin';
 import DaycaresPage from './pages/Admin/Daycarespage';
+import HelpCenter from './pages/HelpCenter'; 
 function AppContent() {
   const location = useLocation();
 
@@ -32,6 +33,7 @@ function AppContent() {
     location.pathname === '/search-results' || 
     location.pathname === '/parent-dashboard'||
  location.pathname === '/facility-profile' ||
+   location.pathname === '/reviews' ||
   location.pathname.startsWith('/admin');
   return (
     <div className="App">
@@ -71,6 +73,7 @@ function AppContent() {
         
         <Route path="/search-results" element={<SearchResults />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/help" element={<HelpCenter />} />
          <Route path="AdminLogin" element={<AdminLogin />} />
          <Route path="/admin/login" element={<AdminLogin />} />
 <Route path="/admin/daycares" element={<DaycaresPage />} />
