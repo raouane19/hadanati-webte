@@ -155,8 +155,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await loginDaycare(formData.email, formData.password);
-      navigate('/daycare-profile');
+     await loginDaycare({ email: formData.email, password: formData.password });
+      navigate('/facility-daycare');
     } catch (err) {
       const status = err?.response?.status;
       const message = err?.response?.data?.message || '';

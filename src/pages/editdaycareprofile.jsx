@@ -679,7 +679,7 @@ const ACTIVITIES = [
 
 const FacilityProfileEditor = () => {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
+  useNavigate();
   const currentUser = getUser();
 
   const fileInputRef = useRef(null);

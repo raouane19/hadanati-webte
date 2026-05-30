@@ -9,7 +9,7 @@ const API = axios.create({
 });
 
 const AccountVerification = () => {
-  const { t } = useTranslation();
+  useTranslation();
   const navigate = useNavigate();
 
   const [code, setCode] = useState('');
