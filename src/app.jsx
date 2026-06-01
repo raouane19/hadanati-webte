@@ -24,7 +24,7 @@ import ResetPassword from './pages/ResetPassword';
 import AdminLogin from './pages/Admin/adminlogin';
 import DaycaresPage from './pages/Admin/Daycarespage';
 import AdminProtectedRoute from './pages/Admin/ProtectedRoute';
-import HelpCenter from './pages/HelpCenter';
+import HelpCenter from './pages/Helpcenter';
 import PendingApproval from './pages/PendingApproval';
 import { getUser } from './api/auth';
 

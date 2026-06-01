@@ -9,7 +9,7 @@ import {
   MdArrowBack,
 } from 'react-icons/md';
 import { sendSupportMessage, getUser } from '../api/auth';
-import './HelpCenter.css';
+import './Helpcenter.css';
 
 const FAQ_ITEMS = [
   {
