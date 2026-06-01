@@ -1,20 +1,12 @@
-
 import axios from "axios";
 
-// ─── Axios instances — two backends ───────────────────────────────────────────
-// Parent/Auth backend
+// ─── Axios instance — one backend ─────────────────────────────────────────────
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
   headers: { "ngrok-skip-browser-warning": "true" },
 });
 
-// Daycare backend
-const DAYCARE_API = axios.create({
-  baseURL: import.meta.env.VITE_DAYCARE_API_URL || "http://localhost:5001",
-  headers: { "ngrok-skip-browser-warning": "true" },
-});
-
-// ─── Request interceptors — attach token automatically ────────────────────────
+// ─── Request interceptor — attach token automatically ─────────────────────────
 const attachToken = (config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -23,9 +15,8 @@ const attachToken = (config) => {
 };
 
 API.interceptors.request.use(attachToken);
-DAYCARE_API.interceptors.request.use(attachToken);
 
-// ─── Response interceptors — handle expired token ─────────────────────────────
+// ─── Response interceptor — handle expired token ──────────────────────────────
 const handleAuthError = (error) => {
   if (error.response?.status === 401 && localStorage.getItem("token")) {
     clearSession();
@@ -35,7 +26,6 @@ const handleAuthError = (error) => {
 };
 
 API.interceptors.response.use((r) => r, handleAuthError);
-DAYCARE_API.interceptors.response.use((r) => r, handleAuthError);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 export const getToken = () => localStorage.getItem("token");
@@ -51,7 +41,7 @@ export const getUser = () => {
 
 export const isLoggedIn = () => !!getToken();
 
-// Wipes ALL session data — no old user bleeds into a new session
+// Wipes ALL session data
 const clearSession = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
@@ -62,7 +52,7 @@ const clearSession = () => {
   localStorage.removeItem("pendingUser");
 };
 
-// ─── AUTH (parent backend) ────────────────────────────────────────────────────
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
 
 export const registerParent = (data) => API.post("/auth/register/parent", data);
 
@@ -98,16 +88,16 @@ export const loginDaycare = async (data) => {
 
 export const logout = () => {
   clearSession();
-  window.location.href = "/login";
+  window.location.href = "/hadanati-login"; // ✅ instead of "/login"
 };
 
-// ─── PARENT PROFILE (parent backend) ─────────────────────────────────────────
+// ─── PARENT PROFILE ───────────────────────────────────────────────────────────
 
 export const getProfile = (parentId) => API.get(`/parents/${parentId}/profile`);
 
 export const updateProfile = (fields) => API.put("/parents/profile", fields);
 
-// ─── PARENT — DAYCARES SEARCH (parent backend) ───────────────────────────────
+// ─── PARENT — DAYCARES SEARCH ─────────────────────────────────────────────────
 
 export const searchDaycares = (params = {}) => {
   const clean = Object.fromEntries(
@@ -120,7 +110,7 @@ export const searchDaycares = (params = {}) => {
 
 export const getDaycareById = (id) => API.get(`/daycares/${id}`);
 
-// ─── PARENT — SAVED / FAVORITES (parent backend) ─────────────────────────────
+// ─── PARENT — SAVED / FAVORITES ───────────────────────────────────────────────
 
 export const getSavedDaycares = (parentId) =>
   API.get(`/parents/${parentId}/saved-daycares`);
@@ -131,7 +121,7 @@ export const saveDaycare = (parentId, daycareId) =>
 export const unsaveDaycare = (parentId, daycareId) =>
   API.delete(`/parents/${parentId}/saved-daycares/${daycareId}`);
 
-// ─── PARENT — CHILDREN (parent backend) ──────────────────────────────────────
+// ─── PARENT — CHILDREN ────────────────────────────────────────────────────────
 
 export const getChildren = (parentId) =>
   API.get(`/parents/${parentId}/children`);
@@ -142,7 +132,7 @@ export const addChild = (parentId, child) =>
 export const updateChild = (parentId, childId, fields) =>
   API.put(`/parents/${parentId}/children/${childId}`, fields);
 
-// ─── PARENT — ENROLLMENT REQUESTS (parent backend) ───────────────────────────
+// ─── PARENT — ENROLLMENT REQUESTS ────────────────────────────────────────────
 
 export const requestEnrollment = (parentId, childId, daycareId) =>
   API.post(
@@ -155,7 +145,7 @@ export const getRequests = (parentId) =>
 export const cancelRequest = (parentId, requestId) =>
   API.delete(`/parents/${parentId}/requests/${requestId}`);
 
-// ─── PARENT — REVIEWS (parent backend) ───────────────────────────────────────
+// ─── PARENT — REVIEWS ─────────────────────────────────────────────────────────
 
 export const submitReview = (parentId, daycareId, rating, comment = "") =>
   API.post(`/parents/${parentId}/review-daycare/${daycareId}`, {
@@ -163,59 +153,93 @@ export const submitReview = (parentId, daycareId, rating, comment = "") =>
     ...(comment ? { comment } : {}),
   });
 
-// ─── PARENT — SUPPORT (parent backend) ───────────────────────────────────────
+// ─── PARENT — SUPPORT ─────────────────────────────────────────────────────────
 
 export const sendSupportMessage = (subject, message) =>
   API.post("/parents/messages", { subject, message });
 
-// ─── PARENT — ACCOUNT (parent backend) ───────────────────────────────────────
+// ─── PARENT — ACCOUNT ─────────────────────────────────────────────────────────
 
 export const deleteAccount = (parentId) =>
   API.delete(`/parents/${parentId}/delete`);
 
-// ─── DAYCARE — PROFILE (daycare backend) ─────────────────────────────────────
+// ─── DAYCARE — PROFILE ────────────────────────────────────────────────────────
 
-/** GET /api/daycares/profile/me — full logged-in daycare profile */
-export const getDaycareProfile = () =>
-  DAYCARE_API.get("/api/daycares/profile/me");
-
-/** PUT /api/auth/daycare/complete-profile — FormData with all profile fields */
+/** POST /daycares/complete-profile — FormData with all profile fields + certificate file */
 export const completeDaycareProfile = (formData) =>
   API.post("/daycares/complete-profile", formData);
 
-// ─── DAYCARE — STATS & DATA (daycare backend) ─────────────────────────────────
+/** GET /daycares/profile/me — full logged-in daycare profile */
+export const getDaycareProfile = () =>
+  API.get("/daycares/profile/me");
 
-export const getDaycareStats = () => DAYCARE_API.get("/api/daycares/my-stats");
+/** PUT /daycares/profile/me — update profile fields (JSON) */
+export const updateDaycareProfile = (fields) =>
+  API.put("/daycares/profile/me", fields);
+
+// ─── DAYCARE — FILE UPLOADS ───────────────────────────────────────────────────
+
+export const uploadDaycareGallery = (formData) =>
+  API.post("/daycares/upload/gallery", formData);
+
+export const uploadDaycareCertification = (formData) =>
+  API.post("/daycares/upload/certification", formData);
+
+export const uploadDaycareProfileImage = (formData) =>
+  API.post("/daycares/upload/profile-image", formData);
+
+// ─── DAYCARE — STATS & DATA ───────────────────────────────────────────────────
+
+export const getDaycareStats = () =>
+  API.get("/daycares/my-stats");
 
 export const getDaycareRequests = () =>
-  DAYCARE_API.get("/api/daycares/my-requests");
+  API.get("/daycares/my-requests");
 
 export const getDaycareChildren = () =>
-  DAYCARE_API.get("/api/daycares/my-children");
+  API.get("/daycares/my-children");
 
 export const getDaycareReviews = () =>
-  DAYCARE_API.get("/api/daycares/my-reviews");
+  API.get("/daycares/my-reviews");
 
 export const getDaycareActivities = () =>
-  DAYCARE_API.get("/api/daycares/my-activities");
+  API.get("/daycares/my-activities");
 
 export const addDaycareActivity = (data) =>
-  DAYCARE_API.post("/api/daycares/my-activities", data);
+  API.post("/daycares/my-activities", data);
+
+export const updateDaycareActivity = (id, data) =>
+  API.put(`/daycares/my-activities/${id}`, data);
+
+export const deleteDaycareActivity = (id) =>
+  API.delete(`/daycares/my-activities/${id}`);
+
+// ─── DAYCARE — REQUESTS ───────────────────────────────────────────────────────
 
 export const acceptRequest = (requestId) =>
-  DAYCARE_API.put(`/api/daycares/requests/${requestId}/accept`);
+  API.put(`/daycares/requests/${requestId}/accept`);
 
 export const rejectRequest = (requestId) =>
-  DAYCARE_API.put(`/api/daycares/requests/${requestId}/reject`);
+  API.put(`/daycares/requests/${requestId}/reject`);
 
-// ─── PUBLIC (daycare backend) ─────────────────────────────────────────────────
+// ─── PUBLIC ───────────────────────────────────────────────────────────────────
 
-export const getPublicDaycares = () => DAYCARE_API.get("/api/public/daycares");
+export const getPublicDaycares = () => API.get("/daycares");
 
-export const getFeaturedDaycares = () =>
-  DAYCARE_API.get("/api/public/featured");
+export const getPublicDaycareById = (id) => API.get(`/daycares/${id}`);
 
-export const getPublicCities = () => DAYCARE_API.get("/api/public/cities");
+export const getDaycareRating = (id) => API.get(`/daycares/${id}/rating`);
+
+export const getPublicDaycareActivities = (id) =>
+  API.get(`/daycares/${id}/activities`);
+
+export const getPublicDaycareReviews = (id, page = 1, limit = 10) =>
+  API.get(`/daycares/${id}/reviews`, { params: { page, limit } });
+
+export const deleteDaycareAccount = () =>
+  API.delete("/daycares/me");
+
+
 
 export default API;
-export { DAYCARE_API };
+export { API as DAYCARE_API };

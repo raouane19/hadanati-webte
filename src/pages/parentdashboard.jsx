@@ -19,8 +19,24 @@ import {
 } from '../api/auth';
 import './ParentDashboard.css';
 
+// ── ngrok-safe image hook ──────────────────────────────────────────────────
+const useNgrokImage = (url) => {
+  const [src, setSrc] = useState(null);
+  useEffect(() => {
+    if (!url) { setSrc(null); return; }
+    let objectUrl = null;
+    fetch(url, { headers: { 'ngrok-skip-browser-warning': 'true' } })
+      .then(r => r.blob())
+      .then(blob => { objectUrl = URL.createObjectURL(blob); setSrc(objectUrl); })
+      .catch(() => setSrc(null));
+    return () => { if (objectUrl) URL.revokeObjectURL(objectUrl); };
+  }, [url]);
+  return src;
+};
+
 const BASE_URL = import.meta.env.VITE_API_URL;
 const CARDS_PER_PAGE = 3;
+const FALLBACK_IMG = 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop';
 
 // Convert "HH:MM:SS" to total minutes
 const timeStringToMinutes = (str) => {
@@ -30,6 +46,79 @@ const timeStringToMinutes = (str) => {
   return parseInt(parts[0]) * 60 + parseInt(parts[1]);
 };
 
+// ── Per-card component so useNgrokImage can be called as a proper hook ────
+const DaycareCard = ({ daycare, savedIds, toggleLike, navigate, t }) => {
+  const imageUrl = daycare.profile_image
+    ? daycare.profile_image.startsWith('http')
+      ? daycare.profile_image
+     : `${BASE_URL}${daycare.profile_image}`
+    : null;
+  const resolvedSrc = useNgrokImage(imageUrl);
+
+  return (
+    <div className="pd-card">
+      <div className="pd-card-image">
+        <img
+          src={resolvedSrc || FALLBACK_IMG}
+          alt={daycare.name}
+          onError={(e) => { e.target.src = FALLBACK_IMG; }}
+        />
+        {daycare.badge && (
+          <span className={`pd-badge ${daycare.badge === 'TOP RATED' ? 'pd-badge-top' : 'pd-badge-value'}`}>
+            {daycare.badge === 'TOP RATED'
+              ? t('parentDashboard.topRated')
+              : t('parentDashboard.bestValue')}
+          </span>
+        )}
+        <button
+          className={`pd-favorite ${savedIds.has(daycare.id) ? 'active' : ''}`}
+          onClick={() => toggleLike(daycare.id)}
+        >
+          {savedIds.has(daycare.id) ? <FaHeart /> : <FiHeart />}
+        </button>
+      </div>
+
+      <div className="pd-card-info">
+        <div>
+          <div className="pd-card-top">
+            <h3 className="pd-card-name">{daycare.name}</h3>
+            {daycare.rating != null && (
+              <span className="pd-card-rating">⭐ {daycare.rating}</span>
+            )}
+          </div>
+          <div className="pd-card-meta-row">
+            {(daycare.City || daycare.address) && (
+              <span className="pd-card-meta">
+                <MdOutlineLocationOn size={15} />
+                {daycare.City || daycare.address}
+              </span>
+            )}
+            {daycare.hours && (
+              <span className="pd-card-meta">
+                <MdOutlineAccessTime size={15} />
+                {daycare.hours}
+              </span>
+            )}
+            {daycare.price != null && (
+              <span className="pd-card-meta">
+                {daycare.price.toLocaleString()} DZD/m
+              </span>
+            )}
+          </div>
+        </div>
+
+        <button
+          className="pd-view-btn"
+          onClick={() => navigate(`/daycare/${daycare.id}`)}
+        >
+          {t('parentDashboard.viewDetails')}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ── Main dashboard component ───────────────────────────────────────────────
 const ParentDashboard = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -151,7 +240,7 @@ const ParentDashboard = () => {
     navigate(`/search-results?name=${encodeURIComponent(search)}&city=${encodeURIComponent(location)}`);
   };
 
-  // Client-side filtering using HH:MM:SS format from backend
+  // Client-side filtering
   const clientFiltered = daycares.filter((d) => {
     if (filters.city) {
       const daycareCity = (d.City || d.address || '').toLowerCase();
@@ -159,16 +248,12 @@ const ParentDashboard = () => {
     }
     if (filters.openingTime) {
       const chosen  = timeStringToMinutes(filters.openingTime);
-      // d.open_time comes from backend as "HH:MM:SS"
       const opening = timeStringToMinutes(d.open_time);
-      // daycare must open AT or BEFORE chosen time
       if (opening === null || opening > chosen) return false;
     }
     if (filters.closingTime) {
       const chosen  = timeStringToMinutes(filters.closingTime);
-      // d.close_time comes from backend as "HH:MM:SS"
       const closing = timeStringToMinutes(d.close_time);
-      // daycare must close AT or AFTER chosen time
       if (closing === null || closing < chosen) return false;
     }
     return true;
@@ -180,12 +265,6 @@ const ParentDashboard = () => {
     currentPage * CARDS_PER_PAGE
   );
 
-  const resolveImage = (path) => {
-    if (!path) return 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop';
-    if (path.startsWith('http')) return path;
-    return `${BASE_URL}/${path}`;
-  };
-
   return (
     <>
       {/* ── NAVBAR ── */}
@@ -194,9 +273,9 @@ const ParentDashboard = () => {
           <img className="logo" src="/logo.png" alt="HADANATI" />
         </div>
         <div className="search-nav-links">
-          <span>{t('navbar.home')}</span>
-          <span>{t('navbar.about')}</span>
-          <span>{t('navbar.help')}</span>
+          <span onClick={() => navigate('/')}>{t('navbar.home')}</span>
+          <span onClick={() => navigate('/about')}>{t('navbar.about')}</span>
+          <span onClick={() => navigate('/help')}>{t('navbar.help')}</span>
         </div>
         <div className="search-nav-right">
           <div className="language-toggle" onClick={toggleLanguage}>
@@ -438,69 +517,16 @@ const ParentDashboard = () => {
             ) : (
               <>
                 <div className="pd-cards">
+                  {/* ✅ FIX: use DaycareCard component so hook can be called per card */}
                   {paginatedDaycares.map((daycare) => (
-                    <div key={daycare.id} className="pd-card">
-                      <div className="pd-card-image">
-                        <img
-                          src={resolveImage(daycare.profile_image)}
-                          alt={daycare.name}
-                          onError={(e) => {
-                            e.target.src =
-                              'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop';
-                          }}
-                        />
-                        {daycare.badge && (
-                          <span className={`pd-badge ${daycare.badge === 'TOP RATED' ? 'pd-badge-top' : 'pd-badge-value'}`}>
-                            {daycare.badge === 'TOP RATED'
-                              ? t('parentDashboard.topRated')
-                              : t('parentDashboard.bestValue')}
-                          </span>
-                        )}
-                        <button
-                          className={`pd-favorite ${savedIds.has(daycare.id) ? 'active' : ''}`}
-                          onClick={() => toggleLike(daycare.id)}
-                        >
-                          {savedIds.has(daycare.id) ? <FaHeart /> : <FiHeart />}
-                        </button>
-                      </div>
-
-                      <div className="pd-card-info">
-                        <div>
-                          <div className="pd-card-top">
-                            <h3 className="pd-card-name">{daycare.name}</h3>
-                            {daycare.rating != null && (
-                              <span className="pd-card-rating">⭐ {daycare.rating}</span>
-                            )}
-                          </div>
-                          <div className="pd-card-meta-row">
-                            {(daycare.City || daycare.address) && (
-                              <span className="pd-card-meta">
-                                <MdOutlineLocationOn size={15} />
-                                {daycare.City || daycare.address}
-                              </span>
-                            )}
-                            {daycare.hours && (
-                              <span className="pd-card-meta">
-                                <MdOutlineAccessTime size={15} />
-                                {daycare.hours}
-                              </span>
-                            )}
-                            {daycare.price != null && (
-                              <span className="pd-card-meta">
-                                {daycare.price.toLocaleString()} DZD/m
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <button
-                          className="pd-view-btn"
-                          onClick={() => navigate(`/daycare/${daycare.id}`)}
-                        >
-                          {t('parentDashboard.viewDetails')}
-                        </button>
-                      </div>
-                    </div>
+                    <DaycareCard
+                      key={daycare.id}
+                      daycare={daycare}
+                      savedIds={savedIds}
+                      toggleLike={toggleLike}
+                      navigate={navigate}
+                      t={t}
+                    />
                   ))}
 
                   {paginatedDaycares.length === 0 && (

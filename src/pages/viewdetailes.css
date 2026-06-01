@@ -228,7 +228,60 @@ body {
   color: #ffffff;
   opacity: 0.95;
 }
- 
+ /* ── Favorite Button ── */
+.sa-fav-btn {
+  position: absolute;
+  top: 16px;
+  right: 109px;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  
+  background: #4a5568;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 9000px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: background 0.2s, transform 0.15s;
+}
+
+/* Default = white heart */
+.sa-fav-btn svg {
+
+  color: #ffffff;
+  fill: white
+  ;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.15s;
+}
+
+/* Active = white background + dark heart */
+.sa-fav-btn--active {
+  background: white;
+}
+
+.sa-fav-btn--active:hover {
+  background: #f0f0f0;
+}
+
+
+
+/* Active = dark filled heart */
+.sa-fav-btn--active svg {
+  color: #ffffff;
+  fill: #4a5568;
+}
+
+.sa-fav-btn:hover svg {
+  transform: scale(1.1);
+}
 /* CSS scene fallback */
 .sa-hero-scene {
   position: absolute;

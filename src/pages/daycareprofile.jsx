@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -87,27 +86,29 @@ const DaycareProfile = () => {
     setError('');
     setSubmitting(true);
 
-   const data = new FormData();
-data.append('address',          form.fullAddress);
-data.append('city',             form.city);
-data.append('capacity',         form.totalCapacity);
-data.append('age_range',        `${form.ageFrom} - ${form.ageTo}`);
-data.append('price',            form.monthlyFeeMin);
-data.append('has_transport',    form.transport);
-data.append('has_lunch',        form.lunch);
-data.append('has_snacks',       form.snacks);
-data.append('hours',            `${form.opensAt} - ${form.closesAt} | ${form.dayStart} - ${form.dayEnd}`);
-data.append('education_info',   form.educationLevels ? 'Education per Levels' : '');
-data.append('healthcare_info',  form.healthcare ? 'Healthcare available' : '');
-
-
-if (form.certification) data.append('certificate', form.certification);
-    form.photos.forEach((photo) => data.append('photos', photo));
+    const data = new FormData();
+    data.append('address',         form.fullAddress);
+    data.append('city',            form.city);
+    data.append('capacity',        form.totalCapacity);
+    data.append('age_range',       `${form.ageFrom} - ${form.ageTo}`);
+    data.append('price',           form.monthlyFeeMin);
+    data.append('has_transport',   form.transport);
+    data.append('has_lunch',       form.lunch);
+    data.append('has_snacks',      form.snacks);
+    data.append('opensAt',         form.opensAt);
+    data.append('closesAt',        form.closesAt);
+    data.append('dayStart',        form.dayStart);
+    data.append('dayEnd',          form.dayEnd);
+    data.append('education_info',  form.educationLevels ? 'Education per Levels' : '');
+  data.append('healthcare_info', form.healthcare ? 'Healthcare available' : '');
+data.append('bio',             form.description);
+    if (form.certification) data.append('certification', form.certification);
+    form.photos.forEach((photo) => data.append('gallery', photo));
 
     try {
-      // Uses DAYCARE_API (VITE_DAYCARE_API_URL) with token attached automatically
       await completeDaycareProfile(data);
-      navigate('/facility-profile');
+      // ✅ After submitting profile, go to pending approval — NOT facility-profile
+      navigate('/pending-approval');
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong. Please try again.');
     } finally {

@@ -9,7 +9,7 @@
 }
 
 /* ─── Topbar ────────────────────────────────────────────────────────────────── */
-.fpe-topbar {
+/*.fpe-topbar {
   background: #ffffff;
   border-bottom: 0.5px solid rgba(0,0,0,0.1);
   padding: 0 2rem;
@@ -43,9 +43,127 @@
 .fpe-user-name { font-size: 12.5px; font-weight: 600; color: #111827; text-align: right; }
 .fpe-user-role { font-size: 10.5px; color: #9ca3af; text-align: right; }
 .fpe-avatar {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: #f3f4f6; border: 0.5px solid rgba(0,0,0,0.1);
-  display: flex; align-items: center; justify-content: center; color: #6b7280;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef1f8;
+}
+  .search-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 48px;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-logo {
+  font-weight: 800;
+  font-size: 20px;
+
+}
+.logo{
+  width: 120px;
+  height: auto;
+}
+
+.search-nav-links {
+  display: flex;
+  gap: 36px;
+  font-size: 14px;
+  color: #555;
+}
+
+.search-nav-links span {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.search-nav-links span:hover {
+  color: #6B8E9E;
+}
+.language-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  gap: 2px;
+}
+
+.language-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #aaa;
+}
+
+.lang-active {
+  color: #6B8E9E;
+}
+
+.search-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  color: #555;
+}
+
+.search-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  color: #333;
+  line-height: 1.3;
+}
+
+.search-user-name small {
+  font-weight: 400;
+  color: #888;
+  font-size: 11px;
+}
+
+/* ─── Search Bar (directly under navbar, no gap) ─── */
+.search-bar-container {
+  padding: 16px 48px;
+ 
+  /* remove border-bottom so it flows into page background cleanly */
+}
+.search-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #eef1f8;   /* ← background مزرق فاتح */
+  border: none;          /* ← بلا border */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7fa3;        /* ← لون الأيقونة رمادي-أزرق */
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.search-avatar svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.8;
 }
 
 /* ─── Page Header ───────────────────────────────────────────────────────────── */
