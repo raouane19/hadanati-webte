@@ -12,7 +12,25 @@ import { LuUtensils, LuVideo, LuBus, LuBriefcaseMedical } from 'react-icons/lu';
 import { MdOutlineAssignment } from 'react-icons/md';
 import { TbMoodSmile } from 'react-icons/tb';
 import { MdOutlineCheckCircle } from 'react-icons/md';
+import { FiHeart } from 'react-icons/fi';
+import { FaHeart } from 'react-icons/fa';
 import { getUser, getChildren, requestEnrollment, submitReview, searchDaycares } from '../api/auth';
+import { getSavedDaycares, saveDaycare, unsaveDaycare } from '../api/auth';
+
+// ── ngrok-safe image hook ──────────────────────────────────────────────────
+const useNgrokImage = (url) => {
+  const [src, setSrc] = useState(null);
+  useEffect(() => {
+    if (!url) { setSrc(null); return; }
+    let objectUrl = null;
+    fetch(url, { headers: { 'ngrok-skip-browser-warning': 'true' } })
+      .then(r => r.blob())
+      .then(blob => { objectUrl = URL.createObjectURL(blob); setSrc(objectUrl); })
+      .catch(() => setSrc(null));
+    return () => { if (objectUrl) URL.revokeObjectURL(objectUrl); };
+  }, [url]);
+  return src;
+};
 
 const FACILITIES = [
   { icon: <LuUtensils size={32} />,         name: 'Meals' },
@@ -29,6 +47,8 @@ const OWNER = {
   roleKey: 'leaders.elena.role',
 };
 
+const FALLBACK_IMG = 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=900&h=400&fit=crop';
+
 const SunshineAcademyPage = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -41,7 +61,7 @@ const SunshineAcademyPage = () => {
   const [reviews,          setReviews]          = useState([]);
   const [loadingReviews,   setLoadingReviews]   = useState(true);
   const [navAvatar,        setNavAvatar]        = useState(null);
-  const [heroImg]                               = useState('https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=900&h=400&fit=crop');
+
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [selectedChild,    setSelectedChild]    = useState(null);
   const [showProfile,      setShowProfile]      = useState(false);
@@ -50,16 +70,57 @@ const SunshineAcademyPage = () => {
   const [reviewRating,     setReviewRating]     = useState(0);
   const [reviewHovered,    setReviewHovered]    = useState(0);
   const [reviewComment,    setReviewComment]    = useState('');
+  const [savedIds,         setSavedIds]         = useState(new Set());
+
+  // ── Hero image via ngrok hook ──────────────────────────────────────────────
+  const heroImgUrl = daycare?.profile_image
+    ? `${import.meta.env.VITE_API_URL}${daycare.profile_image}`
+    : null;
+  const resolvedHero = useNgrokImage(heroImgUrl);
+
+  // ── Fetch saved daycares ───────────────────────────────────────────────────
+  useEffect(() => {
+    if (!currentUser?.id) return;
+    getSavedDaycares(currentUser.id)
+      .then((res) => {
+        if (Array.isArray(res.data))
+          setSavedIds(new Set(res.data.map((d) => d.id)));
+      })
+      .catch(() => {});
+  }, [currentUser?.id]);
+
+  const toggleLike = async (daycareId) => {
+    if (!currentUser?.id) return;
+    const alreadySaved = savedIds.has(daycareId);
+    setSavedIds((prev) => {
+      const next = new Set(prev);
+      alreadySaved ? next.delete(daycareId) : next.add(daycareId);
+      return next;
+    });
+    try {
+      if (alreadySaved) await unsaveDaycare(currentUser.id, daycareId);
+      else              await saveDaycare(currentUser.id, daycareId);
+    } catch (err) {
+      if (err.response?.status !== 409) {
+        setSavedIds((prev) => {
+          const next = new Set(prev);
+          alreadySaved ? next.add(daycareId) : next.delete(daycareId);
+          return next;
+        });
+      }
+    }
+  };
 
   // ── Fetch daycare ──────────────────────────────────────────────────────────
   useEffect(() => {
-    const fetchDaycare = async () => {
-      try {
-        const res = await searchDaycares({});
-        const found = (Array.isArray(res.data) ? res.data : []).find(
-          d => String(d.id) === String(id)
-        );
-        setDaycare(found || null);
+  const fetchDaycare = async () => {
+  try {
+    const BASE_URL = import.meta.env.VITE_API_URL;
+    const res = await fetch(`${BASE_URL}/daycares/${id}`, {
+      headers: { 'ngrok-skip-browser-warning': 'true' }
+    });
+    const json = await res.json();
+    setDaycare(json.data || null);
       } catch (err) {
         console.error('Failed to fetch daycare:', err);
       } finally {
@@ -85,7 +146,6 @@ const SunshineAcademyPage = () => {
       .then(r => r.json())
       .then(data => {
         const all = Array.isArray(data) ? data : [];
-        // only show reviews that belong to this daycare
         setReviews(all.filter(r => String(r.daycare_id) === String(id)));
       })
       .catch(() => setReviews([]))
@@ -160,7 +220,6 @@ const SunshineAcademyPage = () => {
       await submitReview(currentUser.id, id, reviewRating, reviewComment);
       handleCloseReview();
       alert('Review submitted!');
-      // Re-fetch reviews so the new one shows up immediately
       const BASE_URL = import.meta.env.VITE_API_URL;
       fetch(`${BASE_URL}/parents/${currentUser.id}/reviews`, {
         headers: {
@@ -209,9 +268,9 @@ const SunshineAcademyPage = () => {
           <img className="logo" src="/public/logo.png" alt="HADANATI" />
         </div>
         <div className="search-nav-links">
-          <span>{t('navbar.home')}</span>
-          <span>{t('navbar.about')}</span>
-          <span>{t('navbar.help')}</span>
+          <span onClick={() => navigate('/')}>{t('navbar.home')}</span>
+          <span onClick={() => navigate('/about')}>{t('navbar.about')}</span>
+          <span onClick={() => navigate('/help')}>{t('navbar.help')}</span>
         </div>
         <div className="search-nav-right">
           <div className="language-toggle" onClick={toggleLanguage}>
@@ -257,12 +316,9 @@ const SunshineAcademyPage = () => {
         {/* ── Hero + Info sidebar ── */}
         <div className="sa-two-col">
           <div className="sa-hero">
+            {/* ✅ FIX: use resolvedHero (blob URL from ngrok hook) */}
             <img
-              src={
-                daycare?.profile_image
-                  ? `${import.meta.env.VITE_API_URL}/${daycare.profile_image}`
-                  : heroImg
-              }
+              src={resolvedHero || FALLBACK_IMG}
               alt="Classroom"
               className="sa-hero-img"
             />
@@ -274,6 +330,17 @@ const SunshineAcademyPage = () => {
               <LuImages size={20} />
               <span>+12</span>
             </button>
+            <button
+              className={`sa-fav-btn ${savedIds.has(daycare?.id) ? 'sa-fav-btn--active' : ''}`}
+              onClick={() => toggleLike(daycare?.id)}
+              title="Add to favorites"
+            >
+              {savedIds.has(daycare?.id)
+                ? <FaHeart size={18} />
+                : <FiHeart size={18} />
+              }
+            </button>
+
             <div className="sa-hero-overlay" />
             <div className="sa-hero-content">
               <h2 className="sa-hero-title">
@@ -318,7 +385,7 @@ const SunshineAcademyPage = () => {
             </span>
             <h2 className="sa-phil-title">{t('sa.phil.title')}</h2>
             <p className="sa-phil-text">
-              {daycare?.education_info || t('sa.phil.text')}
+              {daycare?.bio || daycare?.education_info || t('sa.phil.text')}
             </p>
           </div>
 
@@ -525,9 +592,20 @@ const SunshineAcademyPage = () => {
         </div>
       )}
 
-      {showGallery && (
-        <Gallery onClose={() => setShowGallery(false)} />
-      )}
+    {showGallery && (
+  <Gallery
+    onClose={() => setShowGallery(false)}
+    images={
+      daycare?.images?.map((img) => ({
+        id:   img.id,
+        url:  img.image_url?.startsWith('http')
+                ? img.image_url
+                : `${import.meta.env.VITE_API_URL}${img.image_url || img.url || ''}`,
+        file: null,
+      })) ?? []
+    }
+  />
+)}
     </>
   );
 };

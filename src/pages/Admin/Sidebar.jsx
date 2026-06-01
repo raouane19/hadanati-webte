@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 const SIDEBAR_ITEMS = [
@@ -67,6 +68,13 @@ const SIDEBAR_ITEMS = [
 ];
 
 const Sidebar = ({ activeSection, onNavClick }) => {
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("adminToken");
+    navigate("/admin/login");
+  };
+
   return (
     <aside className="sidebar">
       <div className="sidebar__label">Admin Panel</div>
@@ -82,7 +90,7 @@ const Sidebar = ({ activeSection, onNavClick }) => {
         </div>
       ))}
 
-      <div className="sidebar__signout">
+      <div className="sidebar__signout" onClick={handleSignOut}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
           <polyline points="16 17 21 12 16 7" />

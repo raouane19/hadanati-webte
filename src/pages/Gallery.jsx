@@ -2,29 +2,70 @@ import React, { useState } from 'react';
 import './Gallery.css';
 import { IoArrowBack } from 'react-icons/io5';
 
-// Placeholder images — replace with real backend images later
-const placeholderImages = [
-  'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800',
-  'https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=800',
-  'https://images.unsplash.com/photo-1567186937675-a5131c8a89ea?w=800',
-  'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800',
-  'https://images.unsplash.com/photo-1560969184-10fe8719e047?w=800',
-  'https://images.unsplash.com/photo-1516627145497-ae6968895b40?w=800',
-  'https://images.unsplash.com/photo-1541178735493-479c1a27ed24?w=800',
-  'https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=800',
-  'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800',
-  'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=800',
-  'https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=800',
-];
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+// Same helpers as FacilityProfileEditor
+const resolveImage = (path) => {
+  if (!path) return null;
+  if (path.startsWith('http')) return path;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${BASE_URL}${cleanPath}`;
+};
+
+const useNgrokImage = (url) => {
+  const [src, setSrc] = React.useState(null);
+  React.useEffect(() => {
+    if (!url) { setSrc(null); return; }
+    let objectUrl = null;
+    fetch(url, { headers: { 'ngrok-skip-browser-warning': 'true' } })
+      .then((r) => r.blob())
+      .then((blob) => {
+        objectUrl = URL.createObjectURL(blob);
+        setSrc(objectUrl);
+      })
+      .catch(() => setSrc(null));
+    return () => { if (objectUrl) URL.revokeObjectURL(objectUrl); };
+  }, [url]);
+  return src;
+};
+
+const NgrokImg = ({ url, alt, className, style }) => {
+  const src = useNgrokImage(url);
+  if (!src) return <div style={{ background: '#f3f4f6', width: '100%', height: '100%' }} />;
+  return <img src={src} alt={alt} className={className} style={style} />;
+};
 
 const VISIBLE_COUNT = 5;
 
-const Gallery = ({ onClose, images = placeholderImages }) => {
+// images prop = same galleryImages array from FacilityProfileEditor
+// each item: { id, url, file } — url is already resolved
+const Gallery = ({ onClose, images = [] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAll, setShowAll] = useState(false);
 
   const visibleImages = showAll ? images : images.slice(0, VISIBLE_COUNT);
   const extraCount = images.length - VISIBLE_COUNT;
+
+  if (images.length === 0) {
+    return (
+      <div className="gallery-overlay" onClick={onClose}>
+        <div className="gallery-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="gallery-header">
+            <div className="gallery-header-left">
+              <button className="gallery-back-btn" onClick={onClose}><IoArrowBack /></button>
+              <h2 className="gallery-title">Gallery</h2>
+            </div>
+            <button className="gallery-close-btn" onClick={onClose}>✕</button>
+          </div>
+          <div style={{ textAlign: 'center', padding: '40px', color: '#aaa' }}>
+            No photos uploaded yet.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const current = images[currentIndex];
 
   return (
     <div className="gallery-overlay" onClick={onClose}>
@@ -43,10 +84,17 @@ const Gallery = ({ onClose, images = placeholderImages }) => {
 
         {/* Main Image */}
         <div className="gallery-main-image">
-          <img
-            src={images[currentIndex]}
-            alt={`Gallery image ${currentIndex + 1}`}
-          />
+          {current.file ? (
+            // Local file (not yet saved) — use object URL directly
+            <img src={current.url} alt={`Gallery image ${currentIndex + 1}`} />
+          ) : (
+            // Saved backend image — use NgrokImg
+           <NgrokImg
+          url={current.url}
+          alt={`Gallery image ${currentIndex + 1}`}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px' }}
+        />
+          )}
         </div>
 
         {/* Thumbnails */}

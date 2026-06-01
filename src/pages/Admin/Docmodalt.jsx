@@ -1,48 +1,96 @@
+import { useEffect, useState } from "react";
+import { fetchDaycareDocument } from "./api";
 import "./Modal.css";
 
+// DocModal fetches the proof_document for the given daycare from the backend
+// (GET /api/admin/daycares/:id/document) and renders it as a PDF/image viewer.
+// If no document exists it shows a friendly empty state.
 const DocModal = ({ daycare, onClose }) => {
+  const [url, setUrl]         = useState(null);
+  const [isPdf, setIsPdf]     = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError]     = useState("");
+
+  useEffect(() => {
+    if (!daycare) return;
+    let objectUrl;
+    setLoading(true);
+    setError("");
+
+    fetchDaycareDocument(daycare.id)
+      .then(({ blobUrl, type }) => {
+        objectUrl = blobUrl;
+        setUrl(blobUrl);
+        setIsPdf(type === "application/pdf");
+      })
+      .catch((err) => setError(err.message || "Could not load document"))
+      .finally(() => setLoading(false));
+
+    // Revoke object URL on unmount to avoid memory leaks
+    return () => { if (objectUrl) URL.revokeObjectURL(objectUrl); };
+  }, [daycare]);
+
   if (!daycare) return null;
 
-  const filename = `${daycare.name.replace(/\s+/g, "_").toLowerCase()}_license.pdf`;
-
-  const fields = [
-    { label: "Daycare",   value: daycare.name },
-    { label: "Owner",     value: daycare.owner },
-    { label: "City",      value: daycare.city },
-    { label: "Submitted", value: daycare.date },
-    { label: "Capacity",  value: `${daycare.cap} children` },
-    { label: "Status",    value: daycare.status.charAt(0).toUpperCase() + daycare.status.slice(1) },
-  ];
+  // isPdf is now determined from the actual blob content-type (set in useEffect above)
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="modal modal--doc"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: 780, width: "92vw" }}
+      >
         <div className="modal__head">
-          <span className="modal__title">Document — {daycare.name}</span>
-          <button className="modal__close" onClick={onClose}>✕</button>
+          <span className="modal__title">📄 Document — {daycare.name}</span>
+          <button className="modal__close" onClick={onClose} aria-label="Close">✕</button>
         </div>
 
-        <div className="modal__doc-grid">
-          {fields.map((f) => (
-            <div key={f.label}>
-              <div className="modal__doc-field-label">{f.label}</div>
-              <div className="modal__doc-field-value">{f.value}</div>
+        <div className="modal__doc-body">
+          {loading && (
+            <div className="modal__doc-placeholder">Loading document…</div>
+          )}
+
+          {!loading && error && (
+            <div className="modal__doc-placeholder modal__doc-placeholder--error">
+              <span style={{ fontSize: "2rem" }}>📭</span>
+              <p>{error}</p>
+              <p style={{ fontSize: ".78rem", color: "#9ca3af" }}>
+                The daycare may not have uploaded a proof document yet.
+              </p>
             </div>
-          ))}
+          )}
+
+          {!loading && !error && url && (
+            isPdf ? (
+              <iframe
+                src={url}
+                title="Proof document"
+                style={{ width: "100%", height: "60vh", border: "none", borderRadius: 6 }}
+              />
+            ) : (
+              <img
+                src={url}
+                alt="Proof document"
+                style={{ maxWidth: "100%", borderRadius: 6, display: "block", margin: "0 auto" }}
+              />
+            )
+          )}
         </div>
 
-        <hr className="modal__divider" />
-
-        <div className="modal__doc-preview">
-          <div className="modal__doc-icon">📄</div>
-          <div className="modal__doc-fname">{filename}</div>
-          <div className="modal__doc-fsize">2.4 MB · PDF Document</div>
-        </div>
-
-        <div className="modal__foot">
-          <button className="btn btn--secondary" onClick={onClose}>Close</button>
-          <button className="btn btn--primary">⬇ Download</button>
-        </div>
+        {!loading && !error && url && (
+          <div className="modal__foot">
+            <a
+              href={url}
+              download={`document-${daycare.id}`}
+              className="btn btn--primary"
+              style={{ textDecoration: "none" }}
+            >
+              ⬇ Download
+            </a>
+            <button className="btn btn--secondary" onClick={onClose}>Close</button>
+          </div>
+        )}
       </div>
     </div>
   );
