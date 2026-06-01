@@ -1,0 +1,315 @@
+.about-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1a1a2e;
+}
+ 
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.about-hero {
+  margin-bottom: 60px;
+}
+ 
+.about-hero__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  color: #1a1a2e;
+}
+ 
+.about-hero__brand {
+  color:#6B8E9E;
+}
+ 
+.about-hero__desc {
+  max-width: 680px;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #444;
+}
+ 
+/* ══════════════════════════════════════
+   THREE CARDS
+══════════════════════════════════════ */
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 100px;
+}
+ 
+/* shared card base */
+.about-card {
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+ 
+.about-card--light {
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+}
+ 
+.about-card--light:last-of-type {
+  border-right: none;
+}
+ 
+.about-card--dark {
+  background: #6d8b98;
+  color: white;
+  overflow: hidden;
+  /* stretch content to top, leave space at bottom */
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+ 
+/* icon */
+.about-card__icon {
+  color:black;
+  margin-bottom: 4px;
+}
+ 
+.about-card__icon--white {
+  color: white;
+}
+ 
+/* heading */
+.about-card__heading {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+ 
+.about-card__heading--white {
+  color: #ffffff;
+}
+ 
+/* bullet list */
+.about-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+ 
+.about-card__list li {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #555;
+  padding-left: 24px;
+  position: relative;
+}
+ 
+.about-card__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #5b9fa8;
+  border-radius: 50%;
+}
+ 
+/* white body text for dark card */
+.about-card__text--white {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.88);
+  margin: 0;
+}
+ 
+/* CTA link */
+.about-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #1a1a2e;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+ 
+.about-card__cta:hover {
+  color: #5b9fa8;
+}
+ 
+.about-card__arrow {
+  font-size: 1rem;
+}
+ 
+/* stacked shield + lock icon */
+.secure-icon-stack {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.secure-icon-shield {
+  font-size: 26px;
+  color: white;
+}
+ 
+.secure-icon-lock {
+  font-size: 13px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%);
+}
+ 
+/* decorative bubble on dark card */
+.about-card__bubble {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+ 
+/* bubble SVG sizing on dark card */
+.about-card__bubble svg {
+  width: 90px;
+  height: 80px;
+}
+ 
+/* ══════════════════════════════════════
+   COMMITMENT
+══════════════════════════════════════ */
+.about-commit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding-bottom: 100px;
+}
+ 
+.about-commit__title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 32px;
+  color: #1a1a2e;
+}
+ 
+.about-commit__title--muted {
+  color: #9ca3af;
+}
+ 
+.about-commit__quote {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #555;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+}
+ 
+/* circle badge */
+.about-commit__right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.about-commit__circle {
+  width: 568px;
+  height: 568px;
+  border-radius: 50%;
+  background: #f5f5f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  border: 1.5px solid #e0e0e8;
+  box-shadow: 0 8px 40px rgba(100, 100, 150, 0.13);
+}
+ 
+.about-commit__values-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: #9ca3af;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+ 
+.about-commit__value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #1a1a2e;
+  margin: 0;
+  text-transform: uppercase;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+  width: 100%;
+  text-align: center;
+}
+ 
+.about-commit__value:last-of-type {
+  border-bottom: none;
+}
+ 
+.about-commit__badge {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  margin-top: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+ 
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .about-cards {
+    grid-template-columns: 1fr;
+  }
+  .about-card--light {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .about-card--dark {
+    min-height: 340px;
+  }
+  .about-commit {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .about-commit__circle {
+    width: 280px;
+    height: 280px;
+  }
+}
+ 
+@media (max-width: 600px) {
+  .about-page {
+    padding: 40px 20px 0;
+  }
+}

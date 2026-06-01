@@ -1,0 +1,79 @@
+/* ── WhyChoose.css ── */
+
+.why-choose-section {
+  padding: 80px 60px;
+  text-align: center;
+  
+}
+
+.wc-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #2D3436;
+  margin-bottom: 15px;
+  font-family: 'Inter', sans-serif;
+}
+
+.wc-underline {
+  width: 60px;
+  height: 3px;
+  background-color: #E8B4BC;
+  margin: 0 auto 25px;
+  border-radius: 2px;
+}
+
+.wc-subtitle {
+  font-size: 17px;
+  color: #636E72;
+  max-width: 700px;
+  margin: 0 auto 60px;
+  line-height: 1.6;
+}
+
+.wc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wc-card {
+  text-align: center;
+  padding: 20px;
+}
+
+.wc-icon {
+  width: 70px;
+  height: 70px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px;
+  color: #6B8E9E;
+}
+
+.wc-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2D3436;
+  margin-bottom: 15px;
+}
+
+.wc-card-desc {
+  font-size: 15px;
+  color: #636E72;
+  line-height: 1.7;
+}
+
+@media (max-width: 968px) {
+  .why-choose-section { padding: 60px 24px; }
+  .wc-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .wc-title { font-size: 28px; }
+}

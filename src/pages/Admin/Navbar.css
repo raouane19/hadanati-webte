@@ -1,0 +1,109 @@
+.navbar {
+  background: #ffffff;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 1rem;
+}
+
+/* Logo */
+.navbar__logo {
+  font-size: 20px;
+  font-weight: 800;
+  color: #3d4f6b;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.navbar__logo span {
+  color: #e05c5c;
+}
+
+/* Nav links */
+.navbar__nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+.navbar__nav-btn {
+  background: none;
+  border: none;
+  font-size: 13.5px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 5px 18px;
+  border-radius: 8px;
+  transition: background 0.15s;
+  font-family: inherit;
+  font-weight: 500;
+}
+.navbar__nav-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+.navbar__nav-btn--active {
+  background: #3d4f6b;
+  color: #ffffff;
+}
+
+/* Right side */
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.navbar__lang-btn {
+  background: none;
+  border: 0.5px solid rgba(0, 0, 0, 0.18);
+  font-size: 12px;
+  color: #6b7280;
+  padding: 4px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.navbar__lang-btn:hover {
+  background: #f3f4f6;
+}
+.navbar__user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.navbar__user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+}
+.navbar__user-role {
+  font-size: 10.5px;
+  color: #9ca3af;
+}
+.navbar__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #3d4f6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .navbar__nav {
+    display: none;
+  }
+}

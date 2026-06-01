@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* Overlay */
+.gallery-overlay {
+ background: rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: blur(6px);
+  position: fixed;
+ inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+
+/* Modal */
+.gallery-modal {
+   background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 680px;
+  padding: 28px 32px 32px;
+  font-family: 'DM Sans', sans-serif;
+  position: relative;
+  overflow-y: auto;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+
+}
+
+
+
+/* Header */
+.gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.gallery-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gallery-back-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.gallery-back-btn:hover {
+  background: #f0f0f0;
+}
+
+.gallery-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.gallery-close-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.gallery-close-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* Main image */
+.gallery-main-image {
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* ← 'contain' keeps full image visible, no cropping */
+  border-radius: 8px;
+}
+
+/* Thumbnails row */
+.gallery-thumbnails {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.gallery-thumb-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  border: 2px solid #2d3a4a;
+  background: #2d3a4a;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-thumb-btn:hover {
+  background: #3d5a6a;
+  border-color: #3d5a6a;
+}
+
+.gallery-thumb-btn.active {
+  background: transparent;
+  border-color: #2d3a4a;
+  color: #2d3a4a;
+}
+
+/* +more button */
+.gallery-more-btn {
+  width: auto;
+  padding: 0 16px;
+  font-size: 13px;
+  background: transparent;
+  border: 2px solid #ddd;
+  color: #555;
+}
+
+.gallery-more-btn:hover {
+  background: #f5f5f5;
+  border-color: #bbb;
+  color: #333;
+}

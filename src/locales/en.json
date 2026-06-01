@@ -1,0 +1,481 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "help": "Help",
+    "language": "Language",
+    "login": "Log In"
+  },
+  "home": {
+    "badge": "TRUSTED BY PARENTS",
+    "title": "Welcome to",
+    "brand": "HADANATI",
+    "description": "A professional guide to safe, modern nurseries. We help discerning parents discover the perfect environment for their child's early development.",
+    "btn1": "Join our family",
+    "btn2": "See how it works"
+  },
+  "whyChoose": {
+    "title": "Why choose HADANATI?",
+    "subtitle": "A sophisticated and professional approach to your child's first educational journey.",
+    "safety": {
+      "title": "Verified Safety",
+      "description": "Every nursery undergoes a rigorous screening process to ensure the highest safety standards for your peace of mind."
+    },
+    "curriculum": {
+      "title": "Curriculum Excellence",
+      "description": "We partner with institutions that prioritize modern, evidence-based early childhood development programs."
+    },
+    "community": {
+      "title": "Parent Community",
+      "description": "Connect with a supportive network of parents and experts dedicated to nurturing the next generation."
+    }
+  },
+  "footer": {
+    "description": "Setting the standard for early childhood education and nursery selection across the region with professional clarity and sophisticated care.",
+    "about": {
+      "title": "ABOUT",
+      "mission": "Our Mission",
+      "team": "Team",
+      "careers": "Careers",
+      "contact": "Contact"
+    },
+    "help": {
+      "title": "GET HELP",
+      "support": "Parent Support",
+      "faq": "Safety FAQ",
+      "center": "Help Center",
+      "guides": "Guides"
+    },
+    "stayUpdated": "STAY UPDATED",
+    "copyright": "© 2026 HADANATI.COM. ALL RIGHTS RESERVED. PROFESSIONAL NURSERY NETWORK."
+  },
+  "join": {
+    "title": "Join our family",
+    "subtitle": "Please select your account type to continue",
+    "parentTitle": "Join as a Parent",
+    "parentDesc": "Discover exceptional nurseries, manage your childcare applications, and stay connected with their early learning journey.",
+    "parentBtn": "Register as Parent",
+    "nurseryTitle": "Join as a Nursery",
+    "nurseryDesc": "Showcase your facility, streamline your admissions process, and reach more parents in your local community.",
+    "nurseryBtn": "Register as Nursery",
+    "back": "Back to Home"
+  },
+  "signup": {
+    "title": "Parent Sign Up",
+    "subtitle": "Join the Hadanati community and empower your child's journey",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "btn": "Create Account",
+    "loginLink": "Already have an account?",
+    "login": "Log in",
+    "professional": "Become a confidential professional advisor",
+    "firstNamePlaceholder": "e.g. Sarah",
+    "lastNamePlaceholder": "e.g. Jackson",
+    "emailPlaceholder": "email@example.com",
+    "phonePlaceholder": "+213",
+    "passwordPlaceholder": "••••••••"
+  },
+  "nursery": {
+    "title": "Nursery Sign Up",
+    "subtitle": "Register your professional nursery with Hadanati",
+    "daycareName": "Daycare Name",
+    "daycarePlaceholder": "e.g. Little Blossoms Academy",
+    "ownerName": "Owner Full Name",
+    "ownerPlaceholder": "Jane Doe",
+    "email": "Email Address",
+    "emailPlaceholder": "jane@example.com",
+    "phone": "Phone Number",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "btn": "Register daycare and complete your profile",
+    "loginLink": "Already have an account?",
+    "login": "Log in"
+  },
+  "daycare": {
+    "title": "Complete Daycare Profile",
+    "backStep": "Return to Dashboard",
+    "fullAddress": "Full Address",
+    "fullAddressPlaceholder": "Street name, building number, area",
+    "city": "City",
+    "selectCity": "Select city",
+    "monthlyFee": "Monthly Fee / Price",
+    "totalCapacity": "Total Capacity",
+    "capacityPlaceholder": "e.g. 45 children",
+    "ageRange": "Age Range",
+    "ageFrom": "Age From",
+    "ageFromPlaceholder": "e.g. 6 months",
+    "ageTo": "Age To",
+    "ageToPlaceholder": "e.g. 5 years",
+    "activitiesOffered": "Activities Offered",
+    "educationLevels": "Education per Levels",
+    "languageLearning": "Language Learning",
+    "events": "Events",
+    "plays": "Plays",
+    "dayFrom": "Day From",
+    "dayTo": "Day To",
+    "opensAt": "Opens At",
+    "closesAt": "Closes At",
+    "services": "SERVICES & FACILITIES",
+    "transport": "Transport Availability",
+    "healthcare": "Healthcare Availability",
+    "foodServices": "FOOD SERVICES",
+    "lunch": "Lunch",
+    "snacks": "Snacks",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your nursery's mission, facilities, and unique approach to early childhood education...",
+    "gallery": "Nursery Gallery",
+    "uploadTitle": "Upload Photos",
+    "uploadSub": "Drag and drop multiple files to create your gallery",
+    "uploadLimit": "You can upload up to 5 photos",
+    "saveBtn": "Save & Continue",
+    "needHelp": "Need help completing your profile?",
+    "contactSupport": "Contact support",
+    "jobCertification": "Job Certification",
+    "jobCertificationUploadTitle": "Upload Job Certification",
+    "jobCertificationUploadSub": "PDF, JPG or PNG accepted",
+    "jobCertificationUploadLimit": "Max size: 5MB"
+  },
+  "sa": {
+    "title": "Sunshine Academy",
+    "subtitle": "A nurturing place where children grow and thrive",
+    "info": {
+      "title": "Daycare Info"
+    },
+    "hero": {
+      "line1": "Where Excellence Meets",
+      "line2": "Early Education",
+      "desc": "Nurturing the next generation through a balanced curriculum, professional educators, and a loving, secure environment.",
+      "btn1": "Leave review",
+      "btn2": "Send request"
+    },
+    "phil": {
+      "badge": "A PREMIER EDUCATION PARTNER",
+      "title": "Our Philosophy: Nurturing Growth, Inspiring Discovery",
+      "text": "At Sunshine Academy, we believe that early childhood is the most crucial stage of human development. Our approach blends Reggio Emilia-inspired inquiry with a rigorous academic foundation. We foster a nurturing environment where children are encouraged to explore, question, and grow at their own pace."
+    },
+    "reviews": {
+      "title": "Parent Reviews",
+      "readAll": "Read All Reviews"
+    },
+    "leaders": {
+      "title": "Our Leadership Team"
+    }
+  },
+  "daycareInfo": {
+    "campus": "Main Campus",
+    "campusVal": "123 Learning Lane, Chicago, IL",
+    "hours": "Operating Hours",
+    "hoursVal": "Mon - Fri, 7:00 AM - 6:30 PM",
+    "admissions": "Admissions",
+    "admissionsVal": "apply@sunshineacademy.edu",
+    "capacity": "Capacity",
+    "capacityVal": "120 children",
+    "age": "Age Range",
+    "ageVal": "6 weeks - 6 years",
+    "tuition": "Tuition",
+    "tuitionVal": "From 3000 DZD/mo",
+     "phone": "Phone",
+  "phoneVal": "+1 (312) 555-0198"
+  },
+  "reviews": {
+    "r1": {
+      "text": "Sunshine Early Learning has been an absolute blessing for our family. The staff is warm, professional, and truly dedicated to each child's growth.",
+      "author": "— Sarah M., Parent"
+    }
+  },
+  "leaders": {
+    "elena": { "name": "Elena Johnson",  "role": "Director & Founder"    },
+    "jessica": { "name": "Jessica Lee",  "role": "Lead Educator"         },
+    "mark": { "name": "Mark Thompson",   "role": "Child Psychologist"     },
+    "amanda": { "name": "Amanda Carter", "role": "Nutrition Specialist"   }
+  },
+  "login": {
+    "title": "Daycare login",
+    "subtitle": "Welcome back! Let's continue your daycare journey.",
+    "email": "Email Address",
+    "emailPlaceholder": "sarah@example.com",
+    "password": "Password",
+    "btn": "Log in",
+    "forgotPassword": "Forgot password?",
+    "professional": "Secure & confidential professional services"
+  },
+  "parentDashboard": {
+    "heroTitle1": "Find the perfect",
+    "heroTitle2": "daycare",
+    "heroTitle3": "for your child",
+    "heroSub": "Search thousands of verified childcare providers with real parent reviews, safety ratings, and available spots.",
+    "searchPlaceholder": "Search by daycare name",
+    "locationPlaceholder": "Enter your city or wilaya",
+    "findBtn": "Find Centers",
+    "filters": "Filters",
+    "foodProvided": " Food Provided",
+    "lunchIncluded": "Lunch Included",
+    "healthySnacks": "Healthy Snacks",
+    "healthcareCap": " Healthcare Cap",
+    "amenities": " Amenities",
+    "transport": "Transport Service",
+    "educational": "Educational Program",
+    "applyFilters": "Apply Filters",
+    "centersFound": "centers",
+    "found": "found",
+    "near": "near",
+    "viewDetails": "View Details",
+    "topRated": "TOP RATED",
+    "bestValue": "BEST VALUE"
+  },
+  "search": {
+    "placeholder_name": "Nursery name",
+    "placeholder_city": "City",
+    "find_btn": "Find Centers",
+    "top_result": "Top Result",
+    "similar": "Similar Centers Nearby",
+    "view_map": "View map",
+    "exact_match": "EXACT MATCH",
+    "view_details": "View Details →",
+    "reviews": "reviews",
+    "no_results": "No centers found. Try a different search! 😊",
+    "nursery_desc_1": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence.",
+    "nursery_desc_2": "Focus on creative arts and outdoor learning.",
+    "nursery_desc_3": "Montessori-inspired learning environment.",
+    "nursery_desc_4": "Large indoor gym and safe outdoor play area.",
+    "nursery_desc_5": "A warm and welcoming environment for children."
+  },
+  "nurseries": {
+    "sunshine":      { "name": "Sunshine Academy",       "desc": "Premium early childhood education with a focus on holistic development, sensory learning, and emotional intelligence." },
+    "littlesprouts": { "name": "Little Sprouts Daycare", "desc": "Focus on creative arts and outdoor learning." },
+    "brighthorizons":{ "name": "Bright Horizons",        "desc": "Montessori-inspired learning environment." },
+    "wonderland":    { "name": "Wonderland Prep",         "desc": "Large indoor gym and safe outdoor play area." },
+    "happykids":     { "name": "Happy Kids Center",       "desc": "A warm and welcoming environment for children." }
+  },
+  "about": {
+    "hero": {
+      "title": "About Us,",
+      "brand": "HADANATI",
+      "desc": "We are on a mission to make quality childcare accessible, transparent, and trustworthy for every family in Algeria."
+    },
+    "parents": {
+      "heading": "For Parents",
+      "item1": "Browse verified nurseries across Algeria",
+      "item2": "Read real reviews from other parents",
+      "item3": "Compare safety ratings and curricula",
+      "item4": "Apply directly through our platform",
+      "item5": "Stay connected with your child's progress",
+      "cta": "Find a Nursery"
+    },
+    "daycares": {
+      "heading": "For Daycares",
+      "item1": "Showcase your facility to thousands of parents",
+      "item2": "Streamline your admissions process",
+      "item3": "Manage registrations in one place",
+      "item4": "Build trust through verified reviews"
+    },
+    "secure": {
+      "heading": "Safe & Secure",
+      "desc": "Every nursery on our platform is verified and screened. Your child's safety is our highest priority."
+    },
+    "commit": {
+      "title": "Our unwavering",
+      "subtitle": "commitment.",
+      "quote": "At Hadnati, we believe childcare should be accessible, reliable, and trustworthy. By bringing families and daycares together on one platform, we empower parents to make informed decisions while supporting providers in growing their community presence.",
+      "valuesLabel": "OUR VALUES",
+      "value1": "ACCESSIBLE",
+      "value2": "RELIABLE",
+      "value3": "TRUSTWORTHY",
+      "badge": "HADNATI PROMISE"
+    }
+  },
+  "facilityProfile": {
+    "pageTitle": "Facility Profile Editor",
+    "pageSubtitle": "Configure your daycare's public identity and operational details.",
+    "discard": "Discard",
+    "saveChanges": "Save Changes",
+    "sidebar": {
+      "account": "Account",
+      "facilityIdentity": "Facility identity",
+      "contactLocation": "Contact and location",
+      "academyDetails": "Academy details",
+      "operatingHours": "Operating hours",
+      "services": "Services",
+      "manageRequests": "Manage requests",
+      "reviewsToPost": "Reviews to post",
+      "facilityGallery": "Facility gallery",
+      "signOut": "Sign Out"
+    },
+    "identity": {
+      "title": "Facility Identity",
+      "photoHint": "Recommended: 400×400px PNG",
+      "clickToUpload": "Click to upload",
+      "daycareName": "Daycare Name",
+      "tagline": "Tagline/Slogan",
+      "shortBio": "Short Bio"
+    },
+    "contact": {
+      "title": "Contact & Location",
+      "physicalAddress": "Physical Address",
+      "phone": "Phone",
+      "email": "Email"
+    },
+    "academy": {
+      "title": "Academy Details",
+      "ageRange": "Age Range",
+      "capacity": "Capacity",
+      "tuitionStructure": "Tuition Structure"
+    },
+    "hours": {
+      "title": "Operating Hours"
+    },
+    "services": {
+      "servicesTitle": "Services & Facilities",
+      "transport": "Transport Availability",
+      "healthcare": "Healthcare Availability",
+      "foodTitle": "Food Services",
+      "lunch": "Lunch",
+      "snacks": "Snacks",
+      "activitiesTitle": "Activities Offered"
+    },
+    "requests": {
+      "title": "Manage Requests",
+      "viewAll": "View All",
+      "childParent": "Child & Parent",
+      "status": "Status",
+      "action": "Action",
+      "pending": "Pending",
+      "approved": "Approved"
+    },
+    "reviews": {
+      "title": "Reviews to Post",
+      "newPending": "New Pending",
+      "history": "History",
+      "parent": "Parent",
+      "rating": "Rating",
+      "quote": "Quote",
+      "actions": "Actions",
+      "approve": "Approve",
+      "viewAll": "View All",              
+  "allReviewsTitle": "All Reviews"  
+    },
+    "gallery": {
+      "title": "Facility Gallery",
+      "photosUploaded": "photos uploaded",
+      "uploadPhotos": "Upload Photos",
+      "addNew": "ADD NEW"
+    }
+  },
+  "allReviews": {
+  "title": "All Reviews",
+  "back": "← Back",
+  "subtitle": "reviews from parents",
+  "noReviews": "No reviews yet."
+},
+"profile": {
+  "title": "profile info",
+  "account": "ACCOUNT",
+  "profileInfo": "Profile Info",
+  "myRequests": "My Requests",
+  "favorites": "Favorites",
+  "children": "Children",
+  "signOut": "Sign Out",
+  "personalInfo": "Personal Information",
+  "editAll": "Edit All",
+  "fullName": "FULL NAME",
+  "emailAddress": "EMAIL ADDRESS",
+  "phoneNumber": "PHONE NUMBER",
+  "location": "LOCATION",
+  "enrollmentRequests": "Enrollment Requests",
+  "viewAll": "VIEW ALL",
+  "manage": "MANAGE",
+  "details": "Details",
+  "pending": "PENDING",
+  "approved": "APPROVED",
+  "noRequests": "No requests yet.",
+"noFavorites": "No saved daycares yet.",
+"noChildren": "No children added yet.",
+"yearsOld": "yrs"
+},
+"editProfile": {
+  "title": "profile info",
+  "backTitle": "Edit Profile",
+  "profilePicture": "Profile Picture",
+  "profilePictureDesc": "Personalize your profile with a professional portrait.",
+  "profilePictureHint": "SUPPORTS JPG, PNG OR GIF • MAX 5MB",
+  "updatePhoto": "Update Photo",
+  "remove": "Remove",
+  "personalInfo": "Personal Information",
+  "personalInfoSub": "Manage your public profile information",
+  "discardChanges": "Discard Changes",
+  "saveProfile": "SAVE PROFILE",
+  "fullName": "FULL NAME",
+  "emailAddress": "EMAIL ADDRESS",
+  "phoneNumber": "PHONE NUMBER",
+  "location": "LOCATION",
+  "security": "Security & Password",
+  "securitySub": "Update your password to keep your account secure",
+  "updatePassword": "UPDATE PASSWORD",
+  "currentPassword": "CURRENT PASSWORD",
+  "newPassword": "NEW PASSWORD",
+  "confirmPassword": "CONFIRM NEW PASSWORD",
+  "newPasswordPlaceholder": "New Password",
+  "confirmPasswordPlaceholder": "Confirm Password",
+  "warning": "PASSWORD MUST BE AT LEAST 4 CHARACTERS AND INCLUDE A SYMBOL.",
+  "savedAlert": "Profile saved successfully!",
+  "passwordUpdatedAlert": "Password updated successfully!",
+  "passwordErrorAlert": "Password must be at least 4 characters and include a symbol!"
+},
+"enrollmentRequests": {
+  "title": "profile info",
+  "pageTitle": "My Enrollment Requests",
+  "subtitle": "Track and manage your daycare applications and enrollment status across our network.",
+  "editAll": "Edit All",
+  "child": "Child",
+  "applied": "Applied",
+  "viewDetails": "View Details",
+  "status": {
+    "in-review": "IN REVIEW",
+    "waitlisted": "WAITLISTED",
+    "confirmed": "CONFIRMED",
+    "pending": "PENDING",
+    "approved": "APPROVED"
+  }
+},
+"favorites": {
+  "title": "profile info",
+  "pageTitle": "My Favorites",
+  "discardChanges": "Discard Changes",
+  "saveAll": "Save All",
+  "viewDetails": "View Details →"
+},
+"children": {
+  "title": "profile info",
+  "pageTitle": "My Children",
+  "age": "Age",
+  "medical": "Medical",
+  "editProfile": "Edit Profile",
+  "addChild": "Add another child?"
+},
+"childrenProfile": {
+  "title": "profile info",
+  "editTitle": "Edit {{name}}'s Profile",
+  "addTitle": "My Children",
+  "portrait": "Child's Portrait",
+  "portraitDesc": "High-resolution headshot recommended.",
+  "portraitFormats": "Accepted formats: JPG, PNG (Max 5MB)",
+  "uploadPhoto": "Upload New Photo",
+  "fullName": "CHILD'S FULL LEGAL NAME",
+  "fullNamePlaceholder": "Enter full name as per identity documents",
+  "dob": "DATE OF BIRTH",
+  "gender": "GENDER",
+  "selectGender": "Select Gender",
+  "male": "Male",
+  "female": "Female",
+  "medicalNotes": "MEDICAL NOTES / ALLERGIES",
+  "medicalPlaceholder": "Enter any critical health information, dietary restrictions, or known allergies...",
+  "cancel": "Cancel",
+  "saveChanges": "Save Changes",
+  "addChild": "Add Child to Program",
+  "requiredAlert": "Please fill in all required fields."
+}
+}

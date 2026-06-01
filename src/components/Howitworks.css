@@ -1,0 +1,163 @@
+/* HowItWorks.css */
+
+.hiw-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.hiw-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 90%;
+  max-width: 620px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CLOSE ── */
+.hiw-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: #f4f8fb;
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #636e72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.hiw-close:hover { background: #e0eaf0; }
+
+/* ── HEADER ── */
+.hiw-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.hiw-sub {
+  font-size: 0.95rem;
+  color: #718096;
+  text-align: center;
+  margin: 0 0 32px;
+}
+
+/* ── ROLE BUTTONS ── */
+.hiw-roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.hiw-role-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 20px;
+  border: 2px solid #d1dfe8;
+  border-radius: 16px;
+  background: #f4f8fb;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hiw-role-btn:hover {
+  border-color: #5b8fa8;
+  background: #e8f4f8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(91, 143, 168, 0.15);
+}
+
+.hiw-role-icon { font-size: 2.2rem; }
+
+.hiw-role-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.hiw-role-desc {
+  font-size: 0.82rem;
+  color: #718096;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── TABS ── */
+.hiw-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: #f4f8fb;
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.hiw-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: #718096;
+  transition: all 0.2s;
+}
+.hiw-tab.active {
+  background: #ffffff;
+  color: #3f6e87;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ── VIDEO ── */
+.hiw-video-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hiw-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 500px) {
+  .hiw-modal  { padding: 28px 18px; }
+  .hiw-roles  { grid-template-columns: 1fr; }
+  .hiw-title  { font-size: 1.3rem; }
+}
