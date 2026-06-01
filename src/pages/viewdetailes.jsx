@@ -592,9 +592,20 @@ const SunshineAcademyPage = () => {
         </div>
       )}
 
-      {showGallery && (
-        <Gallery onClose={() => setShowGallery(false)} />
-      )}
+    {showGallery && (
+  <Gallery
+    onClose={() => setShowGallery(false)}
+    images={
+      daycare?.images?.map((img) => ({
+        id:   img.id,
+        url:  img.image_url?.startsWith('http')
+                ? img.image_url
+                : `${import.meta.env.VITE_API_URL}${img.image_url || img.url || ''}`,
+        file: null,
+      })) ?? []
+    }
+  />
+)}
     </>
   );
 };
