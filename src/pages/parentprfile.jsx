@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import MyChildren from './MyChildren';
 import MyEnrollmentRequests from './Myenrollmentrequests';
 import EditParent from './editparent';
-import MyFavorites from './My Favorites';
+import MyFavorites from './MyFavorites';
 import {
   getUser,
   getChildren,

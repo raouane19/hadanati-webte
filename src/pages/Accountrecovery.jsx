@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AccountRecovery.css';
+import './Accountrecovery.css';
 import { LiaFileAlt } from 'react-icons/lia';
 import { LiaTelegramPlane } from 'react-icons/lia';
 import { useNavigate } from 'react-router-dom';

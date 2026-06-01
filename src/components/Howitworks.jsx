@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './HowItWorks.css';
+import './Howitworks.css';
 import { MdFamilyRestroom } from 'react-icons/md';
 import { FaSchool } from 'react-icons/fa6';
 

@@ -39,7 +39,7 @@ const FAQ_ITEMS = [
 ];
 
 const HelpCenter = () => {
-  const { t } = useTranslation();
+   useTranslation();
   const navigate = useNavigate();
   const currentUser = getUser();
 

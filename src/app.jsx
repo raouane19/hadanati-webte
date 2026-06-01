@@ -26,6 +26,9 @@ import DaycaresPage from './pages/Admin/Daycarespage';
 import AdminProtectedRoute from './pages/Admin/ProtectedRoute';
 import HelpCenter from './pages/Helpcenter';
 import PendingApproval from './pages/PendingApproval';
+import AccountRecovery from './pages/Accountrecovery';
+import MyChildren from './pages/Mychildren';   
+import MyFavorites from './pages/MyFavorites'; 
 import { getUser } from './api/auth';
 
 // ── Guard for approved daycares only ──────────────────────────────────────
