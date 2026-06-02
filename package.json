@@ -1,4 +1,5 @@
 {
+  "homepage": "https://raouane19.github.io/hadanati-webte",
   "name": "hadanati-platform",
   "private": true,
   "version": "0.0.0",
@@ -7,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
+
   },
   "dependencies": {
     "axios": "^1.16.1",
@@ -28,6 +31,7 @@
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "gh-pages": "^6.3.0",
     "globals": "^16.5.0",
     "vite": "^7.3.1"
   }
