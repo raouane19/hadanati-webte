@@ -1,0 +1,357 @@
+/* ===== Font Import ===== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ===== Global ===== */
+.mc-overlay,
+.mc-overlay * {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+/* ===== Overlay ===== */
+.mc-overlay {
+  position: fixed;
+  inset: 0;
+    background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* ===== Modal ===== */
+.mc-modal {
+ background: rgba(255, 255, 255, 0.35);;
+  border-radius: 16px;
+  width: 580px;
+   max-width: 95vw;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Header ===== */
+.mc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.mc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.mc-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 18px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+
+.mc-close:hover {
+  color: #111;
+}
+
+/* ===== Title Row ===== */
+.mc-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 20px 0px;
+  flex-shrink: 0;
+}
+
+.mc-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 40px;
+  color: #2d4a6e;
+  line-height: 1;
+  padding: 0;
+}
+
+.mc-back:hover {
+  color: #1e3550;
+}
+
+.mc-title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  color: #111;
+  letter-spacing: -0.5px;
+}
+
+/* ===== Body ===== */
+.mc-body {
+  padding: 20px 20px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+}
+
+/* ===== Portrait ===== */
+.mc-portrait-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.mc-portrait-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.mc-portrait-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background: #fce9d8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc-portrait-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+}
+
+.mc-portrait-edit {
+  position: absolute;
+  bottom: -7px;
+  right: -7px;
+  background: #2d4a6e;
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.mc-portrait-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 2px;
+}
+
+.mc-portrait-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  color: #111;
+}
+
+.mc-portrait-desc {
+  font-size: 12px;
+  color: #2d4a6e;
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.mc-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  background: #fff;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.mc-upload-btn:hover {
+    color: #fff;
+  background: #374151;
+  border-color: #d1d5db;
+}
+
+/* ===== Fields ===== */
+.mc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.mc-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #374151;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.mc-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 11px 14px;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.mc-input-row:focus-within {
+  border-color: #2d4a6e;
+  box-shadow: 0 0 0 3px rgba(45, 74, 110, 0.08);
+}
+
+.mc-input {
+  border: none;
+  outline: none;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #111;
+  width: 100%;
+  background: transparent;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.mc-input::placeholder {
+  color: #c4c9d4;
+  font-weight: 400;
+}
+
+.mc-select {
+  cursor: pointer;
+  color: #6b7280;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.mc-select:valid {
+  color: #111;
+}
+
+/* ===== Two column row ===== */
+.mc-row-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ===== Textarea ===== */
+.mc-textarea {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #111;
+  resize: vertical;
+  outline: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: #fff;
+  min-height: 100px;
+}
+
+.mc-textarea::placeholder {
+  color: #c4c9d4;
+}
+
+.mc-textarea:focus {
+  border-color: #2d4a6e;
+  box-shadow: 0 0 0 3px rgba(45, 74, 110, 0.08);
+}
+
+/* ===== Actions ===== */
+.mc-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.mc-cancel {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.15s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.mc-cancel:hover {
+  color: #111;
+}
+
+.mc-submit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #2d4a6e;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 22px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.mc-submit:hover {
+  background: #1e3550;
+}
+
+/* ===== Scrollbar ===== */
+.mc-modal::-webkit-scrollbar {
+  width: 5px;
+}
+
+.mc-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mc-modal::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .mc-row-two {
+    grid-template-columns: 1fr;
+  }
+}
