@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import './NurserySignUp.css';
+import './nurserySignUp.css';
 import { useTranslation } from 'react-i18next';
 import { MdOutlineBusinessCenter, MdOutlineEmail } from 'react-icons/md';
 import { FaRegUser } from 'react-icons/fa';
